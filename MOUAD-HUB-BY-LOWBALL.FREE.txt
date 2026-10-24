@@ -1,0 +1,2865 @@
+-- LEAKED BY GOJO EZZ FUCKERS
+-- LEAKED BY GOJO EZZ FUCKERS
+-- LEAKED BY GOJO EZZ FUCKERS
+-- LEAKED BY GOJO EZZ FUCKERS
+-- LEAKED BY GOJO EZZ FUCKERS
+-- LEAKED BY GOJO EZZ FUCKERS
+-- LEAKED BY GOJO EZZ FUCKERS
+-- LEAKED BY GOJO EZZ FUCKERS
+-- LEAKED BY GOJO EZZ FUCKERS
+-- LEAKED BY GOJO EZZ FUCKERS
+-- LEAKED BY GOJO EZZ FUCKERS
+-- LEAKED BY GOJO EZZ FUCKERS
+
+:(%d+): attempt to index nil with nil
+:217: attempt to call a nil value
+mouadOpenDiscord
+_bizarrePingSource
+-- ============================================================
+-- MOUAD PING LAGGER
+-- OPEN panel | CLOSE removes all
+-- ============================================================
+do
+    local UserInputService = game:GetService("UserInputService")
+    local TweenService     = game:GetService("TweenService")
+    local HttpService      = game:GetService("HttpService")
+    local Players          = game:GetService("Players")
+    local RunService       = game:GetService("RunService")
+
+    local plr    = Players.LocalPlayer
+    local plrGui = plr:WaitForChild("PlayerGui")
+
+    local CONFIG_FILE = "MouadPingBypass_Config.json"
+    local HUB_BG = ""
+    local HUB_LOGO = ""
+
+    local DEFAULT_CFG = {
+        power = 100000,
+        interval = 0.125,
+        keybindKb = "F",
+        keybindGp = "ButtonR2",
+        autoBrainrot = true,
+        posX = 0.5, posY = 0.5, posXO = 0, posYO = 0,
+    }
+
+    local cfg = {
+        power = DEFAULT_CFG.power,
+        interval = DEFAULT_CFG.interval,
+        keybindKb = DEFAULT_CFG.keybindKb,
+        keybindGp = DEFAULT_CFG.keybindGp,
+        autoBrainrot = DEFAULT_CFG.autoBrainrot,
+        posX = DEFAULT_CFG.posX, posY = DEFAULT_CFG.posY,
+        posXO = DEFAULT_CFG.posXO, posYO = DEFAULT_CFG.posYO,
+    }
+
+    local function _isfile(n)
+        local ok, r = pcall(function()
+            if isfile then return isfile(n) end
+            if syn and syn.isfile then return syn.isfile(n) end
+            return false
+        end)
+        return ok and r
+    end
+    local function _readfile(n)
+        local ok, r = pcall(function()
+            if readfile then return readfile(n) end
+            if syn and syn.readfile then return syn.readfile(n) end
+            return nil
+        end)
+        return ok and r or nil
+    end
+    local function _writefile(n, data)
+        local ok = pcall(function()
+            if writefile then writefile(n, data); return end
+            if syn and syn.writefile then syn.writefile(n, data); return end
+            if fluxus and fluxus.writefile then fluxus.writefile(n, data); return end
+        end)
+        return ok
+    end
+
+    local function saveConfig()
+        pcall(function()
+            local payload = HttpService:JSONEncode({
+                power = cfg.power,
+                interval = cfg.interval,
+                keybindKb = cfg.keybindKb,
+                keybindGp = cfg.keybindGp,
+                autoBrainrot = cfg.autoBrainrot == true,
+                posX = cfg.posX, posY = cfg.posY,
+                posXO = cfg.posXO, posYO = cfg.posYO,
+            })
+            _writefile(CONFIG_FILE, payload)
+        end)
+    end
+
+    local function loadConfig()
+        pcall(function()
+            if not _isfile(CONFIG_FILE) then return end
+            local raw = _readfile(CONFIG_FILE)
+            if not raw or raw == "" then return end
+            local data = HttpService:JSONDecode(raw)
+            if type(data) ~= "table" then return end
+            if tonumber(data.power) then cfg.power = math.clamp(math.floor(tonumber(data.power)), 1, 9999999) end
+            if tonumber(data.interval) then cfg.interval = math.clamp(tonumber(data.interval), 0.01, 2) end
+            if type(data.keybindKb) == "string" then cfg.keybindKb = data.keybindKb end
+            if type(data.keybindGp) == "string" then cfg.keybindGp = data.keybindGp end
+            if data.autoBrainrot ~= nil then cfg.autoBrainrot = data.autoBrainrot == true end
+            if tonumber(data.posX) then cfg.posX = tonumber(data.posX) end
+            if tonumber(data.posY) then cfg.posY = tonumber(data.posY) end
+            if tonumber(data.posXO) then cfg.posXO = tonumber(data.posXO) end
+            if tonumber(data.posYO) then cfg.posYO = tonumber(data.posYO) end
+        end)
+    end
+    loadConfig()
+
+    local active = false
+    local listeningFor = nil
+    local remote = nil
+    local brainrotMode = false
+    local lastBrainrotState = false
+    local manualOverride = false
+    local lagThread = nil
+
+    -- bizarre pink palette
+    local C = {
+        bg      = Color3.fromRGB(21, 18, 31),
+        panel   = Color3.fromRGB(21, 18, 31),
+        card    = Color3.fromRGB(21, 18, 31),
+        accent  = Color3.fromRGB(139, 92, 246),
+        accent2 = Color3.fromRGB(139, 92, 246),
+        white   = Color3.fromRGB(255, 255, 255),
+        dim     = Color3.fromRGB(139, 92, 246),
+        green   = Color3.fromRGB(255, 255, 255),
+        red     = Color3.fromRGB(139, 92, 246),
+        wait    = Color3.fromRGB(139, 92, 246),
+    }
+
+    local function tw(obj, props, t)
+        TweenService:Create(obj, TweenInfo.new(t or 0.15, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), props):Play()
+    end
+
+    local function corner(p, r)
+        local c = Instance.new("UICorner")
+        c.CornerRadius = UDim.new(0, r or 10)
+        c.Parent = p
+        return c
+    end
+
+    local function stroke(p, col, th, tr)
+        local s = Instance.new("UIStroke")
+        s.Color = col or C.accent
+        s.Thickness = th or 1.2
+        s.Transparency = tr or 0.3
+        s.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+        s.Parent = p
+        return s
+    end
+
+    local function shine(obj, speed)
+        local g = Instance.new("UIGradient")
+        g.Rotation = 18
+        g.Color = ColorSequence.new({
+            ColorSequenceKeypoint.new(0.00, C.accent),
+            ColorSequenceKeypoint.new(0.42, C.accent2),
+            ColorSequenceKeypoint.new(0.50, C.white),
+            ColorSequenceKeypoint.new(0.58, C.accent2),
+            ColorSequenceKeypoint.new(1.00, C.accent),
+        })
+        g.Offset = Vector2.new(-1, 0)
+        g.Parent = obj
+        task.spawn(function()
+            local off = -1
+            while obj.Parent do
+                off = off + (speed or 0.022)
+                if off > 1 then off = -1 end
+                g.Offset = Vector2.new(off, 0)
+                task.wait(0.03)
+            end
+        end)
+        return g
+    end
+
+    local function resolveKb(name)
+        if not name or name == "" or name == "None" then return nil end
+        local ok, val = pcall(function() return Enum.KeyCode[name] end)
+        return (ok and val) or nil
+    end
+
+    local function isGamepad(kc)
+        local n = kc.Name
+        return n:sub(1,6)=="Button" or n:sub(1,10)=="Thumbstick"
+            or n:sub(1,4)=="DPad" or n=="ButtonSelect" or n=="ButtonStart"
+    end
+
+    local BLACKLISTED = {
+        [Enum.KeyCode.Escape] = true,
+        [Enum.KeyCode.LeftControl] = true,
+        [Enum.KeyCode.Unknown] = true,
+    }
+
+    -- destroy old
+    for _, kid in pairs(plrGui:GetChildren()) do
+        if kid.Name == "MouadPingBypass" or kid.Name == "bizarrePingBypass" or kid.Name == "GalaxyPingLaggerGui" or kid.Name == "NoxaPingLagger" then
+            pcall(function() kid:Destroy() end)
+        end
+    end
+    pcall(function()
+        if gethui then
+            local h = gethui()
+            for _, n in ipairs({"MouadPingBypass", "bizarrePingBypass", "GalaxyPingLaggerGui", "NoxaPingLagger"}) do
+                local o = h:FindFirstChild(n)
+                if o then o:Destroy() end
+            end
+        end
+    end)
+
+    local function guiParent()
+        if gethui then
+            local ok, h = pcall(gethui)
+            if ok and h then return h end
+        end
+        return plrGui
+    end
+
+    local screen = Instance.new("ScreenGui")
+    screen.Name = "MouadPingBypass"
+    screen.ResetOnSpawn = false
+    screen.IgnoreGuiInset = true
+    screen.DisplayOrder = 12000
+    screen.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+    screen.Parent = guiParent()
+
+    -- MAIN
+    local MAIN_W, MAIN_H = 260, 300
+    local mainFrame = Instance.new("Frame")
+    mainFrame.Name = "MainFrame"
+    mainFrame.Size = UDim2.new(0, MAIN_W, 0, MAIN_H)
+    mainFrame.Position = UDim2.new(cfg.posX or 0.5, cfg.posXO or 0, cfg.posY or 0.5, cfg.posYO or 0)
+    mainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+    mainFrame.BackgroundColor3 = C.bg
+    mainFrame.BorderSizePixel = 0
+    mainFrame.Active = true
+    mainFrame.ClipsDescendants = true
+    mainFrame.Parent = screen
+    corner(mainFrame, 18)
+    local mainStroke = stroke(mainFrame, C.accent, 1.5, 0.22)
+
+    -- hub background art
+    local bg = Instance.new("ImageLabel", mainFrame)
+    bg.Size = UDim2.new(1, 0, 1, 0)
+    bg.BackgroundTransparency = 1
+    bg.Image = HUB_BG
+    bg.ScaleType = Enum.ScaleType.Crop
+    bg.ImageTransparency = 0.15
+    bg.ZIndex = 1
+    corner(bg, 18)
+
+    local dim = Instance.new("Frame", mainFrame)
+    dim.Size = UDim2.new(1, 0, 1, 0)
+    dim.BackgroundColor3 = Color3.fromRGB(21, 18, 31)
+    dim.BackgroundTransparency = 0.42
+    dim.BorderSizePixel = 0
+    dim.ZIndex = 2
+    corner(dim, 18)
+
+    -- HEADER with bizarre logo
+    local header = Instance.new("Frame", mainFrame)
+    header.Size = UDim2.new(1, 0, 0, 58)
+    header.BackgroundTransparency = 1
+    header.ZIndex = 5
+
+    local logo = Instance.new("ImageLabel", header)
+    logo.AnchorPoint = Vector2.new(0.5, 0.5)
+    logo.Position = UDim2.new(0.5, 0, 0.5, 2)
+    logo.Size = UDim2.new(0, 168, 0, 48)
+    logo.BackgroundTransparency = 1
+    logo.Image = HUB_LOGO
+    logo.ScaleType = Enum.ScaleType.Fit
+    logo.ImageColor3 = Color3.fromRGB(139, 92, 246)
+    logo.ZIndex = 6
+    shine(logo, 0.02)
+
+    local titleSub = Instance.new("TextLabel", header)
+    titleSub.AnchorPoint = Vector2.new(0.5, 1)
+    titleSub.Position = UDim2.new(0.5, 0, 1, -2)
+    titleSub.Size = UDim2.new(1, -20, 0, 12)
+    titleSub.BackgroundTransparency = 1
+    titleSub.Text = "MOUAD PING LAGGER"
+    titleSub.TextColor3 = C.dim
+    titleSub.Font = Enum.Font.GothamBlack
+    titleSub.TextSize = 9
+    titleSub.ZIndex = 7
+
+    -- status pill
+    local statusPill = Instance.new("Frame", header)
+    statusPill.Size = UDim2.new(0, 44, 0, 18)
+    statusPill.Position = UDim2.new(0, 10, 0.5, -9)
+    statusPill.BackgroundColor3 = Color3.fromRGB(21, 18, 31)
+    statusPill.BackgroundTransparency = 0.1
+    statusPill.BorderSizePixel = 0
+    statusPill.ZIndex = 8
+    corner(statusPill, 9)
+    stroke(statusPill, C.accent, 1, 0.45)
+
+    local statusLbl = Instance.new("TextLabel", statusPill)
+    statusLbl.Size = UDim2.new(1, 0, 1, 0)
+    statusLbl.BackgroundTransparency = 1
+    statusLbl.Text = "OFF"
+    statusLbl.TextColor3 = C.red
+    statusLbl.Font = Enum.Font.GothamBlack
+    statusLbl.TextSize = 9
+    statusLbl.ZIndex = 9
+
+    -- CLOSE
+    local closeBtn = Instance.new("TextButton", header)
+    closeBtn.Size = UDim2.new(0, 26, 0, 26)
+    closeBtn.Position = UDim2.new(1, -34, 0.5, -13)
+    closeBtn.BackgroundColor3 = C.card
+    closeBtn.BackgroundTransparency = 0.08
+    closeBtn.Text = "X"
+    closeBtn.TextColor3 = C.white
+    closeBtn.Font = Enum.Font.GothamBlack
+    closeBtn.TextSize = 13
+    closeBtn.AutoButtonColor = false
+    closeBtn.ZIndex = 8
+    corner(closeBtn, 8)
+    stroke(closeBtn, C.accent, 1, 0.3)
+
+    -- BODY
+    local body = Instance.new("Frame", mainFrame)
+    body.Position = UDim2.new(0, 12, 0, 64)
+    body.Size = UDim2.new(1, -24, 1, -74)
+    body.BackgroundTransparency = 1
+    body.ZIndex = 5
+
+    -- power card
+    local card = Instance.new("Frame", body)
+    card.AnchorPoint = Vector2.new(0.5, 0)
+    card.Position = UDim2.new(0.5, 0, 0, 0)
+    card.Size = UDim2.new(1, 0, 0, 72)
+    card.BackgroundColor3 = Color3.fromRGB(21, 18, 31)
+    card.BackgroundTransparency = 0.15
+    card.BorderSizePixel = 0
+    card.ZIndex = 6
+    corner(card, 14)
+    stroke(card, C.accent, 1.2, 0.35)
+
+    local powerLbl = Instance.new("TextLabel", card)
+    powerLbl.AnchorPoint = Vector2.new(0.5, 0.5)
+    powerLbl.Position = UDim2.new(0.5, 0, 0.5, -4)
+    powerLbl.Size = UDim2.new(0.9, 0, 0, 30)
+    powerLbl.BackgroundTransparency = 1
+    powerLbl.Text = tostring(cfg.power)
+    powerLbl.TextColor3 = C.white
+    powerLbl.Font = Enum.Font.GothamBlack
+    powerLbl.TextSize = 26
+    powerLbl.ZIndex = 7
+    shine(powerLbl, 0.025)
+
+    local powerHint = Instance.new("TextLabel", card)
+    powerHint.AnchorPoint = Vector2.new(0.5, 1)
+    powerHint.Position = UDim2.new(0.5, 0, 1, -6)
+    powerHint.Size = UDim2.new(1, -8, 0, 12)
+    powerHint.BackgroundTransparency = 1
+    powerHint.Text = "POWER"
+    powerHint.TextColor3 = C.dim
+    powerHint.Font = Enum.Font.GothamBold
+    powerHint.TextSize = 9
+    powerHint.ZIndex = 7
+
+    -- power input
+    local powerBox = Instance.new("TextBox", body)
+    powerBox.AnchorPoint = Vector2.new(0.5, 0)
+    powerBox.Position = UDim2.new(0.5, 0, 0, 80)
+    powerBox.Size = UDim2.new(1, 0, 0, 28)
+    powerBox.BackgroundColor3 = C.card
+    powerBox.BackgroundTransparency = 0.1
+    powerBox.BorderSizePixel = 0
+    powerBox.Text = tostring(cfg.power)
+    powerBox.PlaceholderText = "Custom power..."
+    powerBox.TextColor3 = C.white
+    powerBox.PlaceholderColor3 = C.dim
+    powerBox.TextSize = 13
+    powerBox.Font = Enum.Font.GothamBold
+    powerBox.ClearTextOnFocus = false
+    powerBox.ZIndex = 7
+    corner(powerBox, 10)
+    stroke(powerBox, C.accent, 1, 0.4)
+
+    -- interval
+    local intervalBox = Instance.new("TextBox", body)
+    intervalBox.AnchorPoint = Vector2.new(0.5, 0)
+    intervalBox.Position = UDim2.new(0.5, 0, 0, 114)
+    intervalBox.Size = UDim2.new(1, 0, 0, 28)
+    intervalBox.BackgroundColor3 = C.card
+    intervalBox.BackgroundTransparency = 0.1
+    intervalBox.BorderSizePixel = 0
+    intervalBox.Text = tostring(cfg.interval)
+    intervalBox.PlaceholderText = "Delay (secs)"
+    intervalBox.TextColor3 = C.white
+    intervalBox.PlaceholderColor3 = C.dim
+    intervalBox.TextSize = 13
+    intervalBox.Font = Enum.Font.GothamBold
+    intervalBox.ClearTextOnFocus = false
+    intervalBox.ZIndex = 7
+    corner(intervalBox, 10)
+    stroke(intervalBox, C.accent, 1, 0.4)
+
+    -- ACTIVATE
+    local actBtn = Instance.new("TextButton", body)
+    actBtn.AnchorPoint = Vector2.new(0.5, 0)
+    actBtn.Position = UDim2.new(0.5, 0, 0, 150)
+    actBtn.Size = UDim2.new(1, 0, 0, 36)
+    actBtn.BackgroundColor3 = C.card
+    actBtn.BackgroundTransparency = 0.05
+    actBtn.BorderSizePixel = 0
+    actBtn.Text = "ACTIVATE"
+    actBtn.TextColor3 = C.white
+    actBtn.TextSize = 14
+    actBtn.Font = Enum.Font.GothamBlack
+    actBtn.AutoButtonColor = false
+    actBtn.ZIndex = 7
+    corner(actBtn, 12)
+    local actStroke = stroke(actBtn, C.accent, 1.3, 0.28)
+    shine(actBtn, 0.02)
+
+    -- Auto Brainrot row
+    local autoRow = Instance.new("Frame", body)
+    autoRow.Position = UDim2.new(0, 0, 0, 194)
+    autoRow.Size = UDim2.new(1, 0, 0, 28)
+    autoRow.BackgroundColor3 = C.card
+    autoRow.BackgroundTransparency = 0.12
+    autoRow.BorderSizePixel = 0
+    autoRow.ZIndex = 7
+    corner(autoRow, 10)
+    stroke(autoRow, C.accent, 1, 0.45)
+
+    local autoLbl = Instance.new("TextLabel", autoRow)
+    autoLbl.Size = UDim2.new(0.55, 0, 1, 0)
+    autoLbl.Position = UDim2.new(0, 10, 0, 0)
+    autoLbl.BackgroundTransparency = 1
+    autoLbl.Text = "Auto Brainrot"
+    autoLbl.TextColor3 = C.dim
+    autoLbl.Font = Enum.Font.GothamBold
+    autoLbl.TextSize = 11
+    autoLbl.TextXAlignment = Enum.TextXAlignment.Left
+    autoLbl.ZIndex = 8
+
+    local autoBtn = Instance.new("TextButton", autoRow)
+    autoBtn.Size = UDim2.new(0, 54, 0, 22)
+    autoBtn.Position = UDim2.new(1, -62, 0.5, -11)
+    autoBtn.BackgroundColor3 = cfg.autoBrainrot and C.accent or Color3.fromRGB(21, 18, 31)
+    autoBtn.BorderSizePixel = 0
+    autoBtn.Text = cfg.autoBrainrot and "ON" or "OFF"
+    autoBtn.TextColor3 = C.white
+    autoBtn.Font = Enum.Font.GothamBlack
+    autoBtn.TextSize = 10
+    autoBtn.AutoButtonColor = false
+    autoBtn.ZIndex = 8
+    corner(autoBtn, 8)
+
+    -- keybinds
+    local kbBtn = Instance.new("TextButton", body)
+    kbBtn.Position = UDim2.new(0, 0, 0, 230)
+    kbBtn.Size = UDim2.new(0.48, -4, 0, 28)
+    kbBtn.BackgroundColor3 = C.card
+    kbBtn.BackgroundTransparency = 0.1
+    kbBtn.BorderSizePixel = 0
+    kbBtn.Text = "KB [" .. (cfg.keybindKb or "F") .. "]"
+    kbBtn.TextColor3 = C.white
+    kbBtn.Font = Enum.Font.GothamBold
+    kbBtn.TextSize = 10
+    kbBtn.AutoButtonColor = false
+    kbBtn.ZIndex = 7
+    corner(kbBtn, 9)
+    stroke(kbBtn, C.accent, 1, 0.4)
+
+    local gpBtn = Instance.new("TextButton", body)
+    gpBtn.Position = UDim2.new(0.52, 0, 0, 230)
+    gpBtn.Size = UDim2.new(0.48, -0, 0, 28)
+    gpBtn.BackgroundColor3 = C.card
+    gpBtn.BackgroundTransparency = 0.1
+    gpBtn.BorderSizePixel = 0
+    gpBtn.Text = "GP [" .. (cfg.keybindGp or "R2") .. "]"
+    gpBtn.TextColor3 = C.white
+    gpBtn.Font = Enum.Font.GothamBold
+    gpBtn.TextSize = 10
+    gpBtn.AutoButtonColor = false
+    gpBtn.ZIndex = 7
+    corner(gpBtn, 9)
+    stroke(gpBtn, C.accent, 1, 0.4)
+
+    -- logic
+    local function findRemote()
+        local rrs = game:FindFirstChild("RobloxReplicatedStorage")
+        if not rrs then pcall(function() rrs = game:GetService("RobloxReplicatedStorage") end) end
+        if not rrs then return nil end
+        for _, name in ipairs({"SetPlayerBlockList", "UpdatePlayerBlockList", "SetBlockList", "UpdateBlockList", "BlockList"}) do
+            local r = rrs:FindFirstChild(name)
+            if r and r:IsA("RemoteEvent") then return r end
+        end
+        for _, c in ipairs(rrs:GetChildren()) do
+            if c:IsA("RemoteEvent") and tostring(c.Name):find("Block") then return c end
+        end
+        return nil
+    end
+
+    local function buildPayload(power)
+        local main, nested = {}, {{}}
+        local current = nested[1]
+        for _ = 1, 186 do
+            local n = {}
+            table.insert(current, n)
+            current = n
+        end
+        local maxRep = math.min(math.floor((tonumber(power) or 70000) / 188), 10000)
+        for _ = 1, math.max(1, maxRep) do
+            table.insert(main, nested)
+        end
+        return main
+    end
+
+    local function stopLag()
+        active = false
+        if lagThread then pcall(task.cancel, lagThread); lagThread = nil end
+    end
+
+    local function runPingLoop()
+        local delay = cfg.interval
+        while active do
+            local r = remote or findRemote()
+            remote = r
+            if not r then
+                task.wait(0.3)
+                remote = findRemote()
+                if not remote then active = false; break end
+            end
+            local payload = buildPayload(cfg.power)
+            local ok = pcall(function() remote:FireServer(payload) end)
+            if not ok then
+                delay = math.min(delay * 1.4, 0.5)
+            else
+                delay = math.max(delay * 0.995, 0.05)
+            end
+            task.wait(delay)
+        end
+        lagThread = nil
+    end
+
+    local function paintActive()
+        if active then
+            actBtn.Text = "DEACTIVATE"
+            actBtn.BackgroundColor3 = Color3.fromRGB(139, 92, 246)
+            actStroke.Color = C.white
+            actStroke.Transparency = 0.1
+            statusLbl.Text = "ON"
+            statusLbl.TextColor3 = C.green
+            mainStroke.Color = C.green
+            mainStroke.Transparency = 0.15
+            tw(statusPill, {BackgroundColor3 = Color3.fromRGB(21, 18, 31)}, 0.15)
+        else
+            actBtn.Text = "ACTIVATE"
+            actBtn.BackgroundColor3 = C.card
+            actStroke.Color = C.accent
+            actStroke.Transparency = 0.28
+            statusLbl.Text = "OFF"
+            statusLbl.TextColor3 = C.red
+            mainStroke.Color = C.accent
+            mainStroke.Transparency = 0.22
+            tw(statusPill, {BackgroundColor3 = Color3.fromRGB(21, 18, 31)}, 0.15)
+        end
+        powerLbl.Text = tostring(cfg.power)
+    end
+
+    local function flipLag(state, isManual)
+        if isManual then
+            if brainrotMode then
+                manualOverride = not state
+            else
+                manualOverride = false
+            end
+        end
+        if state then
+            remote = remote or findRemote()
+            if not remote then
+                remote = findRemote()
+                if not remote then
+                    warn("[MOUAD PING LAGGER] Remote BlockList not found")
+                    active = false
+                    paintActive()
+                    return
+                end
+            end
+            stopLag()
+            active = true
+            lagThread = task.spawn(runPingLoop)
+        else
+            stopLag()
+        end
+        paintActive()
+        saveConfig()
+    end
+
+    actBtn.MouseButton1Click:Connect(function()
+        flipLag(not active, true)
+    end)
+
+    powerBox.FocusLost:Connect(function()
+        local n = tonumber(powerBox.Text)
+        if n then
+            cfg.power = math.clamp(math.floor(n + 0.5), 1, 9999999)
+            powerBox.Text = tostring(cfg.power)
+            powerLbl.Text = tostring(cfg.power)
+            saveConfig()
+        else
+            powerBox.Text = tostring(cfg.power)
+        end
+    end)
+
+    intervalBox.FocusLost:Connect(function()
+        local n = tonumber(intervalBox.Text)
+        if n then
+            cfg.interval = math.clamp(n, 0.01, 2)
+            intervalBox.Text = tostring(cfg.interval)
+            saveConfig()
+        else
+            intervalBox.Text = tostring(cfg.interval)
+        end
+    end)
+
+    autoBtn.MouseButton1Click:Connect(function()
+        cfg.autoBrainrot = not cfg.autoBrainrot
+        autoBtn.Text = cfg.autoBrainrot and "ON" or "OFF"
+        tw(autoBtn, {BackgroundColor3 = cfg.autoBrainrot and C.accent or Color3.fromRGB(21, 18, 31)}, 0.12)
+        saveConfig()
+    end)
+
+    local function updateKbLabels()
+        if listeningFor == "kb" then
+            kbBtn.Text = "Press key..."
+            kbBtn.TextColor3 = C.wait
+        else
+            kbBtn.Text = "KB [" .. (cfg.keybindKb or "None") .. "]"
+            kbBtn.TextColor3 = C.white
+        end
+        if listeningFor == "gp" then
+            gpBtn.Text = "Press btn..."
+            gpBtn.TextColor3 = C.wait
+        else
+            gpBtn.Text = "GP [" .. (cfg.keybindGp or "None") .. "]"
+            gpBtn.TextColor3 = C.white
+        end
+    end
+
+    kbBtn.MouseButton1Click:Connect(function()
+        listeningFor = (listeningFor == "kb") and nil or "kb"
+        updateKbLabels()
+    end)
+    gpBtn.MouseButton1Click:Connect(function()
+        listeningFor = (listeningFor == "gp") and nil or "gp"
+        updateKbLabels()
+    end)
+
+    -- auto brainrot
+    RunService.Heartbeat:Connect(function()
+        if not cfg.autoBrainrot then
+            if brainrotMode then
+                brainrotMode = false
+                lastBrainrotState = false
+            end
+            return
+        end
+        local char = plr.Character
+        local hum = char and char:FindFirstChildOfClass("Humanoid")
+        if not hum then return end
+        local hasBrainrot = hum.WalkSpeed > 0 and hum.WalkSpeed < 25
+        if hasBrainrot and not lastBrainrotState then
+            brainrotMode = true
+            lastBrainrotState = true
+            manualOverride = false
+            if not active then flipLag(true, false) end
+        elseif not hasBrainrot and lastBrainrotState then
+            brainrotMode = false
+            lastBrainrotState = false
+            manualOverride = false
+            if active then flipLag(false, false) end
+        end
+    end)
+
+    UserInputService.InputBegan:Connect(function(input, processed)
+        local kc = input.KeyCode
+        if kc == Enum.KeyCode.Unknown then return end
+        local isGp = isGamepad(kc)
+        local isKb = input.UserInputType == Enum.UserInputType.Keyboard
+
+        if listeningFor then
+            if kc == Enum.KeyCode.Escape then
+                listeningFor = nil
+                updateKbLabels()
+                return
+            end
+            if listeningFor == "kb" and isKb and not BLACKLISTED[kc] then
+                cfg.keybindKb = kc.Name
+                listeningFor = nil
+                updateKbLabels()
+                saveConfig()
+                return
+            end
+            if listeningFor == "gp" and isGp then
+                cfg.keybindGp = kc.Name
+                listeningFor = nil
+                updateKbLabels()
+                saveConfig()
+                return
+            end
+            return
+        end
+
+        if processed then return end
+        local kbEnum = resolveKb(cfg.keybindKb)
+        local gpEnum = resolveKb(cfg.keybindGp)
+        if (kbEnum and kc == kbEnum and isKb) or (gpEnum and kc == gpEnum and isGp) then
+            flipLag(not active, true)
+        end
+    end)
+
+    -- drag + save position
+    local dragging, dragStart, startPos
+    mainFrame.InputBegan:Connect(function(i)
+        if i.UserInputType == Enum.UserInputType.MouseButton1 or i.UserInputType == Enum.UserInputType.Touch then
+            dragging = true
+            dragStart = i.Position
+            startPos = mainFrame.Position
+        end
+    end)
+    UserInputService.InputChanged:Connect(function(i)
+        if not dragging then return end
+        if i.UserInputType ~= Enum.UserInputType.MouseMovement and i.UserInputType ~= Enum.UserInputType.Touch then return end
+        local d = i.Position - dragStart
+        mainFrame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + d.X, startPos.Y.Scale, startPos.Y.Offset + d.Y)
+    end)
+    UserInputService.InputEnded:Connect(function(i)
+        if i.UserInputType == Enum.UserInputType.MouseButton1 or i.UserInputType == Enum.UserInputType.Touch then
+            if dragging then
+                cfg.posX = mainFrame.Position.X.Scale
+                cfg.posXO = mainFrame.Position.X.Offset
+                cfg.posY = mainFrame.Position.Y.Scale
+                cfg.posYO = mainFrame.Position.Y.Offset
+                saveConfig()
+            end
+            dragging = false
+        end
+    end)
+
+    local function closeAll()
+        stopLag()
+        pcall(function() screen:Destroy() end)
+        _G.bizarrePingIsOpen = function() return false end
+    end
+
+    closeBtn.MouseButton1Click:Connect(closeAll)
+
+    _G.bizarrePingClose = closeAll
+    _G.bizarrePingIsOpen = function()
+        return screen and screen.Parent ~= nil
+    end
+
+    paintActive()
+    updateKbLabels()
+    saveConfig() -- force write on open so file always exists
+    -- ping ready
+end
+
+getMatchSongName
+UserInputService
+ReplicatedStorage
+bizarreTauntMessage
+bizarreTauntRepeatCount
+bizarreTauntMessageDelay
+bizarreTauntQueue
+bizarreTauntWorkerRunning
+bizarreSendTauntChatMessage
+bizarreSemiStopPercent
+antiRagdollEnabled
+medusaCounterEnabled
+antiMedusaEnabled
+noCollideEnabled
+batCounterEnabled
+batCounterDebounce
+autoStealEnabled
+stretchRezEnabled
+nightModeEnabled
+autoRightEnabled
+removeAccEnabled
+batAimbotToggled
+looksButtonColor
+looksAutoGrabColor
+mobileBtnVisible
+autoSwingEnabled
+batAimbotVersion
+normalAimbotVersion
+bypassAimbotVersion
+adaptNormalPause
+aimbotConnection
+autoGrabPosition
+mobileButtonPositions
+mobileButtonScale
+hideMobileButtons
+lockMobileButtons
+noCamCollisionEnabled
+customFontEnabled
+visionBatToggled
+snowTpBatEnabled
+currentBackground
+backgroundColorEnabled
+progressBarScale
+customToolsEnabled
+bizarrePositionToConfig
+bizarreConfigToPosition
+bizarreCleanupOldESPVisuals
+_VezyHideSideBtns
+_VynxMobileBtnScale
+AutoStealEnabled
+AutoGrabStopEnabled
+AutoGrabStopTime
+AutoGrabDelayRadius
+autoStealEnabled
+selectedStealMode
+selectedSemiMode
+AmbitiousStealRadii
+SemiV2SemiRadius
+_AmbitiousKickWarn
+_bizarreGrabState
+autoGrabDelayRadius
+selectedStealMode
+selectedSemiMode
+local LP = (rawget(_G, "LP") or game:GetService("Players").LocalPlayer)
+local Players = rawget(_G, "Players") or game:GetService("Players")
+local RunService = rawget(_G, "RunService") or game:GetService("RunService")
+local State = rawget(_G, "_bizarreGrabState") or {}
+local getconnections = rawget(_G, "getconnections") or get_signal_cons or getconnects or (syn and syn.get_signal_cons)
+-- Read mode flags from _G each time engines check (engines capture upvalues; re-sync in Sync)
+do
+  -- nothing: engines read selectedStealMode as global upvalue from load env
+end
+
+_G.__AmbitiousSetupNormalAutoSteal = function()
+  _G.AmbitiousNormalSteal = _G.AmbitiousNormalSteal or {
+    enabled = false,
+    radius = 70,
+    duration = 1.25,
+    animals = {},
+    promptCache = {},
+    internalCache = {},
+    scannerStarted = false,
+    scanning = false,
+    isStealing = false,
+    stealConn = nil,
+    refreshThread = nil,
+    lastSteal = 0,
+    cooldown = 0.02,
+  }
+  if _G.AmbitiousNormalSteal.stealConn then pcall(function() _G.AmbitiousNormalSteal.stealConn:Disconnect() end); _G.AmbitiousNormalSteal.stealConn = nil end
+  _G.AmbitiousNormalSteal.enabled = false
+  _G.AmbitiousNormalSteal.isStealing = false
+
+  local function barProgress(p)
+    p = math.clamp(tonumber(p) or 0, 0, 1)
+    pcall(function()
+      if _G.StealBar then
+        _G.StealBar.SetState("STEALING")
+        _G.StealBar.SetProgress(p)
+      end
+    end)
+  end
+
+  local function resetBar()
+    pcall(function()
+      if _G.StealBar then _G.StealBar.Reset() end
+    end)
+  end
+
+  local function getRoot()
+    local char = LP.Character
+    if not char then return nil end
+    return char:FindFirstChild("HumanoidRootPart") or char:FindFirstChild("UpperTorso")
+  end
+
+  local function isMyBase(plotName)
+    local plots = workspace:FindFirstChild("Plots")
+    local plot = plots and plots:FindFirstChild(plotName)
+    if not plot then return false end
+    local sign = plot:FindFirstChild("PlotSign")
+    local yourBase = sign and sign:FindFirstChild("YourBase")
+    return yourBase and yourBase:IsA("BillboardGui") and yourBase.Enabled == true
+  end
+
+  local function scanPlots()
+    local a = _G.AmbitiousNormalSteal
+    a.animals = {}
+    local plots = workspace:FindFirstChild("Plots")
+    if not plots then return end
+    for _, plot in ipairs(plots:GetChildren()) do
+      if plot:IsA("Model") and not isMyBase(plot.Name) then
+        local podiums = plot:FindFirstChild("AnimalPodiums")
+        if podiums then
+          for _, podium in ipairs(podiums:GetChildren()) do
+            if podium:IsA("Model") then
+              local base = podium:FindFirstChild("Base")
+              local spawn = base and base:FindFirstChild("Spawn")
+              if spawn then
+                table.insert(a.animals, {
+                  plot = plot.Name,
+                  slot = podium.Name,
+                  worldPosition = spawn.Position,
+                  uid = plot.Name .. "_" .. podium.Name,
+                })
+              end
+            end
+          end
+        end
+      end
+    end
+  end
+
+  local function ensureScanner()
+    local a = _G.AmbitiousNormalSteal
+    if a.scannerStarted then return end
+    a.scannerStarted = true
+    task.spawn(function()
+      task.wait(1)
+      while _G.AmbitiousNormalSteal do
+        if _G.AmbitiousNormalSteal.enabled then
+          pcall(scanPlots)
+        end
+        task.wait(1.5)
+      end
+    end)
+  end
+
+  local function findPrompt(data)
+    if not data then return nil end
+    local a = _G.AmbitiousNormalSteal
+    local cached = a.promptCache[data.uid]
+    if cached and cached.Parent then return cached end
+    local plots = workspace:FindFirstChild("Plots")
+    local plot = plots and plots:FindFirstChild(data.plot)
+    local podiums = plot and plot:FindFirstChild("AnimalPodiums")
+    local podium = podiums and podiums:FindFirstChild(data.slot)
+    local base = podium and podium:FindFirstChild("Base")
+    local spawn = base and base:FindFirstChild("Spawn")
+    local attach = spawn and spawn:FindFirstChild("PromptAttachment")
+    if not attach then return nil end
+    for _, prompt in ipairs(attach:GetChildren()) do
+      if prompt:IsA("ProximityPrompt") then
+        a.promptCache[data.uid] = prompt
+        return prompt
+      end
+    end
+    return nil
+  end
+
+  local function cacheCallbacks(prompt)
+    local a = _G.AmbitiousNormalSteal
+    if a.internalCache[prompt] then return end
+    local data = {hold = {}, trigger = {}, ready = true}
+    pcall(function()
+      if getconnections then
+        for _, conn in ipairs(getconnections(prompt.PromptButtonHoldBegan)) do
+          if type(conn.Function) == "function" then table.insert(data.hold, conn.Function) end
+        end
+        for _, conn in ipairs(getconnections(prompt.Triggered)) do
+          if type(conn.Function) == "function" then table.insert(data.trigger, conn.Function) end
+        end
+      end
+    end)
+    if #data.hold > 0 or #data.trigger > 0 then
+      a.internalCache[prompt] = data
+    end
+  end
+
+  -- Stesso identico check delle modalita' Semi: distanza dal prompt vivo
+  -- (prompt.Parent.Parent = la parte Spawn), non da una posizione salvata.
+  local function stillInRange(prompt)
+    local a = _G.AmbitiousNormalSteal
+    local root = getRoot()
+    if not root or not prompt.Parent or not prompt.Parent.Parent then return false end
+    return (root.Position - prompt.Parent.Parent.Position).Magnitude <= (tonumber(a.radius) or 62)
+  end
+
+  local function doSteal(prompt)
+    local a = _G.AmbitiousNormalSteal
+    if not prompt or not prompt.Parent or a.isStealing then return end
+    if tick() - (a.lastSteal or 0) < (a.cooldown or 0.08) then return end
+    cacheCallbacks(prompt)
+    local data = a.internalCache[prompt]
+    if not data or not data.ready then return end
+    if _G.SyncAfterHitReady and not _G.SyncAfterHitReady() then return end
+    data.ready = false
+    a.isStealing = true
+    a.lastSteal = tick()
+    pcall(function() if _G.StealBar then _G.StealBar.SetState("STEALING") end end)
+    task.spawn(function()
+      if #data.hold > 0 then
+        for _, fn in ipairs(data.hold) do task.spawn(function() pcall(fn) end) end
+      end
+      local startTime = tick()
+      local dur = tonumber(a.duration) or 1.25
+      a.duration = dur
+      -- La barra si riempie in 1.25s e resta piena per gli ultimi 0.05s:
+      -- cosi' il 100% e' visibile invece di comparire nello stesso frame del reset.
+      local fillDur = math.max(dur - 0.05, 0.05)
+      local aborted = false
+      while a.enabled and selectedStealMode == "Normal" and tick() - startTime < dur do
+        if not stillInRange(prompt) then
+          aborted = true
+          break
+        end
+        barProgress((tick() - startTime) / fillDur)
+        task.wait(0.01)
+      end
+      if aborted or not a.enabled or selectedStealMode ~= "Normal" then
+        data.ready = true
+        a.isStealing = false
+        resetBar()
+        return
+      end
+      barProgress(1)
+      if #data.trigger > 0 then
+        for _, fn in ipairs(data.trigger) do task.spawn(function() pcall(fn) end) end
+      end
+      pcall(function() if _G.AutoCarrySpeed and _G.AutoCarrySpeed.WatchPickup then _G.AutoCarrySpeed.WatchPickup(1.25) end end)
+      -- nessun wait: ripartenza immediata al prossimo Heartbeat
+      data.ready = true
+      a.isStealing = false
+      resetBar()
+    end)
+  end
+
+  local function nearestAnimal()
+    local a = _G.AmbitiousNormalSteal
+    local root = getRoot()
+    if not root then return nil end
+    local radius = tonumber(a.radius) or 62
+
+    -- STESSA SCELTA DEL BERSAGLIO DELLA SEMI.
+    -- Prima si guardava la lista costruita dallo scan della Normal, che
+    -- contiene TUTTI i podi (anche quelli vuoti), e si usava la
+    -- worldPosition salvata al momento della scansione. Due problemi in
+    -- uno: si prendeva di mira un podio senza niente sopra, e anche
+    -- quando l'animale spariva la posizione vecchia restava buona,
+    -- quindi lo steal partiva lo stesso a vuoto.
+    -- La lista della Semi nasce invece dall'AnimalList del plot (solo
+    -- slot davvero occupati) e la posizione viene risolta ADESSO dal
+    -- podio: se non c'e' piu' niente, animalPos ritorna nil e quella
+    -- voce non e' un bersaglio.
+    -- #list > 0 e non solo "e' una tabella": lo scan condiviso ci mette un
+    -- attimo a partire (aspetta ReplicatedStorage), e con la lista ancora
+    -- vuota si usciva subito senza bersaglio invece di ripiegare sulla
+    -- scansione propria. Era per quello che la Normal sembrava morta
+    -- finche' non passavi da Semi e tornavi indietro.
+    if _G.AmbitiousStealAnimals then
+      local list = _G.AmbitiousStealAnimals()
+      if type(list) == "table" and #list > 0 then
+        local best, bestDist = nil, math.huge
+        for _, data in ipairs(list) do
+          local mine = _G.AmbitiousStealIsMyBase and _G.AmbitiousStealIsMyBase(data)
+          local occupied = (not _G.AmbitiousStealSlotOccupied)
+                           or _G.AmbitiousStealSlotOccupied(data)
+          if not mine and occupied then
+            local pos = _G.AmbitiousStealAnimalPos and _G.AmbitiousStealAnimalPos(data)
+            if pos then
+              local dist = (root.Position - pos).Magnitude
+              if dist <= radius and dist < bestDist then
+                best, bestDist = data, dist
+              end
+            end
+          end
+        end
+        return best
+      end
+    end
+
+    -- Ripiego: la Semi non e' ancora stata inizializzata. Anche qui la
+    -- posizione si risolve dal vivo, non dalla worldPosition salvata.
+    local best, bestDist = nil, math.huge
+    for _, data in ipairs(a.animals) do
+      if not isMyBase(data.plot) then
+        local plots = workspace:FindFirstChild("Plots")
+        local plot = plots and plots:FindFirstChild(data.plot)
+        local podiums = plot and plot:FindFirstChild("AnimalPodiums")
+        local podium = podiums and podiums:FindFirstChild(data.slot)
+        if podium then
+          local dist = (root.Position - podium:GetPivot().Position).Magnitude
+          if dist <= radius and dist < bestDist then
+            best, bestDist = data, dist
+          end
+        end
+      end
+    end
+    return best
+  end
+
+  _G.AmbitiousNormalAutoStealSetRadius = function(v)
+    _G.AmbitiousNormalSteal.radius = tonumber(v) or _G.AmbitiousNormalSteal.radius or 62
+  end
+
+  _G.AmbitiousNormalAutoStealStop = function()
+    local a = _G.AmbitiousNormalSteal
+    a.enabled = false
+    a.isStealing = false
+    if a.stealConn then a.stealConn:Disconnect(); a.stealConn = nil end
+    resetBar()
+  end
+
+  _G.AmbitiousNormalAutoStealStart = function()
+    if _G.SyncAfterHitReady and not _G.SyncAfterHitReady() then return end
+    local a = _G.AmbitiousNormalSteal
+    a.radius = tonumber(autoStealRadius) or a.radius or 70
+    a.duration = 1.25
+    a.enabled = true
+    ensureScanner()
+    pcall(scanPlots)
+    -- Lista condivisa con la Semi: va fatta partire, se no resta vuota e
+    -- nearestAnimal non ha niente su cui lavorare.
+    if _G.AmbitiousStealEnsureScan then pcall(_G.AmbitiousStealEnsureScan) end
+    if a.stealConn then a.stealConn:Disconnect(); a.stealConn = nil end
+    a.stealConn = RunService.Heartbeat:Connect(function()
+      if not a.enabled then return end
+      if selectedStealMode ~= "Normal" then _G.AmbitiousNormalAutoStealStop(); return end
+      if a.isStealing then return end
+      local target = nearestAnimal()
+      if not target then return end
+      local prompt = findPrompt(target)
+      if prompt then doSteal(prompt) end
+    end)
+  end
+
+  _G.AmbitiousNormalAutoStealSync = function()
+    if selectedStealMode == "Normal" and autoStealEnabled then
+      _G.AmbitiousNormalAutoStealStart()
+    else
+      _G.AmbitiousNormalAutoStealStop()
+    end
+  end
+end
+
+_G.__AmbitiousSetupNormalAutoSteal()
+
+_G.__AmbitiousSetupSemiAutoSteal = function()
+  _G.AmbitiousSemiSteal = _G.AmbitiousSemiSteal or {}
+  local A = _G.AmbitiousSemiSteal
+  if A.conn then pcall(function() A.conn:Disconnect() end); A.conn = nil end
+  A.enabled    = false
+  A.cooldown   = A.cooldown   or 0.02
+  A.primeRange = A.primeRange or 80
+  A.radius     = tonumber(autoStealRadius) or A.radius or 60
+  -- applica valori salvati dal config (loadAmbitiousConfig gira prima di questo setup)
+  local pending = _G._AmbitiousSemiStealPending
+  A.autoGrabStopTime       = (pending and pending.autoGrabStopTime)       or A.autoGrabStopTime       or 1.29
+  A.autoGrabSetDelayRadius = (pending and pending.autoGrabSetDelayRadius) or A.autoGrabSetDelayRadius or 8
+  A.autoGrabStopEnabled    = true
+  _G._AmbitiousSemiStealPending = nil
+
+
+  A.conn = A.conn
+  A.scanThread = A.scanThread
+  A.plotSync = A.plotSync or {caches = {}, connections = {}}
+  A.animals = A.animals or {}
+  A.promptCache = A.promptCache or {}
+  A.internalCache = A.internalCache or {}
+  A.state = A.state or {active = false, startTime = 0, phase = "idle", label = "", lastResult = "", lastResultTime = 0}
+
+  local function barSet(p, label)
+    pcall(function()
+      if _G.StealBar then
+        _G.StealBar.SetState(label or "STEALING")
+        _G.StealBar.SetProgress(math.clamp(tonumber(p) or 0, 0, 1))
+      end
+    end)
+  end
+
+  local function barReset()
+    pcall(function()
+      if _G.StealBar then _G.StealBar.Reset() end
+    end)
+  end
+
+  local function rootPart()
+    local char = LP.Character
+    return char and (char:FindFirstChild("HumanoidRootPart") or char:FindFirstChild("UpperTorso")) or nil
+  end
+
+  local function splitPath(path)
+    if typeof(path) == "table" then return path end
+    local out = {}
+    for part in string.gmatch(tostring(path), "[^%.]+") do
+      table.insert(out, tonumber(part) or part)
+    end
+    return out
+  end
+
+  local function resolvePath(path, root)
+    local current, parent, key = root, nil, nil
+    for _, part in ipairs(splitPath(path)) do
+      parent = current
+      key = part
+      current = current and current[part] or nil
+    end
+    return current, parent, key
+  end
+
+  local function applySyncDiff(channelName, packet)
+    local cache = A.plotSync.caches[channelName]
+    if typeof(cache) ~= "table" then return end
+    local path, action, a, b = packet[1], packet[2], packet[3], packet[4]
+    local current, parent, key = resolvePath(path, cache)
+    if action == "Changed" then
+      if parent ~= nil then parent[key] = a end
+    elseif action == "ArrayInsert" then
+      if current ~= nil then table.insert(current, b, a) end
+    elseif action == "ArrayRemoved" then
+      if current ~= nil then table.remove(current, b) end
+    elseif action == "DictionaryInsert" then
+      if current ~= nil then current[b] = a end
+    elseif action == "DictionaryRemoved" then
+      if current ~= nil then current[b] = nil end
+    end
+  end
+
+  local function attachPlotChannel(remote, plots, requestData)
+    if A.plotSync.connections[remote] then return end
+    local channelName = tostring(remote.Name)
+    if not plots:FindFirstChild(channelName) then return end
+    if requestData and A.plotSync.caches[channelName] == nil then
+      local ok, data = pcall(function() return requestData:InvokeServer(channelName) end)
+      A.plotSync.caches[channelName] = (ok and typeof(data) == "table") and data or {}
+    elseif A.plotSync.caches[channelName] == nil then
+      A.plotSync.caches[channelName] = {}
+    end
+    A.plotSync.connections[remote] = remote.OnClientEvent:Connect(function(queue)
+      for _, packet in ipairs(queue) do applySyncDiff(channelName, packet) end
+    end)
+  end
+
+  local function ensureSync()
+    if A.syncReady then return true end
+    local ok = pcall(function()
+      local rs = game:GetService("ReplicatedStorage")
+      A.packages = rs:WaitForChild("Packages", 10)
+      A.datas = rs:WaitForChild("Datas", 10)
+      A.plots = workspace:WaitForChild("Plots", 10)
+      if not (A.packages and A.datas and A.plots) then return end
+      A.animalsData = require(A.datas:WaitForChild("Animals", 10))
+      local sync = A.packages:WaitForChild("Synchronizer", 10)
+      A.channelFolder = sync:WaitForChild("Channel", 10)
+      A.routeRemote = sync:WaitForChild("CommunicationRoute", 10)
+      A.requestData = sync:FindFirstChild("RequestData")
+      for _, child in ipairs(A.channelFolder:GetChildren()) do
+        if child:IsA("RemoteEvent") then attachPlotChannel(child, A.plots, A.requestData) end
+      end
+      A.channelFolder.ChildAdded:Connect(function(child)
+        if child:IsA("RemoteEvent") then attachPlotChannel(child, A.plots, A.requestData) end
+      end)
+      A.routeRemote.OnClientEvent:Connect(function(actions)
+        for _, action in ipairs(actions) do
+          local kind, channelName = action[1], tostring(action[2])
+          if A.plots and A.plots:FindFirstChild(channelName) then
+            if kind == "ListenerAdded" then
+              local remote = A.channelFolder and A.channelFolder:FindFirstChild(channelName)
+              if remote and remote:IsA("RemoteEvent") then attachPlotChannel(remote, A.plots, A.requestData) end
+            elseif kind == "ListenerRemoved" then
+              for remote, conn in pairs(A.plotSync.connections) do
+                if tostring(remote.Name) == channelName then
+                  pcall(function() conn:Disconnect() end)
+                  A.plotSync.connections[remote] = nil
+                  A.plotSync.caches[channelName] = nil
+                  break
+                end
+              end
+            end
+          end
+        end
+      end)
+      A.syncReady = true
+    end)
+    return ok and A.syncReady == true
+  end
+
+  local function getPlotOwner(plot)
+    local sign = plot and plot:FindFirstChild("PlotSign")
+    local frame = sign and sign:FindFirstChild("SurfaceGui") and sign.SurfaceGui:FindFirstChild("Frame")
+    local label = frame and frame:FindFirstChild("TextLabel")
+    if not label or label.Text == "Empty Base" then return nil end
+    return label.Text:gsub("'s [Bb]ase$", ""):gsub("%s+$", "")
+  end
+
+  local function isMyBaseAnimal(animalData)
+    if not animalData or not animalData.plot or not A.plots then return false end
+    local plot = A.plots:FindFirstChild(animalData.plot)
+    if not plot then return false end
+    local owner = getPlotOwner(plot)
+    return owner == LP.DisplayName or owner == LP.Name
+  end
+
+  local function podiumFor(animalData)
+    local plot = A.plots and A.plots:FindFirstChild(animalData.plot)
+    local podiums = plot and plot:FindFirstChild("AnimalPodiums")
+    return podiums and podiums:FindFirstChild(animalData.slot) or nil
+  end
+
+  local function animalPos(animalData)
+    local podium = podiumFor(animalData)
+    return podium and podium:GetPivot().Position or nil
+  end
+
+  local function distToAnimal(animalData)
+    local root = rootPart()
+    local pos = animalPos(animalData)
+    return root and pos and (root.Position - pos).Magnitude or math.huge
+  end
+
+  local function findPromptForAnimal(animalData)
+    if not animalData then return nil end
+    local cached = A.promptCache[animalData.uid]
+    if cached and cached.Parent then return cached end
+    local podium = podiumFor(animalData)
+    local base = podium and podium:FindFirstChild("Base")
+    local spawn = base and base:FindFirstChild("Spawn")
+    local attach = spawn and spawn:FindFirstChild("PromptAttachment")
+    if not attach then return nil end
+    for _, prompt in ipairs(attach:GetChildren()) do
+      if prompt:IsA("ProximityPrompt") then
+        A.promptCache[animalData.uid] = prompt
+        return prompt
+      end
+    end
+    return nil
+  end
+
+  local function scanAllPlots()
+    if not ensureSync() then return 0 end
+    local newCache = {}
+    for _, plot in ipairs(A.plots:GetChildren()) do
+      local cache = A.plotSync.caches[plot.Name]
+      local animalList = cache and cache.AnimalList
+      if typeof(animalList) == "table" then
+        for slot, animalData in pairs(animalList) do
+          if type(animalData) == "table" then
+            local animalName = animalData.Index
+            local info = A.animalsData and A.animalsData[animalName]
+            if info then
+              table.insert(newCache, {
+                name = info.DisplayName or animalName,
+                plot = plot.Name,
+                slot = tostring(slot),
+                uid = plot.Name .. "_" .. tostring(slot),
+              })
+            end
+          end
+        end
+      end
+    end
+    A.animals = newCache
+    return #newCache
+  end
+
+  local function pickClosest()
+    local root = rootPart()
+    if not root then return nil end
+    local best, bestDist = nil, math.huge
+    for _, animalData in ipairs(A.animals) do
+      if not isMyBaseAnimal(animalData) then
+        local pos = animalPos(animalData)
+        local dist = pos and (root.Position - pos).Magnitude or math.huge
+        if dist <= (A.primeRange or 80) and dist < bestDist then
+          best, bestDist = animalData, dist
+        end
+      end
+    end
+    return best
+  end
+
+  -- ---- lista bersagli condivisa con la modalita' Normal ----
+  -- La Normal costruiva una lista sua scorrendo i podi: ci finiva DENTRO
+  -- ogni podio esistente, pieno o vuoto che fosse. Questa invece nasce
+  -- dall'AnimalList del plot, quindi contiene solo gli slot che hanno
+  -- davvero un animale sopra. Esposta su _G perche' il blocco della
+  -- Normal sta prima di questo nel file e non vede questi local.
+  _G.AmbitiousStealAnimals   = function() return A.animals end
+  _G.AmbitiousStealAnimalPos = function(d) return animalPos(d) end
+  _G.AmbitiousStealIsMyBase  = function(d) return isMyBaseAnimal(d) end
+
+  -- Lo slot ha ANCORA un animale sopra, adesso.
+  -- La lista viene ricostruita ogni 5 secondi, quindi da sola non basta:
+  -- un animale appena rubato resta in elenco fino al giro dopo, e il
+  -- podio esiste comunque (vuoto), quindi anche la posizione risulta
+  -- valida. Le cache dei plot sono invece aggiornate dal vivo dai
+  -- RemoteEvent del Synchronizer: chiedendo a loro si sa in quell'istante
+  -- se lo slot e' occupato.
+  _G.AmbitiousStealSlotOccupied = function(d)
+    if not d or not d.plot or not d.slot then return false end
+    local cache = A.plotSync and A.plotSync.caches and A.plotSync.caches[d.plot]
+    local list = cache and cache.AnimalList
+    -- Cache non disponibile: non si puo' dire di no, se no con la sync
+    -- non pronta la Normal non partirebbe mai.
+    if typeof(list) ~= "table" then return true end
+    -- Le chiavi possono essere numeri o stringhe a seconda di come
+    -- arrivano dal server: si provano entrambe.
+    local entry = list[d.slot] or list[tonumber(d.slot) or -1]
+    return type(entry) == "table"
+  end
+
+  local function ensureScanThread()
+    if A.scanThread then return end
+    A.scanThread = task.spawn(function()
+      while _G.AmbitiousSemiSteal do
+        -- Lo scan gira anche per la Normal, che ora legge da qui.
+        if A.enabled or selectedStealMode == "Semi"
+           or (selectedStealMode == "Normal" and autoStealEnabled) then
+          pcall(scanAllPlots)
+        end
+        task.wait(2)
+      end
+    end)
+  end
+
+  -- Avvio dello scan su richiesta. La Normal ora legge da questa lista,
+  -- ma il thread che la riempie partiva SOLO dall'avvio della Semi: senza
+  -- aver mai acceso la Semi la lista restava vuota e la Normal non
+  -- trovava mai un bersaglio. Da qui la puo' far partire chiunque.
+  _G.AmbitiousStealEnsureScan = function()
+    ensureScanThread()
+    task.spawn(function() pcall(scanAllPlots) end)
+  end
+
+end
+
+_G.__AmbitiousSetupSemiAutoSteal()
+
+do
+    local getconnections_v3 = getconnections or get_signal_cons or getconnects or (syn and syn.get_signal_cons)
+    _G.bizarreMysteryV1 = _G.bizarreMysteryV1 or {
+        conn=nil, active=false, progress=0, paused=false, pauseTime=nil,
+        startTime=nil, progressConn=nil, dataCache={}, enabled=false,
+        StealRadius=63, StealDuration=1.3, TriggerRadius=10
+    }
+    _G.bizarreMysteryNormal = _G.bizarreMysteryV1
+    local GS = _G.bizarreMysteryV1
+
+    local function _v3GetHRP()
+        local c = LP.Character
+        return c and (c:FindFirstChild("HumanoidRootPart") or c:FindFirstChild("UpperTorso"))
+    end
+
+    local function _v3IsMyPlot(plotName)
+        local plots = workspace:FindFirstChild("Plots")
+        if not plots then return false end
+        local plot = plots:FindFirstChild(plotName)
+        if not plot then return false end
+        local sign = plot:FindFirstChild("PlotSign")
+        if sign then
+            local yb = sign:FindFirstChild("YourBase")
+            if yb and yb:IsA("BillboardGui") then return yb.Enabled == true end
+        end
+        return false
+    end
+
+    local function _v3FindPrompt()
+        local hrp = _v3GetHRP()
+        if not hrp then return nil, nil end
+        local plots = workspace:FindFirstChild("Plots")
+        if not plots then return nil, nil end
+        local bestPrompt, bestDist, bestSpawn = nil, math.huge, nil
+
+        for _, plot in ipairs(plots:GetChildren()) do
+            if plot:IsA("Model") and not _v3IsMyPlot(plot.Name) then
+                local pods = plot:FindFirstChild("AnimalPodiums")
+                if pods then
+                    for _, pod in ipairs(pods:GetChildren()) do
+                        pcall(function()
+                            local base  = pod:FindFirstChild("Base")
+                            local spawn = base and base:FindFirstChild("Spawn")
+                            if not spawn then return end
+                            local dist = (spawn.Position - hrp.Position).Magnitude
+                            if dist >= bestDist or dist > GS.StealRadius then return end
+
+                            local function tryPrompt(container)
+                                for _, ch in ipairs(container:GetChildren()) do
+                                    if ch:IsA("ProximityPrompt") and ch.Enabled then
+                                        bestPrompt = ch; bestDist = dist; bestSpawn = spawn
+                                        return true
+                                    end
+                                end
+                                return false
+                            end
+
+                            local att = spawn:FindFirstChild("PromptAttachment")
+                            if not (att and tryPrompt(att)) then
+                                for _, ch in ipairs(spawn:GetDescendants()) do
+                                    if ch:IsA("ProximityPrompt") and ch.Enabled then
+                                        bestPrompt = ch; bestDist = dist; bestSpawn = spawn
+                                        break
+                                    end
+                                end
+                            end
+                        end)
+                    end
+                end
+            end
+        end
+        return bestPrompt, bestSpawn
+    end
+
+    local function _v3DistToSpawn(spawnPart)
+        local hrp = _v3GetHRP()
+        if not hrp then return math.huge end
+        if not spawnPart or not spawnPart.Parent then
+            local _, ns = _v3FindPrompt()
+            return ns and (hrp.Position - ns.Position).Magnitude or math.huge
+        end
+        return (hrp.Position - spawnPart.Position).Magnitude
+    end
+
+    local function _v3UpdateBar(p, state)
+        if _G.StealBar then
+            pcall(function()
+                _G.StealBar.SetProgress(p or 0)
+                if state then _G.StealBar.SetState(state) end
+            end)
+        end
+    end
+
+    local function _v3Active()
+        return autoStealEnabled == true and selectedStealMode == "Semi" and selectedSemiMode == "V1"
+    end
+
+    local function _v3Execute(prompt, spawnPart)
+        if GS.active then return end
+        -- janela do Ragdoll Steal: apenas PAUSA o grab, nunca desliga o toggle
+        if _G.RagdollStealReady and not _G.RagdollStealReady() then return end
+
+        if not GS.dataCache[prompt] then
+            local data = {hold={}, trigger={}, ready=true}
+            if getconnections_v3 then
+                pcall(function()
+                    for _, c in ipairs(getconnections_v3(prompt.PromptButtonHoldBegan)) do
+                        if c.Function then table.insert(data.hold, c.Function) end
+                    end
+                    for _, c in ipairs(getconnections_v3(prompt.Triggered)) do
+                        if c.Function then table.insert(data.trigger, c.Function) end
+                    end
+                end)
+            end
+            GS.dataCache[prompt] = data
+        end
+
+        local data = GS.dataCache[prompt]
+        if not data.ready then return end
+
+        data.ready   = false
+        GS.active    = true
+        GS.paused    = false
+        GS.startTime = tick() - (GS.progress * GS.StealDuration)
+        local pauseArmed = true
+
+        if GS.progressConn then GS.progressConn:Disconnect() end
+        _v3UpdateBar(GS.progress, "STEALING")
+
+        GS.progressConn = RunService.Heartbeat:Connect(function()
+            if not GS.active then
+                if GS.progressConn then GS.progressConn:Disconnect(); GS.progressConn = nil end
+                return
+            end
+
+            if not GS.enabled or not _v3Active() or (_G.RagdollStealReady and not _G.RagdollStealReady()) then
+                GS.active = false; GS.progress = 0; GS.paused = false
+                data.ready = true
+                _v3UpdateBar(0, autoStealEnabled and "READY" or "IDLE")
+                return
+            end
+
+            -- Saiu do Radius do Auto Grab: reseta na hora.
+            -- Ao voltar para dentro do Radius o loop principal religa sozinho.
+            do
+                local rad = tonumber(GS.StealRadius) or 63
+                local dNow = _v3DistToSpawn(spawnPart)
+                if dNow > rad then
+                    GS.active = false
+                    GS.progress = 0
+                    GS.paused = false
+                    GS.pauseTime = nil
+                    pauseArmed = true
+                    data.ready = true
+                    if GS.progressConn then GS.progressConn:Disconnect(); GS.progressConn = nil end
+                    _v3UpdateBar(0, autoStealEnabled and "READY" or "IDLE")
+                    return
+                end
+            end
+
+            if GS.paused then
+                local dist = _v3DistToSpawn(spawnPart)
+                if dist <= GS.TriggerRadius then
+                    GS.paused = false
+                    GS.pauseTime = nil
+                    GS.startTime = tick() - (0.8 * GS.StealDuration)
+                else
+                    if not GS.pauseTime then
+                        GS.pauseTime = tick()
+                    elseif tick() - GS.pauseTime >= 1.3 then
+                        GS.pauseTime = nil
+                        GS.paused = false
+                        GS.active = false
+                        GS.progress = 0
+                        data.ready = true
+                        pauseArmed = true
+                        if GS.progressConn then GS.progressConn:Disconnect(); GS.progressConn = nil end
+                        _v3UpdateBar(0, autoStealEnabled and "READY" or "IDLE")
+                        return
+                    end
+                    GS.progress = 0.8
+                    _v3UpdateBar(0.8, "STEALING")
+                    return
+                end
+            end
+
+            local elapsed = tick() - GS.startTime
+            local prog = math.clamp(elapsed / GS.StealDuration, 0, 1)
+            GS.progress = prog
+
+            if pauseArmed and prog >= 0.8 then
+                GS.paused = true
+                pauseArmed = false
+                GS.progress = 0.8
+                _v3UpdateBar(0.8, "STEALING")
+                return
+            end
+
+            _v3UpdateBar(prog, "STEALING")
+
+            if prog >= 1 then
+                GS.active = false; GS.progress = 0; GS.paused = false
+                pauseArmed = true
+                if GS.progressConn then GS.progressConn:Disconnect(); GS.progressConn = nil end
+
+                local triggered = false
+                for _, fn in ipairs(data.trigger) do
+                    triggered = true
+                    task.spawn(function() pcall(fn) end)
+                end
+                if not triggered then
+                    pcall(function()
+                        if fireproximityprompt then
+                            fireproximityprompt(prompt, 0)
+                        else
+                            prompt:InputHoldBegin()
+                            task.wait()
+                            prompt:InputHoldEnd()
+                        end
+                    end)
+                end
+
+                data.ready = true
+                _v3UpdateBar(0, autoStealEnabled and "READY" or "IDLE")
+            end
+        end)
+
+        for _, fn in ipairs(data.hold) do
+            task.spawn(function() pcall(fn) end)
+        end
+    end
+
+    _G.AmbitiousSemiAutoStealSetRadius = function(v)
+        GS.StealRadius = tonumber(v) or GS.StealRadius or 63
+    end
+
+    _G.AmbitiousSemiAutoStealStart = function()
+        if _G.RagdollStealReady and not _G.RagdollStealReady() then return end
+        if GS.conn then GS.conn:Disconnect(); GS.conn = nil end
+        GS.enabled       = true
+        GS.StealRadius   = tonumber(autoStealRadius) or 63
+        GS.StealDuration = 1.3
+        GS.TriggerRadius = 10
+        GS.conn = RunService.Heartbeat:Connect(function()
+            if not GS.enabled or GS.active then return end
+            if not _v3Active() then return end
+            local prompt, spawnPart = _v3FindPrompt()
+            if prompt then _v3Execute(prompt, spawnPart) end
+        end)
+        _v3UpdateBar(0, "READY")
+    end
+
+    _G.AmbitiousSemiAutoStealStop = function()
+        GS.enabled = false
+        if GS.conn then GS.conn:Disconnect(); GS.conn = nil end
+        if GS.progressConn then GS.progressConn:Disconnect(); GS.progressConn = nil end
+        GS.active = false; GS.progress = 0; GS.paused = false; GS.pauseTime = nil
+        GS.dataCache = {}
+        _v3UpdateBar(0, autoStealEnabled and "READY" or "IDLE")
+        pcall(function() if _G.StealBar then _G.StealBar.Reset() end end)
+    end
+
+    _G.AmbitiousSemiAutoStealSync = function()
+        if _v3Active() then
+            _G.AmbitiousSemiAutoStealStart()
+        else
+            _G.AmbitiousSemiAutoStealStop()
+        end
+    end
+
+end
+
+-- MysteryVs Semi -> Embeer V2
+do
+    _G.AmbitiousSemiV2Steal = _G.AmbitiousSemiV2Steal or {}
+    local AS = _G.AmbitiousSemiV2Steal
+    AS.conn         = AS.conn
+    AS.scanThread   = AS.scanThread
+    AS.enabled      = false
+    AS.holdMin      = 1.3
+    AS.holdMax      = 2.99
+    AS.autoGrabStopPercent = tonumber(State and State.bizarreSemiStopPercent) or AS.autoGrabStopPercent or 75
+    AS.autoGrabSetDelayRadius = tonumber(rawget(_G, "autoGrabDelayRadius")) or AS.autoGrabSetDelayRadius or 8
+    AS.cooldown     = 0.05
+    AS.primeRange   = 80
+    AS.radius       = (tonumber(autoStealRadius) or 68)
+    AS.plotSync     = AS.plotSync or {caches={}, connections={}}
+    AS.animals      = AS.animals or {}
+    AS.promptCache  = AS.promptCache or {}
+    AS.internalCache = AS.internalCache or {}
+    AS.state        = AS.state or {active=false, startTime=0, phase="idle", label="", lastResult="", lastResultTime=0}
+
+    local function _semiBarSet(p, label)
+        pcall(function()
+            if _G.StealBar then
+                _G.StealBar.SetState(label or "STEALING")
+                _G.StealBar.SetProgress(math.clamp(tonumber(p) or 0, 0, 1))
+            end
+        end)
+    end
+    local function _semiBarReset()
+        pcall(function() if _G.StealBar then _G.StealBar.Reset() end end)
+    end
+
+    local function _semiRoot()
+        local c = LP.Character
+        return c and (c:FindFirstChild("HumanoidRootPart") or c:FindFirstChild("UpperTorso")) or nil
+    end
+
+    -- path diff helpers
+    local function _splitPath(path)
+        if typeof(path)=="table" then return path end
+        local out = {}
+        for p in string.gmatch(tostring(path), "[^%.]+") do
+            table.insert(out, tonumber(p) or p)
+        end
+        return out
+    end
+    local function _resolvePath(path, root)
+        local cur, par, key = root, nil, nil
+        for _, p in ipairs(_splitPath(path)) do par=cur; key=p; cur=cur and cur[p] or nil end
+        return cur, par, key
+    end
+    local function _applyDiff(channelName, packet)
+        local cache = AS.plotSync.caches[channelName]
+        if typeof(cache)~="table" then return end
+        local path, action, a, b = packet[1], packet[2], packet[3], packet[4]
+        local cur, par, key = _resolvePath(path, cache)
+        if action=="Changed" then if par then par[key]=a end
+        elseif action=="ArrayInsert" then if cur then table.insert(cur, b, a) end
+        elseif action=="ArrayRemoved" then if cur then table.remove(cur, b) end
+        elseif action=="DictionaryInsert" then if cur then cur[b]=a end
+        elseif action=="DictionaryRemoved" then if cur then cur[b]=nil end
+        end
+    end
+
+    local function _semiAttachChannel(remote, plots, requestData)
+        if AS.plotSync.connections[remote] then return end
+        local channelName = tostring(remote.Name)
+        if not plots:FindFirstChild(channelName) then return end
+        if requestData and AS.plotSync.caches[channelName]==nil then
+            local ok, data = pcall(function() return requestData:InvokeServer(channelName) end)
+            AS.plotSync.caches[channelName] = (ok and typeof(data)=="table") and data or {}
+        elseif AS.plotSync.caches[channelName]==nil then
+            AS.plotSync.caches[channelName] = {}
+        end
+        AS.plotSync.connections[remote] = remote.OnClientEvent:Connect(function(queue)
+            for _, packet in ipairs(queue) do _applyDiff(channelName, packet) end
+        end)
+    end
+
+    local function _semiEnsureSync()
+        if AS.syncReady then return true end
+        local ok = pcall(function()
+            AS.plots = workspace:WaitForChild("Plots", 10)
+            local rs = game:GetService("ReplicatedStorage")
+            local pkgs = rs:WaitForChild("Packages", 10)
+            local datas = rs:WaitForChild("Datas", 10)
+            if not (pkgs and datas and AS.plots) then return end
+            AS.animalsData = require(datas:WaitForChild("Animals", 10))
+            local sync = pkgs:WaitForChild("Synchronizer", 10)
+            AS.channelFolder = sync:WaitForChild("Channel", 10)
+            AS.routeRemote   = sync:WaitForChild("CommunicationRoute", 10)
+            AS.requestData   = sync:FindFirstChild("RequestData")
+            for _, child in ipairs(AS.channelFolder:GetChildren()) do
+                if child:IsA("RemoteEvent") then _semiAttachChannel(child, AS.plots, AS.requestData) end
+            end
+            AS.channelFolder.ChildAdded:Connect(function(child)
+                if child:IsA("RemoteEvent") then _semiAttachChannel(child, AS.plots, AS.requestData) end
+            end)
+            AS.routeRemote.OnClientEvent:Connect(function(actions)
+                for _, action in ipairs(actions) do
+                    local kind, cn = action[1], tostring(action[2])
+                    if AS.plots and AS.plots:FindFirstChild(cn) then
+                        if kind=="ListenerAdded" then
+                            local r = AS.channelFolder and AS.channelFolder:FindFirstChild(cn)
+                            if r and r:IsA("RemoteEvent") then _semiAttachChannel(r, AS.plots, AS.requestData) end
+                        elseif kind=="ListenerRemoved" then
+                            for remote, conn in pairs(AS.plotSync.connections) do
+                                if tostring(remote.Name)==cn then
+                                    pcall(function() conn:Disconnect() end)
+                                    AS.plotSync.connections[remote] = nil
+                                    AS.plotSync.caches[cn] = nil
+                                    break
+                                end
+                            end
+                        end
+                    end
+                end
+            end)
+            AS.syncReady = true
+        end)
+        return ok and AS.syncReady==true
+    end
+
+    local function _semiPlotOwner(plot)
+        local sign  = plot and plot:FindFirstChild("PlotSign")
+        local frame = sign and sign:FindFirstChild("SurfaceGui") and sign.SurfaceGui:FindFirstChild("Frame")
+        local label = frame and frame:FindFirstChild("TextLabel")
+        if not label or label.Text=="Empty Base" then return nil end
+        return label.Text:gsub("'s [Bb]ase$",""):gsub("%s+$","")
+    end
+    local function _semiIsMyBase(animalData)
+        if not animalData or not animalData.plot or not AS.plots then return false end
+        local plot = AS.plots:FindFirstChild(animalData.plot)
+        if not plot then return false end
+        local owner = _semiPlotOwner(plot)
+        return owner==LP.DisplayName or owner==LP.Name
+    end
+    local function _semiPodiumFor(animalData)
+        local plot = AS.plots and AS.plots:FindFirstChild(animalData.plot)
+        local pds  = plot and plot:FindFirstChild("AnimalPodiums")
+        return pds and pds:FindFirstChild(animalData.slot) or nil
+    end
+    local function _semiAnimalPos(animalData)
+        local pod = _semiPodiumFor(animalData)
+        return pod and pod:GetPivot().Position or nil
+    end
+    local function _semiDistToAnimal(animalData)
+        local root = _semiRoot()
+        local pos  = _semiAnimalPos(animalData)
+        return root and pos and (root.Position-pos).Magnitude or math.huge
+    end
+    local function _semiFindPrompt(animalData)
+        if not animalData then return nil end
+        local cached = AS.promptCache[animalData.uid]
+        if cached and cached.Parent then return cached end
+        local pod    = _semiPodiumFor(animalData)
+        local base   = pod and pod:FindFirstChild("Base")
+        local spawn  = base and base:FindFirstChild("Spawn")
+        local attach = spawn and spawn:FindFirstChild("PromptAttachment")
+        if not attach then return nil end
+        for _, p in ipairs(attach:GetChildren()) do
+            if p:IsA("ProximityPrompt") then AS.promptCache[animalData.uid]=p; return p end
+        end
+        return nil
+    end
+    local function _semiBuildCallbacks(prompt)
+        if AS.internalCache[prompt] then return end
+        local data = {holdCallbacks={}, triggerCallbacks={}, ready=true}
+        local okH, holds = pcall(getconnections, prompt.PromptButtonHoldBegan)
+        if okH and type(holds)=="table" then
+            for _, c in ipairs(holds) do if type(c.Function)=="function" then table.insert(data.holdCallbacks, c.Function) end end
+        end
+        local okT, triggers = pcall(getconnections, prompt.Triggered)
+        if okT and type(triggers)=="table" then
+            for _, c in ipairs(triggers) do if type(c.Function)=="function" then table.insert(data.triggerCallbacks, c.Function) end end
+        end
+        -- Keep the prompt cached even when the executor cannot expose signal
+        -- connections; _semiExecute then uses the proximity-prompt fallback.
+        AS.internalCache[prompt]=data
+    end
+    -- Ambitious Auto Steal V3: preload to a configurable percentage,
+    -- wait for Delay Radius, then finish the bar and trigger the prompt.
+    AS.generation = AS.generation or 0
+    local function _semiAlive(gen)
+        return AS.enabled and selectedStealMode == "Semi" and selectedSemiMode == "V2" and AS.generation == gen and autoStealEnabled and (not _G.RagdollStealReady or _G.RagdollStealReady())
+    end
+    local function _semiExecute(prompt, animalData)
+        if not prompt or not prompt.Parent or not animalData then return false end
+        if _G.RagdollStealReady and not _G.RagdollStealReady() then return false end
+        if AS.state.active then return false end
+        if tick()-(AS.state.lastResultTime or 0) < (AS.cooldown or 0.05) then return false end
+        _semiBuildCallbacks(prompt)
+        local data = AS.internalCache[prompt]
+        if not data or not data.ready then return false end
+        data.ready=false; AS.state.active=true
+        AS.state.startTime=tick(); AS.state.phase="holding"
+        AS.state.label = animalData.name or "Animal"
+
+        local generation = AS.generation
+        task.spawn(function()
+            local startTime = AS.state.startTime
+            local duration = 1.3
+            local pct = math.clamp(tonumber(AS.autoGrabStopPercent) or 75, 1, 100)
+            local stopTime = duration * (pct / 100)
+            local cancelled = false
+
+            for _, fn in ipairs(data.holdCallbacks) do task.spawn(function() pcall(fn) end) end
+
+            while _semiAlive(generation) do
+                local elapsed = tick()-startTime
+                if elapsed >= stopTime then break end
+                _semiBarSet(math.clamp(elapsed/duration, 0, 1), "STEALING")
+                local root = _semiRoot()
+                if not root or not prompt.Parent or not prompt.Parent.Parent then cancelled=true; break end
+                if (root.Position-prompt.Parent.Parent.Position).Magnitude > (tonumber(AS.radius) or 60) then cancelled=true; break end
+                task.wait()
+            end
+
+            local stopProgress = math.clamp(stopTime/duration, 0, 1)
+            if not cancelled then _semiBarSet(stopProgress, "STEALING") end
+            local phase2Timeout = math.max(2.99-stopTime-math.max(duration-stopTime, 0), 0.05)
+            local phase2Start = tick()
+
+            while not cancelled and _semiAlive(generation) do
+                if tick()-phase2Start >= phase2Timeout then cancelled=true; break end
+                if not prompt.Parent or not prompt.Parent.Parent then cancelled=true; break end
+                local root = _semiRoot()
+                if root then
+                    local dist = (root.Position-prompt.Parent.Parent.Position).Magnitude
+                    if dist <= (tonumber(AS.autoGrabSetDelayRadius) or 8) then
+                        break
+                    elseif dist > (tonumber(AS.radius) or 60) then
+                        cancelled=true; break
+                    end
+                end
+                task.wait()
+            end
+
+            local fired = false
+            if not cancelled and _semiAlive(generation) then
+                local fillDuration = math.max(duration-stopTime, 0)
+                local barLead = math.min(0.05, fillDuration)
+                local fillRamp = fillDuration-barLead
+                local fillStart = tick()
+                while _semiAlive(generation) do
+                    local fp = fillRamp > 0 and math.clamp((tick()-fillStart)/fillRamp, 0, 1) or 1
+                    _semiBarSet(stopProgress+fp*(1-stopProgress), "STEALING")
+                    if fp >= 1 then break end
+                    task.wait()
+                end
+                _semiBarSet(1, "STEALING")
+                if barLead > 0 then task.wait(barLead) end
+                if not _semiAlive(generation) then
+                    if AS.generation == generation then AS.state.active = false; AS.state.phase = "idle"; data.ready = true; _semiBarReset() end
+                    return
+                end
+                for _, fn in ipairs(data.triggerCallbacks) do fired=true; task.spawn(function() pcall(fn) end) end
+                if not fired then
+                    pcall(function()
+                        if fireproximityprompt then
+                            fireproximityprompt(prompt, 0)
+                        else
+                            prompt:InputHoldBegin(); task.wait(); prompt:InputHoldEnd()
+                        end
+                    end)
+                    fired=true
+                end
+                pcall(function()
+                    if _G.AutoCarrySpeed and _G.AutoCarrySpeed.WatchPickup then _G.AutoCarrySpeed.WatchPickup(1.25) end
+                end)
+            end
+
+            if AS.generation ~= generation then return end
+            AS.state.lastResult = fired and ("Stole "..tostring(AS.state.label)) or (cancelled and "Cancelled" or "Missed")
+            AS.state.active=false; AS.state.phase="idle"; AS.state.lastResultTime=tick()
+            data.ready=true
+            _semiBarReset()
+        end)
+        return true
+    end
+    local function _semiScanAllPlots()
+        if not _semiEnsureSync() then return 0 end
+        local newCache = {}
+        for _, plot in ipairs(AS.plots:GetChildren()) do
+            local cache = AS.plotSync.caches[plot.Name]
+            local animalList = cache and cache.AnimalList
+            if typeof(animalList)=="table" then
+                for slot, animalData in pairs(animalList) do
+                    if type(animalData)=="table" then
+                        local animalName = animalData.Index
+                        local info = AS.animalsData and AS.animalsData[animalName]
+                        if info then
+                            table.insert(newCache, {
+                                name = info.DisplayName or animalName,
+                                plot = plot.Name,
+                                slot = tostring(slot),
+                                uid  = plot.Name.."_"..tostring(slot),
+                                mutation   = animalData.Mutation,
+                                traits     = animalData.Traits,
+                                generation = animalData.Generation,
+                            })
+                        end
+                    end
+                end
+            end
+        end
+        AS.animals = newCache
+        return #newCache
+    end
+    local function _semiPickClosest()
+        local root = _semiRoot()
+        if not root then return nil end
+        local best, bestDist = nil, math.huge
+        for _, data in ipairs(AS.animals) do
+            if not _semiIsMyBase(data) then
+                local pos  = _semiAnimalPos(data)
+                local dist = pos and (root.Position-pos).Magnitude or math.huge
+                if dist <= (AS.primeRange or 80) and dist < bestDist then
+                    best, bestDist = data, dist
+                end
+            end
+        end
+        return best
+    end
+    local function _semiEnsureScanThread()
+        if AS.scanThread then return end
+        AS.scanThread = task.spawn(function()
+            while _G.AmbitiousSemiV2Steal do
+                if AS.enabled or (selectedStealMode=="Semi" and selectedSemiMode=="V2") then pcall(_semiScanAllPlots) end
+                task.wait(5)
+            end
+        end)
+    end
+
+    _G.AmbitiousSemiV2AutoStealStop = function()
+        AS.enabled = false
+        AS.generation = AS.generation + 1
+        for _, data in pairs(AS.internalCache) do data.ready = true end
+        if AS.conn then AS.conn:Disconnect(); AS.conn=nil end
+        AS.state.active=false; AS.state.phase="idle"
+        _semiBarReset()
+    end
+
+    _G.AmbitiousSemiV2AutoStealStart = function()
+        if _G.RagdollStealReady and not _G.RagdollStealReady() then return end
+        AS.generation = AS.generation + 1
+        for _, data in pairs(AS.internalCache) do data.ready = true end
+        AS.state.active = false
+        AS.autoGrabStopPercent = tonumber(State.bizarreSemiStopPercent) or AS.autoGrabStopPercent or 75
+        AS.autoGrabSetDelayRadius = tonumber(rawget(_G, "autoGrabDelayRadius")) or AS.autoGrabSetDelayRadius or 8
+        AS.radius  = (tonumber(autoStealRadius) or 68)
+        AS.enabled = true
+        pcall(_semiEnsureSync)
+        _semiEnsureScanThread()
+        pcall(_semiScanAllPlots)
+        if AS.conn then AS.conn:Disconnect(); AS.conn=nil end
+        AS.conn = RunService.Heartbeat:Connect(function()
+            if not AS.enabled then return end
+            if (selectedStealMode~="Semi" or selectedSemiMode~="V2") then _G.AmbitiousSemiV2AutoStealStop(); return end
+            if AS.state.active then return end
+            local target = _semiPickClosest()
+            if not target then return end
+            local prompt = _semiFindPrompt(target)
+            if prompt then _semiExecute(prompt, target) end
+        end)
+    end
+
+    _G.AmbitiousSemiV2AutoStealSync = function()
+        if (selectedStealMode=="Semi" and selectedSemiMode=="V2") and autoStealEnabled then
+            _G.AmbitiousSemiV2AutoStealStart()
+        else
+            _G.AmbitiousSemiV2AutoStealStop()
+        end
+    end
+
+end
+
+_G.AmbitiousAutoStealSync = function()
+  if not autoStealEnabled then
+    if _G.AmbitiousNormalAutoStealStop then _G.AmbitiousNormalAutoStealStop() end
+    if _G.AmbitiousSemiAutoStealStop then _G.AmbitiousSemiAutoStealStop() end
+    if _G.AmbitiousSemiV2AutoStealStop then _G.AmbitiousSemiV2AutoStealStop() end
+    return
+  end
+  if selectedStealMode == "Normal" then
+    if _G.AmbitiousSemiAutoStealStop then _G.AmbitiousSemiAutoStealStop() end
+    if _G.AmbitiousSemiV2AutoStealStop then _G.AmbitiousSemiV2AutoStealStop() end
+    if _G.AmbitiousNormalAutoStealSync then _G.AmbitiousNormalAutoStealSync() end
+  elseif selectedStealMode == "Semi" then
+    if _G.AmbitiousNormalAutoStealStop then _G.AmbitiousNormalAutoStealStop() end
+    if selectedSemiMode == "V2" then
+      if _G.AmbitiousSemiAutoStealStop then _G.AmbitiousSemiAutoStealStop() end
+      if _G.AmbitiousSemiV2AutoStealSync then _G.AmbitiousSemiV2AutoStealSync() end
+    else
+      if _G.AmbitiousSemiV2AutoStealStop then _G.AmbitiousSemiV2AutoStealStop() end
+      if _G.AmbitiousSemiAutoStealSync then _G.AmbitiousSemiAutoStealSync() end
+    end
+  end
+end
+
+    -- ============================================================
+    -- RAGDOLL STEAL
+    -- Morcego (bat): ragdoll 2.7s -> auto grab volta em 1.5s
+    -- Medusa's Head: ragdoll 5.7s; nao altera o Auto Grab
+    -- ============================================================
+    do
+    local _rsWindow = nil        -- {t0=number, reenable=number}
+    local _rsPrevAutoGrab = nil
+    local _rsWasRagdolled = false
+    local _rsConn = nil
+
+    local RAG_CFG = {
+        bat    = { reenable = 1.5, timer = 2.8 },
+        medusa = { reenable = 4.5, timer = 5.7 },
+    }
+    -- qualquer ragdoll com duracao >= 4s so pode ser Medusa's Head
+    local MEDUSA_MIN_DURATION = 4.0
+    local _rsGuard = nil
+    local _rsHitKind = nil
+    local _rsHitAt = 0
+    local _rsLastTrigger = 0     -- cooldown: impede detectar 2x o mesmo golpe
+    local _rsClearSince = 0      -- ragdoll precisa sumir por um tempo antes de rearmar
+    local RS_COOLDOWN = 1.2
+    local _rsLockUntil = 0       -- travamento total: 1 golpe = 1 deteccao
+
+
+    _G._K7RagdollStealClear = function()
+        _rsWindow = nil
+    end
+
+    local function _rsIsRagdolled(hum)
+        local st = hum:GetState()
+        if st == Enum.HumanoidStateType.Physics
+        or st == Enum.HumanoidStateType.Ragdoll
+        or st == Enum.HumanoidStateType.FallingDown then return true end
+        local et = LP:GetAttribute("RagdollEndTime")
+        if et and (et - workspace:GetServerTimeNow()) > 0 then return true end
+        return false
+    end
+
+    -- ===== DETECTORES (Medusa's Head x Morcego) =====
+    local function _strHasMedusa(n)
+        if type(n) ~= "string" then return false end
+        n = n:lower()
+        return (n:find("medusa") or n:find("petrif") or n:find("stone") or n:find("statue")) and true or false
+    end
+
+    local function _strHasBat(n)
+        if type(n) ~= "string" then return false end
+        n = n:lower()
+        return (n:find("bat") or n:find("morcego") or n:find("slap")) and true or false
+    end
+
+    -- duracao restante do ragdoll atual (0 se nao houver)
+    local function _rsRagdollRemaining()
+        local now = workspace:GetServerTimeNow()
+        local best = 0
+        local et = LP:GetAttribute("RagdollEndTime")
+        if type(et) == "number" then
+            local rem = et - now
+            if rem > best then best = rem end
+        end
+        for _, obj in ipairs({ LP, LP.Character }) do
+            if obj then
+                local ok, attrs = pcall(function() return obj:GetAttributes() end)
+                if ok and attrs then
+                    for k, v in pairs(attrs) do
+                        local n = tostring(k):lower()
+                        if type(v) == "number" and (n:find("ragdoll") or n:find("stun")
+                            or n:find("petrif") or n:find("stone") or n:find("medusa")) then
+                            local rem = v - now
+                            if rem > 0 and rem < 60 and rem > best then best = rem end
+                            if v > 0 and v < 60 and v > best then best = v end
+                        end
+                    end
+                end
+            end
+        end
+        return best
+    end
+
+    -- eu estou segurando/portando a Medusa? (para NUNCA disparar quando EU medusar)
+    local function _rsIHoldMedusa()
+        local c = LP.Character
+        if c then
+            for _, t in ipairs(c:GetChildren()) do
+                if t:IsA("Tool") and _strHasMedusa(t.Name) then return true end
+            end
+        end
+        return false
+    end
+
+    -- o objeto esta dentro de uma Tool? (ignora partes da arma que EU seguro)
+    local function _rsInsideTool(d)
+        local p = d
+        while p and p ~= LP.Character do
+            if p:IsA("Tool") then return true end
+            p = p.Parent
+        end
+        return false
+    end
+
+    -- marcadores exclusivos da Medusa (pedra/petrificacao), sem falso positivo
+    local function _rsMedusaMarker()
+        local c = LP.Character
+        if not c then return false end
+
+        for _, obj in ipairs({ LP, c }) do
+            local ok, attrs = pcall(function() return obj:GetAttributes() end)
+            if ok and attrs then
+                for k, v in pairs(attrs) do
+                    if _strHasMedusa(k) then
+                        if v == true then return true end
+                        if type(v) == "number" and v > workspace:GetServerTimeNow() then return true end
+                        if type(v) == "string" and v ~= "" then return true end
+                    end
+                end
+            end
+        end
+
+        for _, d in ipairs(c:GetDescendants()) do
+            if not d:IsA("Tool") and not _rsInsideTool(d) and _strHasMedusa(d.Name) then return true end
+        end
+        return false
+    end
+
+
+    -- alguem por perto segurando Medusa's Head?
+    local function _rsToolNearby(matcher)
+        local myChar = LP.Character
+        local myRoot = myChar and myChar:FindFirstChild("HumanoidRootPart")
+        for _, plr in ipairs(Players:GetPlayers()) do
+            if plr ~= LP and plr.Character then
+                local root = plr.Character:FindFirstChild("HumanoidRootPart")
+                local near = (not myRoot) or (not root) or (root.Position - myRoot.Position).Magnitude <= 20
+                if near then
+                    for _, t in ipairs(plr.Character:GetChildren()) do
+                        if t:IsA("Tool") and matcher(t.Name) then return true end
+                    end
+                end
+            end
+        end
+        return false
+    end
+
+    -- ===== EU usei a Medusa? (bloqueia o Ragdoll Steal Med) =====
+    local _rsSelfMedusaUntil = 0
+    local _rsSelfMedusaConns = {}
+    local function _rsWatchSelfMedusa(char)
+        for _, c in ipairs(_rsSelfMedusaConns) do pcall(function() c:Disconnect() end) end
+        _rsSelfMedusaConns = {}
+        _rsSelfMedusaUntil = 0
+        if not char then return end
+        local function hook(tool)
+            if not (tool and tool:IsA("Tool") and _strHasMedusa(tool.Name)) then return end
+            table.insert(_rsSelfMedusaConns, tool.Activated:Connect(function()
+                _rsSelfMedusaUntil = os.clock() + 8
+            end))
+        end
+        for _, t in ipairs(char:GetChildren()) do hook(t) end
+        table.insert(_rsSelfMedusaConns, char.ChildAdded:Connect(hook))
+    end
+    _G._K7WatchSelfMedusa = _rsWatchSelfMedusa
+
+    local function _rsSelfMedusaActive()
+        return os.clock() < _rsSelfMedusaUntil
+    end
+
+    -- SO conta quando OUTRO jogador me medusou.
+    -- Nunca dispara se fui EU quem usou a Medusa.
+    local function _rsIsMedusad()
+        local hum = LP.Character and LP.Character:FindFirstChildOfClass("Humanoid")
+        if not hum or not _rsIsRagdolled(hum) then return false end
+        if _rsSelfMedusaActive() then return false end
+        if _rsIHoldMedusa() then return false end
+        -- exige um OUTRO jogador por perto empunhando a Medusa's Head
+        if not _rsToolNearby(_strHasMedusa) then return false end
+        if _rsMedusaMarker() then return true end
+        if _rsRagdollRemaining() >= MEDUSA_MIN_DURATION then return true end
+        return false
+    end
+
+    -- SO detecta quando OUTRA pessoa me bateu (morcego) ou me medusou.
+    -- Queda, fisica normal ou uso proprio da Medusa nunca contam.
+    local function _rsHitDetected(hum)
+        if not _rsIsRagdolled(hum) then return false end
+        if _rsSelfMedusaActive() then return false end
+        -- precisa existir um oponente por perto com morcego (ou medusa)
+        local batNear = _rsToolNearby(_strHasBat)
+        local medNear = (not _rsIHoldMedusa()) and _rsToolNearby(_strHasMedusa)
+        if not (batNear or medNear) then return false end
+        if _rsRagdollRemaining() > 0 then return true end
+        local st = hum:GetState()
+        if st == Enum.HumanoidStateType.Physics or st == Enum.HumanoidStateType.Ragdoll then
+            return true
+        end
+        return false
+    end
+
+    -- classificacao definitiva do golpe recebido
+    local function _rsClassifyHit()
+        local rem = _rsRagdollRemaining()
+        local medNear = (not _rsIHoldMedusa()) and (not _rsSelfMedusaActive()) and _rsToolNearby(_strHasMedusa)
+        if medNear and (rem >= MEDUSA_MIN_DURATION or _rsMedusaMarker()) then return "medusa" end
+        if medNear and not _rsToolNearby(_strHasBat) then return "medusa" end
+        return "bat"
+    end
+
+
+
+    -- restaura o Auto Grab SEMPRE (nunca pode ficar desligado por bug)
+    local function _rsRestoreAutoGrab()
+        _rsWindow = nil
+        _G._K7AutoGrabPauseUntil = nil
+        if autoStealEnabled and _G.AmbitiousAutoStealSync then pcall(_G.AmbitiousAutoStealSync) end
+    end
+    -- loop unico: roda para sempre; so para de agir se o toggle for desligado
+    local function startRagdollSystems(char)
+        if _rsConn then pcall(function() _rsConn:Disconnect() end) _rsConn = nil end
+        pcall(function() _rsWatchSelfMedusa(char) end)
+        _rsWasRagdolled = false
+        _rsWindow = nil
+        _rsLastTrigger = 0
+        _rsClearSince = 0
+        _rsLockUntil = 0
+        _rsConn = RunService.Heartbeat:Connect(function()
+            if not State.syncAfterHitToggle then
+                _rsWasRagdolled = false
+                _rsLockUntil = 0
+                if _rsWindow then _rsRestoreAutoGrab() end
+                return
+            end
+            local hum = char and char.Parent and char:FindFirstChildOfClass("Humanoid")
+            if not hum then return end
+            local med = _rsIsMedusad()
+            local rag = med or _rsHitDetected(hum)
+            local nowc = os.clock()
+            -- debounce: o estado precisa ficar limpo ~0.35s antes de rearmar,
+            -- senao um unico golpe seria contado duas vezes.
+            if rag then
+                _rsClearSince = 0
+            else
+                if _rsClearSince == 0 then _rsClearSince = nowc end
+                if (nowc - _rsClearSince) < 0.6 then
+                    rag = _rsWasRagdolled
+                end
+            end
+            -- enquanto o golpe atual esta travado, o estado conta como continuo:
+            -- qualquer piscada do ragdoll NAO pode gerar uma segunda deteccao.
+            if nowc < _rsLockUntil then
+                rag = true
+            elseif not rag then
+                _rsLockUntil = 0
+            end
+            if rag and not _rsWasRagdolled and nowc >= _rsLockUntil and (nowc - _rsLastTrigger) >= RS_COOLDOWN then
+                _rsLastTrigger = nowc
+                local kind = med and "medusa" or _rsClassifyHit()
+                local cfg = RAG_CFG[kind]
+                -- trava o rearme por toda a duracao do golpe (1 hit = 1 deteccao)
+                _rsLockUntil = nowc + math.max(cfg.timer or 0, cfg.reenable or 0) + 0.5
+                _rsHitKind = kind
+                _rsHitAt = os.clock()
+                -- Ragdoll Steal agora SO age no golpe de MORCEGO (medusa removida)
+                if State.syncAfterHitToggle and kind == "bat" and selectedStealMode == "Semi" and autoStealEnabled then
+                    if autoStealEnabled and _rsWindow == nil then
+                        _rsPrevAutoGrab = true
+                        _G._K7AutoGrabPauseUntil = os.clock() + cfg.reenable
+                        -- Set the window before stopping to prevent re-entrant starts.
+                        _rsWindow = {t0 = os.clock(), reenable = cfg.reenable}
+                        if selectedStealMode == "Semi" then
+                            if _G.AmbitiousSemiAutoStealStop then pcall(_G.AmbitiousSemiAutoStealStop) end
+                            if _G.AmbitiousSemiV2AutoStealStop then pcall(_G.AmbitiousSemiV2AutoStealStop) end
+                        end
+                    end
+                    _rsWindow = { t0 = os.clock(), reenable = cfg.reenable, kind = kind }
+                    -- rede de seguranca: mesmo se o Heartbeat falhar, volta no tempo
+                    _rsGuard = (_rsGuard or 0) + 1
+                    local g = _rsGuard
+                    task.delay(cfg.reenable + 0.05, function()
+                        if g == _rsGuard and _rsWindow then _rsRestoreAutoGrab() end
+                    end)
+                end
+            elseif rag and _rsHitKind == "bat" and med and (nowc - (_rsHitAt or 0)) < RS_COOLDOWN then
+                -- upgrade: Medusa confirmada logo apos o hit
+                local elapsed = os.clock() - (_rsHitAt or os.clock())
+                _rsHitKind = "medusa"
+                -- Medusa nao pausa mais o Auto Grab: libera a janela na hora
+                if _rsWindow then _rsRestoreAutoGrab() end
+            end
+            _rsWasRagdolled = rag
+            if _rsWindow and (os.clock() - _rsWindow.t0) >= _rsWindow.reenable then
+                _rsRestoreAutoGrab()
+            end
+        end)
+    end
+
+    -- trava extra: o Semi (Auto Grab V2) tambem respeita a janela de bloqueio.
+    -- A janela EXPIRA sozinha: nunca pode deixar o Auto Grab preso em 0%.
+    _G.RagdollStealReady = function()
+        if selectedStealMode ~= "Semi" then return true end
+        if not State.syncAfterHitToggle then
+            if _rsWindow then _rsRestoreAutoGrab() end
+            return true
+        end
+        if _rsWindow == nil then return true end
+        if (os.clock() - _rsWindow.t0) >= (_rsWindow.reenable or 1.5) then
+            _rsRestoreAutoGrab()
+            return true
+        end
+        return false
+    end
+
+    -- WATCHDOG: destrava o Auto Grab caso a janela fique presa por qualquer bug
+    task.spawn(function()
+        while true do
+            task.wait(0.25)
+            pcall(function()
+                if _rsWindow and (os.clock() - _rsWindow.t0) >= ((_rsWindow.reenable or 1.5) + 0.3) then
+                    _rsRestoreAutoGrab()
+                end
+                if (not State.syncAfterHitToggle) and _rsWindow then
+                    _rsRestoreAutoGrab()
+                end
+            end)
+        end
+    end)
+
+    _G.SyncAfterHitReady = _G.RagdollStealReady
+    _G._K7SyncAfterHitClear = function() _rsRestoreAutoGrab() end
+    _G._K7RagdollStealClear = _G._K7SyncAfterHitClear
+    _G._startSyncAfterHitWatcher = function() startRagdollSystems(LP.Character) end
+    _G._stopSyncAfterHitWatcher = function()
+        _rsRestoreAutoGrab()
+        if _rsConn then _rsConn:Disconnect(); _rsConn = nil end
+        for _, conn in ipairs(_rsSelfMedusaConns) do pcall(function() conn:Disconnect() end) end
+        _rsSelfMedusaConns = {}
+    end
+    _G._bizarreApplySyncAfterHit = function()
+        State.syncAfterHitEnabled = State.syncAfterHitToggle == true
+        if State.syncAfterHitEnabled then
+            if not _rsConn then startRagdollSystems(LP.Character) end
+        else
+            _G._stopSyncAfterHitWatcher()
+        end
+    end
+    LP.CharacterAdded:Connect(function(char)
+        _rsWindow = nil
+        _G._K7AutoGrabPauseUntil = nil
+        if State.syncAfterHitToggle then startRagdollSystems(char) end
+        task.delay(0.5, function()
+            if LP.Character == char and autoStealEnabled then pcall(_G.AmbitiousAutoStealSync) end
+        end)
+    end)
+    _G._bizarreApplySyncAfterHit()
+    -- Keep Auto Grab armed continuously, including while carrying a Pet.
+    -- The user's toggle never changes here: only an active Ragdoll Steal window
+    -- may pause the engine, and the selected mode is restored as soon as it ends.
+    task.spawn(function()
+        while true do
+            task.wait(0.2)
+            if autoStealEnabled and _G.RagdollStealReady() then
+                local engine
+                if selectedStealMode == "Normal" then
+                    engine = _G.AmbitiousNormalSteal
+                elseif selectedSemiMode == "V2" then
+                    engine = _G.AmbitiousSemiV2Steal
+                else
+                    engine = _G.bizarreMysteryV1
+                end
+                local connection = engine and (engine.conn or engine.stealConn)
+                if engine and (not engine.enabled or not connection or not connection.Connected) then
+                    pcall(_G.AmbitiousAutoStealSync)
+                end
+            end
+        end
+    end)
+    _G._K7StartRagdollSystems = startRagdollSystems
+    end
+
+
+_G.AmbitiousAutoStealReady = true
+
+
+
+bizarreAntiDieDisconnectCharacter
+bizarreAntiDieProtectCharacter
+bizarreSetAntiDie
+bizarreToggleAntiDie
+laggerCarrySpeed
+softStealEnabled
+softStealLatched
+_renderSteppedConn
+_softStealScanner
+_softStealAnimals
+_softStealScanning
+_batAimbotToggled
+scanSoftStealAnimals
+startSoftStealScanner
+stopSoftStealScanner
+getNearestSoftStealAnimal
+setLaggerCarrySpeed
+setSoftStealSpeed
+setSoftStealRadius
+toggleLaggerMode
+setSoftStealEnabled
+isLaggerNormalOn
+toggleLaggerCycle
+resetMovementState
+refreshSpeedModeLabel
+cleanupSpeedPhysics
+setupMovementAndIndicators
+getActiveMoveSpeed
+bizarreEnableCustomFov
+bizarreDisableCustomFov
+bizarreAnimationPacks
+rbxassetid://133806214992291
+rbxassetid://94970088341563
+rbxassetid://707897309
+rbxassetid://707861613
+rbxassetid://116936326516985
+rbxassetid://507765644
+rbxassetid://134824450619865
+rbxassetid://121454505477205
+rbxassetid://94788218468396
+rbxassetid://616158929
+rbxassetid://616168032
+rbxassetid://616163682
+rbxassetid://616161997
+rbxassetid://616157476
+rbxassetid://616156119
+rbxassetid://656117400
+rbxassetid://656121766
+rbxassetid://656118852
+rbxassetid://656117878
+rbxassetid://656115606
+rbxassetid://656114359
+rbxassetid://657595757
+rbxassetid://657552124
+rbxassetid://657564596
+rbxassetid://658409194
+rbxassetid://657600338
+rbxassetid://658360781
+rbxassetid://845397899
+rbxassetid://845403856
+rbxassetid://845386501
+rbxassetid://845398858
+rbxassetid://845397673
+rbxassetid://845392038
+rbxassetid://616006778
+rbxassetid://616013216
+rbxassetid://616008936
+rbxassetid://616005863
+rbxassetid://616003713
+rbxassetid://891621366
+rbxassetid://891636393
+rbxassetid://891627522
+rbxassetid://891617961
+rbxassetid://891609353
+rbxassetid://750781874
+rbxassetid://750785693
+rbxassetid://750783738
+rbxassetid://750782230
+rbxassetid://750780242
+rbxassetid://750779899
+rbxassetid://782841498
+rbxassetid://782843345
+rbxassetid://782842708
+rbxassetid://782847020
+rbxassetid://782846423
+rbxassetid://782843869
+rbxassetid://1083445855
+rbxassetid://1083473930
+rbxassetid://1083462077
+rbxassetid://1083455352
+rbxassetid://1083443587
+rbxassetid://1083439238
+rbxassetid://1083195517
+rbxassetid://1083178339
+rbxassetid://1083216690
+rbxassetid://1083218792
+rbxassetid://1083189019
+rbxassetid://1083182000
+rbxassetid://2510196951
+rbxassetid://2510202577
+rbxassetid://2510198475
+rbxassetid://2510197830
+rbxassetid://2510195892
+rbxassetid://2510192778
+rbxassetid://616136790
+rbxassetid://616146177
+rbxassetid://616140816
+rbxassetid://616139451
+rbxassetid://616134815
+rbxassetid://616133594
+bizarreAnimationPackList
+bizarreAnimationPackState
+bizarreAnimationPack
+bizarreHiddenAccessories
+bizarreApplyHeadless
+bizarreStopHeadless
+bizarreApplyKorblox
+bizarreStopKorblox
+bizarreApplyLaggerScale
+MouseButton1Click
+BackgroundColor3
+BackgroundTransparency
+ClipsDescendants
+HorizontalAlignment
+VerticalAlignment
+use < > to cycle colors
+toggle which floating buttons show
+  No songs loaded.
+  Add tracks later.
+Normal Speed (NS)
+Carry Speed (CS)
+Lagger Carry Speed
+MOUAD PING LAGGER
+Mode (click = Carry)
+TextTransparency
+TextStrokeTransparency
+TextStrokeColor3
+bizarreOpenLagger
+AnimationPackValue
+Change Size Buttons
+ClearTextOnFocus
+No Cam Collision
+Remove Accessories
+Progress Bar Size
+Mobile Button Size
+Lock UI Mobile Buttons
+Intro Song (10s)
+UITextSizeConstraint
+Dark Matter Slap
+EmbeerMysteryBat
+smoothedVelocity
+accelerationHistory
+aerialVelocityHistory
+previousDirection
+lastDirectionChangeTime
+lastActivationTime
+ACTIVATE_DISTANCE
+MIN_FOLLOW_DISTANCE
+MAX_VELOCITY_CHANGE
+VELOCITY_SMOOTHING
+MAX_HORIZONTAL_VELOCITY
+MIN_PING_COMPENSATION
+MAX_PING_COMPENSATION
+ACCELERATION_PREDICTION_WEIGHT
+DIRECTION_CHANGE_DETECTION_TIME
+QUICK_DIRECTION_CHANGE_MULTIPLIER
+AIR_CONTROL_FACTOR
+MIN_AIRBORNE_TIME
+fallingDownSince
+ragdollConnections
+RaycastFilterType
+startAntiRagdoll
+mouadAimbotV5Start
+mouadAimbotV5Stop
+bizarreStealProgressBar
+bizarreStealProgress
+_bizarreTpBatLeanCFrame
+bizarreTpBatV2Swing
+bizarreTpBatV2Tick
+previousAutoRotate
+bizarreSnowTpSet
+BindToRenderStep
+LoKrCECmxg9famHuDTvIlndlYMiLbY
+bizarreCleanupOldESPVisuals
+_VezyHideSideBtns
+_VynxMobileBtnScale
+selectedStealMode
+selectedSemiMode
+AmbitiousStealRadii
+_AmbitiousKickWarn
+autoStealEnabled
+autoStealEnabled
+selectedStealMode
+selectedSemiMode
+autoStealEnabled
+autoStealEnabled
+selectedStealMode
+selectedStealMode
+selectedSemiMode
+selectedSemiMode
+rbxassetid://116936326516985
+rbxassetid://133806214992291
+rbxassetid://94970088341563
+rbxassetid://134824450619865
+rbxassetid://121454505477205
+rbxassetid://121454505477205
+rbxassetid://121454505477205
+rbxassetid://616158929
+rbxassetid://656117400
+rbxassetid://657595757
+rbxassetid://845397899
+rbxassetid://616006778
+rbxassetid://616013216
+rbxassetid://891621366
+rbxassetid://891636393
+rbxassetid://750781874
+rbxassetid://782841498
+rbxassetid://1083445855
+rbxassetid://1083195517
+rbxassetid://2510196951
+rbxassetid://616136790
+bizarreAnimationPackState
+bizarreAnimationPackList
+bizarreHiddenAccessories
+noCamCollisionEnabled
+batAimbotToggled
+autoRightEnabled
+MouseButton1Click
+HorizontalAlignment
+VerticalAlignment
+BackgroundTransparency
+BackgroundTransparency
+mobileBtnVisible
+mobileBtnVisible
+mobileBtnVisible
+mobileBtnVisible
+BackgroundTransparency
+BackgroundTransparency
+BackgroundColor3
+BackgroundTransparency
+mobileBtnVisible
+BackgroundColor3
+MouseButton1Click
+BackgroundTransparency
+BackgroundColor3
+BackgroundTransparency
+BackgroundColor3
+MouseButton1Click
+BackgroundColor3
+BackgroundTransparency
+BackgroundColor3
+BackgroundTransparency
+BackgroundColor3
+BackgroundTransparency
+MouseButton1Click
+MouseButton1Click
+BackgroundColor3
+BackgroundTransparency
+BackgroundTransparency
+BackgroundTransparency
+TextTransparency
+TextStrokeTransparency
+TextStrokeColor3
+BackgroundTransparency
+MouseButton1Click
+refreshSpeedModeLabel
+batAimbotToggled
+medusaCounterEnabled
+batCounterEnabled
+snowTpBatEnabled
+BackgroundColor3
+BackgroundTransparency
+BackgroundTransparency
+TextTransparency
+TextStrokeColor3
+TextStrokeTransparency
+BackgroundColor3
+BackgroundTransparency
+BackgroundTransparency
+TextStrokeColor3
+TextStrokeTransparency
+BackgroundColor3
+BackgroundTransparency
+MouseButton1Click
+MouseButton1Click
+stretchRezEnabled
+BackgroundColor3
+BackgroundTransparency
+BackgroundTransparency
+BackgroundColor3
+BackgroundTransparency
+mobileButtonScale
+BackgroundColor3
+BackgroundTransparency
+BackgroundColor3
+BackgroundTransparency
+MouseButton1Click
+MouseButton1Click
+BackgroundColor3
+BackgroundTransparency
+BackgroundTransparency
+TextStrokeTransparency
+TextStrokeColor3
+BackgroundColor3
+BackgroundTransparency
+MouseButton1Click
+BackgroundColor3
+BackgroundTransparency
+MouseButton1Click
+noCamCollisionEnabled
+removeAccEnabled
+nightModeEnabled
+progressBarScale
+mobileButtonScale
+hideMobileButtons
+hideMobileButtons
+lockMobileButtons
+lockMobileButtons
+BackgroundColor3
+BackgroundTransparency
+BackgroundTransparency
+TextTransparency
+TextStrokeTransparency
+TextStrokeColor3
+BackgroundColor3
+BackgroundTransparency
+MouseButton1Click
+BackgroundColor3
+BackgroundTransparency
+BackgroundTransparency
+BackgroundColor3
+BackgroundColor3
+MouseButton1Click
+BackgroundColor3
+BackgroundTransparency
+MouseButton1Click
+smoothedVelocity
+accelerationHistory
+aerialVelocityHistory
+previousDirection
+lastDirectionChangeTime
+lastActivationTime
+ACTIVATE_DISTANCE
+MIN_FOLLOW_DISTANCE
+MAX_VELOCITY_CHANGE
+VELOCITY_SMOOTHING
+MAX_HORIZONTAL_VELOCITY
+MIN_PING_COMPENSATION
+MAX_PING_COMPENSATION
+ACCELERATION_PREDICTION_WEIGHT
+DIRECTION_CHANGE_DETECTION_TIME
+QUICK_DIRECTION_CHANGE_MULTIPLIER
+AIR_CONTROL_FACTOR
+MIN_AIRBORNE_TIME
+Dark Matter Slap
+snowTpBatEnabled
+snowTpBatEnabled
+
+-- LEAKED BY GOJO EZZ FUCKERS
+-- LEAKED BY GOJO EZZ FUCKERS
+-- LEAKED BY GOJO EZZ FUCKERS
+-- LEAKED BY GOJO EZZ FUCKERS
+-- LEAKED BY GOJO EZZ FUCKERS
+-- LEAKED BY GOJO EZZ FUCKERS
+-- LEAKED BY GOJO EZZ FUCKERS
+-- LEAKED BY GOJO EZZ FUCKERS
+-- LEAKED BY GOJO EZZ FUCKERS
+-- LEAKED BY GOJO EZZ FUCKERS
+-- LEAKED BY GOJO EZZ FUCKERS
+-- LEAKED BY GOJO EZZ FUCKERS
