@@ -1,0 +1,3490 @@
+-- ============================================================
+-- MWP HUB v3.0 - PREMIUM GLASS + AUTOGRAB EDITION
+-- Features: Base Detector + Auto Steal + AutoGrab Instant Steal + Target Controls
+-- + AP Spammer + Infinite Jump + Anchor + Player ESP + Auto Kick + Slot ESP + Anti Ragdoll
+-- ============================================================
+
+local Players = game:GetService("Players")
+local lp = Players.LocalPlayer
+local pg = lp:WaitForChild("PlayerGui")
+local UIS = game:GetService("UserInputService")
+local TS = game:GetService("TweenService")
+local HttpService = game:GetService("HttpService")
+local RunService = game:GetService("RunService")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local CoreGui = game:GetService("CoreGui")
+local Camera = workspace.CurrentCamera
+local Workspace = game:GetService("Workspace")
+local Lighting = game:GetService("Lighting")
+
+-- ============================================================
+-- PART 1: NETWORK REMOTE BYPASS
+-- ============================================================
+do
+    local HIDDEN_KEYS = {
+        "identifyexecutor",
+        "islclosure",
+        "iscclosure",
+        "hookfunction",
+        "getgenv",
+        "getrenv",
+    }
+
+    _G.HubSafeNetCall = function(fn, ...)
+        if type(fn) ~= "function" then return false end
+        local env = getgenv and getgenv() or _G
+        local saved = {}
+        for _, key in ipairs(HIDDEN_KEYS) do
+            saved[key] = rawget(env, key)
+            rawset(env, key, nil)
+        end
+        local ok, a, b, c, d, e = pcall(fn, ...)
+        for k, v in next, saved do
+            if v ~= nil then
+                rawset(env, k, v)
+            end
+        end
+        if ok then return true, a, b, c, d, e end
+        return false, a
+    end
+
+    local _hubNetModule
+    local function getHubNetModule()
+        if _hubNetModule then return _hubNetModule end
+        local ok, mod = _G.HubSafeNetCall(function()
+            return require(game:GetService("ReplicatedStorage")
+                :WaitForChild("Packages"):WaitForChild("Net")
+                :WaitForChild("Net"))
+        end)
+        if ok and type(mod) == "table" then
+            _hubNetModule = mod
+        end
+        return _hubNetModule
+    end
+
+    _G.HubNetFire = function(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = path
+            if fullPath:sub(1, 3) ~= "RE/" and fullPath:sub(1, 3) ~= "RF/" then
+                fullPath = "RE/" .. fullPath
+            end
+            if net then
+                if type(net.RemoteEvent) == "function" then
+                    local re = net:RemoteEvent(fullPath:sub(4))
+                    if re and re.FireServer then
+                        re:FireServer(table.unpack(args))
+                        return true
+                    end
+                end
+                if type(net.FireServer) == "function" then
+                    net:FireServer(fullPath, table.unpack(args))
+                    return true
+                end
+            endfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathdo
+    local HIDDEN_KEYS = {
+        "identifyexecutor",
+        "islclosure",
+        "iscclosure",
+        "hookfunction",
+        "getgenv",
+        "getrenv",
+    }
+
+    _G.HubSafeNetCall = function(fn, ...)
+        if type(fn) ~= "function" then return false end
+        local env = getgenv and getgenv() or _G
+        local saved = {}
+        for _, key in ipairs(HIDDEN_KEYS) do
+            saved[key] = rawget(env, key)
+            rawset(env, key, nil)
+        end
+        local ok, a, b, c, d, e = pcall(fn, ...)
+        for k, v in next, saved do
+            if v ~= nil then
+                rawset(env, k, v)
+            end
+        end
+        if ok then return true, a, b, c, d, e end
+        return false, a
+    end
+
+    local _hubNetModule
+    local function getHubNetModule()
+        if _hubNetModule then return _hubNetModule end
+        local ok, mod = _G.HubSafeNetCall(function()
+            return require(game:GetService("ReplicatedStorage")
+                :WaitForChild("Packages"):WaitForChild("Net")
+                :WaitForChild("Net"))
+        end)
+        if ok and type(mod) == "table" then
+            _hubNetModule = mod
+        end
+        return _hubNetModule
+    end
+
+    _G.HubNetFire = function(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = path
+            if fullPath:sub(1, 3) ~= "RE/" and fullPath:sub(1, 3) ~= "RF/" then
+                fullPath = "RE/" .. fullPath
+            end
+            if net then
+                if type(net.RemoteEvent) == "function" then
+                    local re = net:RemoteEvent(fullPath:sub(4))
+                    if re and re.FireServer then
+                        re:FireServer(table.unpack(args))
+                        return true
+                    end
+                end
+                if type(net.FireServer) == "function" then
+                    net:FireServer(fullPath, table.unpack(args))
+                    return true
+                end
+            endfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathdo
+    local HIDDEN_KEYS = {
+        "identifyexecutor",
+        "islclosure",
+        "iscclosure",
+        "hookfunction",
+        "getgenv",
+        "getrenv",
+    }
+
+    _G.HubSafeNetCall = function(fn, ...)
+        if type(fn) ~= "function" then return false end
+        local env = getgenv and getgenv() or _G
+        local saved = {}
+        for _, key in ipairs(HIDDEN_KEYS) do
+            saved[key] = rawget(env, key)
+            rawset(env, key, nil)
+        end
+        local ok, a, b, c, d, e = pcall(fn, ...)
+        for k, v in next, saved do
+            if v ~= nil then
+                rawset(env, k, v)
+            end
+        end
+        if ok then return true, a, b, c, d, e end
+        return false, a
+    end
+
+    local _hubNetModule
+    local function getHubNetModule()
+        if _hubNetModule then return _hubNetModule end
+        local ok, mod = _G.HubSafeNetCall(function()
+            return require(game:GetService("ReplicatedStorage")
+                :WaitForChild("Packages"):WaitForChild("Net")
+                :WaitForChild("Net"))
+        end)
+        if ok and type(mod) == "table" then
+            _hubNetModule = mod
+        end
+        return _hubNetModule
+    end
+
+    _G.HubNetFire = function(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = path
+            if fullPath:sub(1, 3) ~= "RE/" and fullPath:sub(1, 3) ~= "RF/" then
+                fullPath = "RE/" .. fullPath
+            end
+            if net then
+                if type(net.RemoteEvent) == "function" then
+                    local re = net:RemoteEvent(fullPath:sub(4))
+                    if re and re.FireServer then
+                        re:FireServer(table.unpack(args))
+                        return true
+                    end
+                end
+                if type(net.FireServer) == "function" then
+                    net:FireServer(fullPath, table.unpack(args))
+                    return true
+                end
+            endfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathdo
+    local HIDDEN_KEYS = {
+        "identifyexecutor",
+        "islclosure",
+        "iscclosure",
+        "hookfunction",
+        "getgenv",
+        "getrenv",
+    }
+
+    _G.HubSafeNetCall = function(fn, ...)
+        if type(fn) ~= "function" then return false end
+        local env = getgenv and getgenv() or _G
+        local saved = {}
+        for _, key in ipairs(HIDDEN_KEYS) do
+            saved[key] = rawget(env, key)
+            rawset(env, key, nil)
+        end
+        local ok, a, b, c, d, e = pcall(fn, ...)
+        for k, v in next, saved do
+            if v ~= nil then
+                rawset(env, k, v)
+            end
+        end
+        if ok then return true, a, b, c, d, e end
+        return false, a
+    end
+
+    local _hubNetModule
+    local function getHubNetModule()
+        if _hubNetModule then return _hubNetModule end
+        local ok, mod = _G.HubSafeNetCall(function()
+            return require(game:GetService("ReplicatedStorage")
+                :WaitForChild("Packages"):WaitForChild("Net")
+                :WaitForChild("Net"))
+        end)
+        if ok and type(mod) == "table" then
+            _hubNetModule = mod
+        end
+        return _hubNetModule
+    end
+
+    _G.HubNetFire = function(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = path
+            if fullPath:sub(1, 3) ~= "RE/" and fullPath:sub(1, 3) ~= "RF/" then
+                fullPath = "RE/" .. fullPath
+            end
+            if net then
+                if type(net.RemoteEvent) == "function" then
+                    local re = net:RemoteEvent(fullPath:sub(4))
+                    if re and re.FireServer then
+                        re:FireServer(table.unpack(args))
+                        return true
+                    end
+                end
+                if type(net.FireServer) == "function" then
+                    net:FireServer(fullPath, table.unpack(args))
+                    return true
+                end
+            endfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathdo
+    local HIDDEN_KEYS = {
+        "identifyexecutor",
+        "islclosure",
+        "iscclosure",
+        "hookfunction",
+        "getgenv",
+        "getrenv",
+    }
+
+    _G.HubSafeNetCall = function(fn, ...)
+        if type(fn) ~= "function" then return false end
+        local env = getgenv and getgenv() or _G
+        local saved = {}
+        for _, key in ipairs(HIDDEN_KEYS) do
+            saved[key] = rawget(env, key)
+            rawset(env, key, nil)
+        end
+        local ok, a, b, c, d, e = pcall(fn, ...)
+        for k, v in next, saved do
+            if v ~= nil then
+                rawset(env, k, v)
+            end
+        end
+        if ok then return true, a, b, c, d, e end
+        return false, a
+    end
+
+    local _hubNetModule
+    local function getHubNetModule()
+        if _hubNetModule then return _hubNetModule end
+        local ok, mod = _G.HubSafeNetCall(function()
+            return require(game:GetService("ReplicatedStorage")
+                :WaitForChild("Packages"):WaitForChild("Net")
+                :WaitForChild("Net"))
+        end)
+        if ok and type(mod) == "table" then
+            _hubNetModule = mod
+        end
+        return _hubNetModule
+    end
+
+    _G.HubNetFire = function(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = path
+            if fullPath:sub(1, 3) ~= "RE/" and fullPath:sub(1, 3) ~= "RF/" then
+                fullPath = "RE/" .. fullPath
+            end
+            if net then
+                if type(net.RemoteEvent) == "function" then
+                    local re = net:RemoteEvent(fullPath:sub(4))
+                    if re and re.FireServer then
+                        re:FireServer(table.unpack(args))
+                        return true
+                    end
+                end
+                if type(net.FireServer) == "function" then
+                    net:FireServer(fullPath, table.unpack(args))
+                    return true
+                end
+            endfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathdo
+    local HIDDEN_KEYS = {
+        "identifyexecutor",
+        "islclosure",
+        "iscclosure",
+        "hookfunction",
+        "getgenv",
+        "getrenv",
+    }
+
+    _G.HubSafeNetCall = function(fn, ...)
+        if type(fn) ~= "function" then return false end
+        local env = getgenv and getgenv() or _G
+        local saved = {}
+        for _, key in ipairs(HIDDEN_KEYS) do
+            saved[key] = rawget(env, key)
+            rawset(env, key, nil)
+        end
+        local ok, a, b, c, d, e = pcall(fn, ...)
+        for k, v in next, saved do
+            if v ~= nil then
+                rawset(env, k, v)
+            end
+        end
+        if ok then return true, a, b, c, d, e end
+        return false, a
+    end
+
+    local _hubNetModule
+    local function getHubNetModule()
+        if _hubNetModule then return _hubNetModule end
+        local ok, mod = _G.HubSafeNetCall(function()
+            return require(game:GetService("ReplicatedStorage")
+                :WaitForChild("Packages"):WaitForChild("Net")
+                :WaitForChild("Net"))
+        end)
+        if ok and type(mod) == "table" then
+            _hubNetModule = mod
+        end
+        return _hubNetModule
+    end
+
+    _G.HubNetFire = function(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = path
+            if fullPath:sub(1, 3) ~= "RE/" and fullPath:sub(1, 3) ~= "RF/" then
+                fullPath = "RE/" .. fullPath
+            end
+            if net then
+                if type(net.RemoteEvent) == "function" then
+                    local re = net:RemoteEvent(fullPath:sub(4))
+                    if re and re.FireServer then
+                        re:FireServer(table.unpack(args))
+                        return true
+                    end
+                end
+                if type(net.FireServer) == "function" then
+                    net:FireServer(fullPath, table.unpack(args))
+                    return true
+                end
+            endfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathdo
+    local HIDDEN_KEYS = {
+        "identifyexecutor",
+        "islclosure",
+        "iscclosure",
+        "hookfunction",
+        "getgenv",
+        "getrenv",
+    }
+
+    _G.HubSafeNetCall = function(fn, ...)
+        if type(fn) ~= "function" then return false end
+        local env = getgenv and getgenv() or _G
+        local saved = {}
+        for _, key in ipairs(HIDDEN_KEYS) do
+            saved[key] = rawget(env, key)
+            rawset(env, key, nil)
+        end
+        local ok, a, b, c, d, e = pcall(fn, ...)
+        for k, v in next, saved do
+            if v ~= nil then
+                rawset(env, k, v)
+            end
+        end
+        if ok then return true, a, b, c, d, e end
+        return false, a
+    end
+
+    local _hubNetModule
+    local function getHubNetModule()
+        if _hubNetModule then return _hubNetModule end
+        local ok, mod = _G.HubSafeNetCall(function()
+            return require(game:GetService("ReplicatedStorage")
+                :WaitForChild("Packages"):WaitForChild("Net")
+                :WaitForChild("Net"))
+        end)
+        if ok and type(mod) == "table" then
+            _hubNetModule = mod
+        end
+        return _hubNetModule
+    end
+
+    _G.HubNetFire = function(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = path
+            if fullPath:sub(1, 3) ~= "RE/" and fullPath:sub(1, 3) ~= "RF/" then
+                fullPath = "RE/" .. fullPath
+            end
+            if net then
+                if type(net.RemoteEvent) == "function" then
+                    local re = net:RemoteEvent(fullPath:sub(4))
+                    if re and re.FireServer then
+                        re:FireServer(table.unpack(args))
+                        return true
+                    end
+                end
+                if type(net.FireServer) == "function" then
+                    net:FireServer(fullPath, table.unpack(args))
+                    return true
+                end
+            endfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathdo
+    local HIDDEN_KEYS = {
+        "identifyexecutor",
+        "islclosure",
+        "iscclosure",
+        "hookfunction",
+        "getgenv",
+        "getrenv",
+    }
+
+    _G.HubSafeNetCall = function(fn, ...)
+        if type(fn) ~= "function" then return false end
+        local env = getgenv and getgenv() or _G
+        local saved = {}
+        for _, key in ipairs(HIDDEN_KEYS) do
+            saved[key] = rawget(env, key)
+            rawset(env, key, nil)
+        end
+        local ok, a, b, c, d, e = pcall(fn, ...)
+        for k, v in next, saved do
+            if v ~= nil then
+                rawset(env, k, v)
+            end
+        end
+        if ok then return true, a, b, c, d, e end
+        return false, a
+    end
+
+    local _hubNetModule
+    local function getHubNetModule()
+        if _hubNetModule then return _hubNetModule end
+        local ok, mod = _G.HubSafeNetCall(function()
+            return require(game:GetService("ReplicatedStorage")
+                :WaitForChild("Packages"):WaitForChild("Net")
+                :WaitForChild("Net"))
+        end)
+        if ok and type(mod) == "table" then
+            _hubNetModule = mod
+        end
+        return _hubNetModule
+    end
+
+    _G.HubNetFire = function(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = path
+            if fullPath:sub(1, 3) ~= "RE/" and fullPath:sub(1, 3) ~= "RF/" then
+                fullPath = "RE/" .. fullPath
+            end
+            if net then
+                if type(net.RemoteEvent) == "function" then
+                    local re = net:RemoteEvent(fullPath:sub(4))
+                    if re and re.FireServer then
+                        re:FireServer(table.unpack(args))
+                        return true
+                    end
+                end
+                if type(net.FireServer) == "function" then
+                    net:FireServer(fullPath, table.unpack(args))
+                    return true
+                end
+            endfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathdo
+    local HIDDEN_KEYS = {
+        "identifyexecutor",
+        "islclosure",
+        "iscclosure",
+        "hookfunction",
+        "getgenv",
+        "getrenv",
+    }
+
+    _G.HubSafeNetCall = function(fn, ...)
+        if type(fn) ~= "function" then return false end
+        local env = getgenv and getgenv() or _G
+        local saved = {}
+        for _, key in ipairs(HIDDEN_KEYS) do
+            saved[key] = rawget(env, key)
+            rawset(env, key, nil)
+        end
+        local ok, a, b, c, d, e = pcall(fn, ...)
+        for k, v in next, saved do
+            if v ~= nil then
+                rawset(env, k, v)
+            end
+        end
+        if ok then return true, a, b, c, d, e end
+        return false, a
+    end
+
+    local _hubNetModule
+    local function getHubNetModule()
+        if _hubNetModule then return _hubNetModule end
+        local ok, mod = _G.HubSafeNetCall(function()
+            return require(game:GetService("ReplicatedStorage")
+                :WaitForChild("Packages"):WaitForChild("Net")
+                :WaitForChild("Net"))
+        end)
+        if ok and type(mod) == "table" then
+            _hubNetModule = mod
+        end
+        return _hubNetModule
+    end
+
+    _G.HubNetFire = function(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = path
+            if fullPath:sub(1, 3) ~= "RE/" and fullPath:sub(1, 3) ~= "RF/" then
+                fullPath = "RE/" .. fullPath
+            end
+            if net then
+                if type(net.RemoteEvent) == "function" then
+                    local re = net:RemoteEvent(fullPath:sub(4))
+                    if re and re.FireServer then
+                        re:FireServer(table.unpack(args))
+                        return true
+                    end
+                end
+                if type(net.FireServer) == "function" then
+                    net:FireServer(fullPath, table.unpack(args))
+                    return true
+                end
+            endfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathdo
+    local HIDDEN_KEYS = {
+        "identifyexecutor",
+        "islclosure",
+        "iscclosure",
+        "hookfunction",
+        "getgenv",
+        "getrenv",
+    }
+
+    _G.HubSafeNetCall = function(fn, ...)
+        if type(fn) ~= "function" then return false end
+        local env = getgenv and getgenv() or _G
+        local saved = {}
+        for _, key in ipairs(HIDDEN_KEYS) do
+            saved[key] = rawget(env, key)
+            rawset(env, key, nil)
+        end
+        local ok, a, b, c, d, e = pcall(fn, ...)
+        for k, v in next, saved do
+            if v ~= nil then
+                rawset(env, k, v)
+            end
+        end
+        if ok then return true, a, b, c, d, e end
+        return false, a
+    end
+
+    local _hubNetModule
+    local function getHubNetModule()
+        if _hubNetModule then return _hubNetModule end
+        local ok, mod = _G.HubSafeNetCall(function()
+            return require(game:GetService("ReplicatedStorage")
+                :WaitForChild("Packages"):WaitForChild("Net")
+                :WaitForChild("Net"))
+        end)
+        if ok and type(mod) == "table" then
+            _hubNetModule = mod
+        end
+        return _hubNetModule
+    end
+
+    _G.HubNetFire = function(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = path
+            if fullPath:sub(1, 3) ~= "RE/" and fullPath:sub(1, 3) ~= "RF/" then
+                fullPath = "RE/" .. fullPath
+            end
+            if net then
+                if type(net.RemoteEvent) == "function" then
+                    local re = net:RemoteEvent(fullPath:sub(4))
+                    if re and re.FireServer then
+                        re:FireServer(table.unpack(args))
+                        return true
+                    end
+                end
+                if type(net.FireServer) == "function" then
+                    net:FireServer(fullPath, table.unpack(args))
+                    return true
+                end
+            endfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathdo
+    local HIDDEN_KEYS = {
+        "identifyexecutor",
+        "islclosure",
+        "iscclosure",
+        "hookfunction",
+        "getgenv",
+        "getrenv",
+    }
+
+    _G.HubSafeNetCall = function(fn, ...)
+        if type(fn) ~= "function" then return false end
+        local env = getgenv and getgenv() or _G
+        local saved = {}
+        for _, key in ipairs(HIDDEN_KEYS) do
+            saved[key] = rawget(env, key)
+            rawset(env, key, nil)
+        end
+        local ok, a, b, c, d, e = pcall(fn, ...)
+        for k, v in next, saved do
+            if v ~= nil then
+                rawset(env, k, v)
+            end
+        end
+        if ok then return true, a, b, c, d, e end
+        return false, a
+    end
+
+    local _hubNetModule
+    local function getHubNetModule()
+        if _hubNetModule then return _hubNetModule end
+        local ok, mod = _G.HubSafeNetCall(function()
+            return require(game:GetService("ReplicatedStorage")
+                :WaitForChild("Packages"):WaitForChild("Net")
+                :WaitForChild("Net"))
+        end)
+        if ok and type(mod) == "table" then
+            _hubNetModule = mod
+        end
+        return _hubNetModule
+    end
+
+    _G.HubNetFire = function(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = path
+            if fullPath:sub(1, 3) ~= "RE/" and fullPath:sub(1, 3) ~= "RF/" then
+                fullPath = "RE/" .. fullPath
+            end
+            if net then
+                if type(net.RemoteEvent) == "function" then
+                    local re = net:RemoteEvent(fullPath:sub(4))
+                    if re and re.FireServer then
+                        re:FireServer(table.unpack(args))
+                        return true
+                    end
+                end
+                if type(net.FireServer) == "function" then
+                    net:FireServer(fullPath, table.unpack(args))
+                    return true
+                end
+            endfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathdo
+    local HIDDEN_KEYS = {
+        "identifyexecutor",
+        "islclosure",
+        "iscclosure",
+        "hookfunction",
+        "getgenv",
+        "getrenv",
+    }
+
+    _G.HubSafeNetCall = function(fn, ...)
+        if type(fn) ~= "function" then return false end
+        local env = getgenv and getgenv() or _G
+        local saved = {}
+        for _, key in ipairs(HIDDEN_KEYS) do
+            saved[key] = rawget(env, key)
+            rawset(env, key, nil)
+        end
+        local ok, a, b, c, d, e = pcall(fn, ...)
+        for k, v in next, saved do
+            if v ~= nil then
+                rawset(env, k, v)
+            end
+        end
+        if ok then return true, a, b, c, d, e end
+        return false, a
+    end
+
+    local _hubNetModule
+    local function getHubNetModule()
+        if _hubNetModule then return _hubNetModule end
+        local ok, mod = _G.HubSafeNetCall(function()
+            return require(game:GetService("ReplicatedStorage")
+                :WaitForChild("Packages"):WaitForChild("Net")
+                :WaitForChild("Net"))
+        end)
+        if ok and type(mod) == "table" then
+            _hubNetModule = mod
+        end
+        return _hubNetModule
+    end
+
+    _G.HubNetFire = function(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = path
+            if fullPath:sub(1, 3) ~= "RE/" and fullPath:sub(1, 3) ~= "RF/" then
+                fullPath = "RE/" .. fullPath
+            end
+            if net then
+                if type(net.RemoteEvent) == "function" then
+                    local re = net:RemoteEvent(fullPath:sub(4))
+                    if re and re.FireServer then
+                        re:FireServer(table.unpack(args))
+                        return true
+                    end
+                end
+                if type(net.FireServer) == "function" then
+                    net:FireServer(fullPath, table.unpack(args))
+                    return true
+                end
+            endfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathdo
+    local HIDDEN_KEYS = {
+        "identifyexecutor",
+        "islclosure",
+        "iscclosure",
+        "hookfunction",
+        "getgenv",
+        "getrenv",
+    }
+
+    _G.HubSafeNetCall = function(fn, ...)
+        if type(fn) ~= "function" then return false end
+        local env = getgenv and getgenv() or _G
+        local saved = {}
+        for _, key in ipairs(HIDDEN_KEYS) do
+            saved[key] = rawget(env, key)
+            rawset(env, key, nil)
+        end
+        local ok, a, b, c, d, e = pcall(fn, ...)
+        for k, v in next, saved do
+            if v ~= nil then
+                rawset(env, k, v)
+            end
+        end
+        if ok then return true, a, b, c, d, e end
+        return false, a
+    end
+
+    local _hubNetModule
+    local function getHubNetModule()
+        if _hubNetModule then return _hubNetModule end
+        local ok, mod = _G.HubSafeNetCall(function()
+            return require(game:GetService("ReplicatedStorage")
+                :WaitForChild("Packages"):WaitForChild("Net")
+                :WaitForChild("Net"))
+        end)
+        if ok and type(mod) == "table" then
+            _hubNetModule = mod
+        end
+        return _hubNetModule
+    end
+
+    _G.HubNetFire = function(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = path
+            if fullPath:sub(1, 3) ~= "RE/" and fullPath:sub(1, 3) ~= "RF/" then
+                fullPath = "RE/" .. fullPath
+            end
+            if net then
+                if type(net.RemoteEvent) == "function" then
+                    local re = net:RemoteEvent(fullPath:sub(4))
+                    if re and re.FireServer then
+                        re:FireServer(table.unpack(args))
+                        return true
+                    end
+                end
+                if type(net.FireServer) == "function" then
+                    net:FireServer(fullPath, table.unpack(args))
+                    return true
+                end
+            endfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathdo
+    local HIDDEN_KEYS = {
+        "identifyexecutor",
+        "islclosure",
+        "iscclosure",
+        "hookfunction",
+        "getgenv",
+        "getrenv",
+    }
+
+    _G.HubSafeNetCall = function(fn, ...)
+        if type(fn) ~= "function" then return false end
+        local env = getgenv and getgenv() or _G
+        local saved = {}
+        for _, key in ipairs(HIDDEN_KEYS) do
+            saved[key] = rawget(env, key)
+            rawset(env, key, nil)
+        end
+        local ok, a, b, c, d, e = pcall(fn, ...)
+        for k, v in next, saved do
+            if v ~= nil then
+                rawset(env, k, v)
+            end
+        end
+        if ok then return true, a, b, c, d, e end
+        return false, a
+    end
+
+    local _hubNetModule
+    local function getHubNetModule()
+        if _hubNetModule then return _hubNetModule end
+        local ok, mod = _G.HubSafeNetCall(function()
+            return require(game:GetService("ReplicatedStorage")
+                :WaitForChild("Packages"):WaitForChild("Net")
+                :WaitForChild("Net"))
+        end)
+        if ok and type(mod) == "table" then
+            _hubNetModule = mod
+        end
+        return _hubNetModule
+    end
+
+    _G.HubNetFire = function(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = path
+            if fullPath:sub(1, 3) ~= "RE/" and fullPath:sub(1, 3) ~= "RF/" then
+                fullPath = "RE/" .. fullPath
+            end
+            if net then
+                if type(net.RemoteEvent) == "function" then
+                    local re = net:RemoteEvent(fullPath:sub(4))
+                    if re and re.FireServer then
+                        re:FireServer(table.unpack(args))
+                        return true
+                    end
+                end
+                if type(net.FireServer) == "function" then
+                    net:FireServer(fullPath, table.unpack(args))
+                    return true
+                end
+            endfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathdo
+    local HIDDEN_KEYS = {
+        "identifyexecutor",
+        "islclosure",
+        "iscclosure",
+        "hookfunction",
+        "getgenv",
+        "getrenv",
+    }
+
+    _G.HubSafeNetCall = function(fn, ...)
+        if type(fn) ~= "function" then return false end
+        local env = getgenv and getgenv() or _G
+        local saved = {}
+        for _, key in ipairs(HIDDEN_KEYS) do
+            saved[key] = rawget(env, key)
+            rawset(env, key, nil)
+        end
+        local ok, a, b, c, d, e = pcall(fn, ...)
+        for k, v in next, saved do
+            if v ~= nil then
+                rawset(env, k, v)
+            end
+        end
+        if ok then return true, a, b, c, d, e end
+        return false, a
+    end
+
+    local _hubNetModule
+    local function getHubNetModule()
+        if _hubNetModule then return _hubNetModule end
+        local ok, mod = _G.HubSafeNetCall(function()
+            return require(game:GetService("ReplicatedStorage")
+                :WaitForChild("Packages"):WaitForChild("Net")
+                :WaitForChild("Net"))
+        end)
+        if ok and type(mod) == "table" then
+            _hubNetModule = mod
+        end
+        return _hubNetModule
+    end
+
+    _G.HubNetFire = function(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = path
+            if fullPath:sub(1, 3) ~= "RE/" and fullPath:sub(1, 3) ~= "RF/" then
+                fullPath = "RE/" .. fullPath
+            end
+            if net then
+                if type(net.RemoteEvent) == "function" then
+                    local re = net:RemoteEvent(fullPath:sub(4))
+                    if re and re.FireServer then
+                        re:FireServer(table.unpack(args))
+                        return true
+                    end
+                end
+                if type(net.FireServer) == "function" then
+                    net:FireServer(fullPath, table.unpack(args))
+                    return true
+                end
+            endfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathdo
+    local HIDDEN_KEYS = {
+        "identifyexecutor",
+        "islclosure",
+        "iscclosure",
+        "hookfunction",
+        "getgenv",
+        "getrenv",
+    }
+
+    _G.HubSafeNetCall = function(fn, ...)
+        if type(fn) ~= "function" then return false end
+        local env = getgenv and getgenv() or _G
+        local saved = {}
+        for _, key in ipairs(HIDDEN_KEYS) do
+            saved[key] = rawget(env, key)
+            rawset(env, key, nil)
+        end
+        local ok, a, b, c, d, e = pcall(fn, ...)
+        for k, v in next, saved do
+            if v ~= nil then
+                rawset(env, k, v)
+            end
+        end
+        if ok then return true, a, b, c, d, e end
+        return false, a
+    end
+
+    local _hubNetModule
+    local function getHubNetModule()
+        if _hubNetModule then return _hubNetModule end
+        local ok, mod = _G.HubSafeNetCall(function()
+            return require(game:GetService("ReplicatedStorage")
+                :WaitForChild("Packages"):WaitForChild("Net")
+                :WaitForChild("Net"))
+        end)
+        if ok and type(mod) == "table" then
+            _hubNetModule = mod
+        end
+        return _hubNetModule
+    end
+
+    _G.HubNetFire = function(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = path
+            if fullPath:sub(1, 3) ~= "RE/" and fullPath:sub(1, 3) ~= "RF/" then
+                fullPath = "RE/" .. fullPath
+            end
+            if net then
+                if type(net.RemoteEvent) == "function" then
+                    local re = net:RemoteEvent(fullPath:sub(4))
+                    if re and re.FireServer then
+                        re:FireServer(table.unpack(args))
+                        return true
+                    end
+                end
+                if type(net.FireServer) == "function" then
+                    net:FireServer(fullPath, table.unpack(args))
+                    return true
+                end
+            endfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathdo
+    local HIDDEN_KEYS = {
+        "identifyexecutor",
+        "islclosure",
+        "iscclosure",
+        "hookfunction",
+        "getgenv",
+        "getrenv",
+    }
+
+    _G.HubSafeNetCall = function(fn, ...)
+        if type(fn) ~= "function" then return false end
+        local env = getgenv and getgenv() or _G
+        local saved = {}
+        for _, key in ipairs(HIDDEN_KEYS) do
+            saved[key] = rawget(env, key)
+            rawset(env, key, nil)
+        end
+        local ok, a, b, c, d, e = pcall(fn, ...)
+        for k, v in next, saved do
+            if v ~= nil then
+                rawset(env, k, v)
+            end
+        end
+        if ok then return true, a, b, c, d, e end
+        return false, a
+    end
+
+    local _hubNetModule
+    local function getHubNetModule()
+        if _hubNetModule then return _hubNetModule end
+        local ok, mod = _G.HubSafeNetCall(function()
+            return require(game:GetService("ReplicatedStorage")
+                :WaitForChild("Packages"):WaitForChild("Net")
+                :WaitForChild("Net"))
+        end)
+        if ok and type(mod) == "table" then
+            _hubNetModule = mod
+        end
+        return _hubNetModule
+    end
+
+    _G.HubNetFire = function(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = path
+            if fullPath:sub(1, 3) ~= "RE/" and fullPath:sub(1, 3) ~= "RF/" then
+                fullPath = "RE/" .. fullPath
+            end
+            if net then
+                if type(net.RemoteEvent) == "function" then
+                    local re = net:RemoteEvent(fullPath:sub(4))
+                    if re and re.FireServer then
+                        re:FireServer(table.unpack(args))
+                        return true
+                    end
+                end
+                if type(net.FireServer) == "function" then
+                    net:FireServer(fullPath, table.unpack(args))
+                    return true
+                end
+            endfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathdo
+    local HIDDEN_KEYS = {
+        "identifyexecutor",
+        "islclosure",
+        "iscclosure",
+        "hookfunction",
+        "getgenv",
+        "getrenv",
+    }
+
+    _G.HubSafeNetCall = function(fn, ...)
+        if type(fn) ~= "function" then return false end
+        local env = getgenv and getgenv() or _G
+        local saved = {}
+        for _, key in ipairs(HIDDEN_KEYS) do
+            saved[key] = rawget(env, key)
+            rawset(env, key, nil)
+        end
+        local ok, a, b, c, d, e = pcall(fn, ...)
+        for k, v in next, saved do
+            if v ~= nil then
+                rawset(env, k, v)
+            end
+        end
+        if ok then return true, a, b, c, d, e end
+        return false, a
+    end
+
+    local _hubNetModule
+    local function getHubNetModule()
+        if _hubNetModule then return _hubNetModule end
+        local ok, mod = _G.HubSafeNetCall(function()
+            return require(game:GetService("ReplicatedStorage")
+                :WaitForChild("Packages"):WaitForChild("Net")
+                :WaitForChild("Net"))
+        end)
+        if ok and type(mod) == "table" then
+            _hubNetModule = mod
+        end
+        return _hubNetModule
+    end
+
+    _G.HubNetFire = function(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = path
+            if fullPath:sub(1, 3) ~= "RE/" and fullPath:sub(1, 3) ~= "RF/" then
+                fullPath = "RE/" .. fullPath
+            end
+            if net then
+                if type(net.RemoteEvent) == "function" then
+                    local re = net:RemoteEvent(fullPath:sub(4))
+                    if re and re.FireServer then
+                        re:FireServer(table.unpack(args))
+                        return true
+                    end
+                end
+                if type(net.FireServer) == "function" then
+                    net:FireServer(fullPath, table.unpack(args))
+                    return true
+                end
+            endfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathdo
+    local HIDDEN_KEYS = {
+        "identifyexecutor",
+        "islclosure",
+        "iscclosure",
+        "hookfunction",
+        "getgenv",
+        "getrenv",
+    }
+
+    _G.HubSafeNetCall = function(fn, ...)
+        if type(fn) ~= "function" then return false end
+        local env = getgenv and getgenv() or _G
+        local saved = {}
+        for _, key in ipairs(HIDDEN_KEYS) do
+            saved[key] = rawget(env, key)
+            rawset(env, key, nil)
+        end
+        local ok, a, b, c, d, e = pcall(fn, ...)
+        for k, v in next, saved do
+            if v ~= nil then
+                rawset(env, k, v)
+            end
+        end
+        if ok then return true, a, b, c, d, e end
+        return false, a
+    end
+
+    local _hubNetModule
+    local function getHubNetModule()
+        if _hubNetModule then return _hubNetModule end
+        local ok, mod = _G.HubSafeNetCall(function()
+            return require(game:GetService("ReplicatedStorage")
+                :WaitForChild("Packages"):WaitForChild("Net")
+                :WaitForChild("Net"))
+        end)
+        if ok and type(mod) == "table" then
+            _hubNetModule = mod
+        end
+        return _hubNetModule
+    end
+
+    _G.HubNetFire = function(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = path
+            if fullPath:sub(1, 3) ~= "RE/" and fullPath:sub(1, 3) ~= "RF/" then
+                fullPath = "RE/" .. fullPath
+            end
+            if net then
+                if type(net.RemoteEvent) == "function" then
+                    local re = net:RemoteEvent(fullPath:sub(4))
+                    if re and re.FireServer then
+                        re:FireServer(table.unpack(args))
+                        return true
+                    end
+                end
+                if type(net.FireServer) == "function" then
+                    net:FireServer(fullPath, table.unpack(args))
+                    return true
+                end
+            endfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathdo
+    local HIDDEN_KEYS = {
+        "identifyexecutor",
+        "islclosure",
+        "iscclosure",
+        "hookfunction",
+        "getgenv",
+        "getrenv",
+    }
+
+    _G.HubSafeNetCall = function(fn, ...)
+        if type(fn) ~= "function" then return false end
+        local env = getgenv and getgenv() or _G
+        local saved = {}
+        for _, key in ipairs(HIDDEN_KEYS) do
+            saved[key] = rawget(env, key)
+            rawset(env, key, nil)
+        end
+        local ok, a, b, c, d, e = pcall(fn, ...)
+        for k, v in next, saved do
+            if v ~= nil then
+                rawset(env, k, v)
+            end
+        end
+        if ok then return true, a, b, c, d, e end
+        return false, a
+    end
+
+    local _hubNetModule
+    local function getHubNetModule()
+        if _hubNetModule then return _hubNetModule end
+        local ok, mod = _G.HubSafeNetCall(function()
+            return require(game:GetService("ReplicatedStorage")
+                :WaitForChild("Packages"):WaitForChild("Net")
+                :WaitForChild("Net"))
+        end)
+        if ok and type(mod) == "table" then
+            _hubNetModule = mod
+        end
+        return _hubNetModule
+    end
+
+    _G.HubNetFire = function(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = path
+            if fullPath:sub(1, 3) ~= "RE/" and fullPath:sub(1, 3) ~= "RF/" then
+                fullPath = "RE/" .. fullPath
+            end
+            if net then
+                if type(net.RemoteEvent) == "function" then
+                    local re = net:RemoteEvent(fullPath:sub(4))
+                    if re and re.FireServer then
+                        re:FireServer(table.unpack(args))
+                        return true
+                    end
+                end
+                if type(net.FireServer) == "function" then
+                    net:FireServer(fullPath, table.unpack(args))
+                    return true
+                end
+            endfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathdo
+    local HIDDEN_KEYS = {
+        "identifyexecutor",
+        "islclosure",
+        "iscclosure",
+        "hookfunction",
+        "getgenv",
+        "getrenv",
+    }
+
+    _G.HubSafeNetCall = function(fn, ...)
+        if type(fn) ~= "function" then return false end
+        local env = getgenv and getgenv() or _G
+        local saved = {}
+        for _, key in ipairs(HIDDEN_KEYS) do
+            saved[key] = rawget(env, key)
+            rawset(env, key, nil)
+        end
+        local ok, a, b, c, d, e = pcall(fn, ...)
+        for k, v in next, saved do
+            if v ~= nil then
+                rawset(env, k, v)
+            end
+        end
+        if ok then return true, a, b, c, d, e end
+        return false, a
+    end
+
+    local _hubNetModule
+    local function getHubNetModule()
+        if _hubNetModule then return _hubNetModule end
+        local ok, mod = _G.HubSafeNetCall(function()
+            return require(game:GetService("ReplicatedStorage")
+                :WaitForChild("Packages"):WaitForChild("Net")
+                :WaitForChild("Net"))
+        end)
+        if ok and type(mod) == "table" then
+            _hubNetModule = mod
+        end
+        return _hubNetModule
+    end
+
+    _G.HubNetFire = function(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = path
+            if fullPath:sub(1, 3) ~= "RE/" and fullPath:sub(1, 3) ~= "RF/" then
+                fullPath = "RE/" .. fullPath
+            end
+            if net then
+                if type(net.RemoteEvent) == "function" then
+                    local re = net:RemoteEvent(fullPath:sub(4))
+                    if re and re.FireServer then
+                        re:FireServer(table.unpack(args))
+                        return true
+                    end
+                end
+                if type(net.FireServer) == "function" then
+                    net:FireServer(fullPath, table.unpack(args))
+                    return true
+                end
+            endfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = path-- ============================================================
+-- MWP HUB v3.0 - PREMIUM GLASS + AUTOGRAB EDITION
+-- Features: Base Detector + Auto Steal + AutoGrab Instant Steal + Target Controls
+-- + AP Spammer + Infinite Jump + Anchor + Player ESP + Auto Kick + Slot ESP + Anti Ragdoll
+-- ============================================================
+
+local Players = game:GetService("Players")
+local lp = Players.LocalPlayer
+local pg = lp:WaitForChild("PlayerGui")
+local UIS = game:GetService("UserInputService")
+local TS = game:GetService("TweenService")
+local HttpService = game:GetService("HttpService")
+local RunService = game:GetService("RunService")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local CoreGui = game:GetService("CoreGui")
+local Camera = workspace.CurrentCamera
+local Workspace = game:GetService("Workspace")
+local Lighting = game:GetService("Lighting")
+
+-- ============================================================
+-- PART 1: NETWORK REMOTE BYPASS
+-- ============================================================
+do
+    local HIDDEN_KEYS = {
+        "identifyexecutor",
+        "islclosure",
+        "iscclosure",
+        "hookfunction",
+        "getgenv",
+        "getrenv",
+    }
+
+    _G.HubSafeNetCall = function(fn, ...)
+        if type(fn) ~= "function" then return false end
+        local env = getgenv and getgenv() or _G
+        local saved = {}
+        for _, key in ipairs(HIDDEN_KEYS) do
+            saved[key] = rawget(env, key)
+            rawset(env, key, nil)
+        end
+        local ok, a, b, c, d, e = pcall(fn, ...)
+        for k, v in next, saved do
+            if v ~= nil then
+                rawset(env, k, v)
+            end
+        end
+        if ok then return true, a, b, c, d, e end
+        return false, a
+    end
+
+    local _hubNetModule
+    local function getHubNetModule()
+        if _hubNetModule then return _hubNetModule end
+        local ok, mod = _G.HubSafeNetCall(function()
+            return require(game:GetService("ReplicatedStorage")
+                :WaitForChild("Packages"):WaitForChild("Net")
+                :WaitForChild("Net"))
+        end)
+        if ok and type(mod) == "table" then
+            _hubNetModule = mod
+        end
+        return _hubNetModule
+    end
+
+    _G.HubNetFire = function(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = path
+            if fullPath:sub(1, 3) ~= "RE/" and fullPath:sub(1, 3) ~= "RF/" then
+                fullPath = "RE/" .. fullPath
+            end
+            if net then
+                if type(net.RemoteEvent) == "function" then
+                    local re = net:RemoteEvent(fullPath:sub(4))
+                    if re and re.FireServer then
+                        re:FireServer(table.unpack(args))
+                        return true
+                    end
+                end
+                if type(net.FireServer) == "function" then
+                    net:FireServer(fullPath, table.unpack(args))
+                    return true
+                end
+            endfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathdo
+    local HIDDEN_KEYS = {
+        "identifyexecutor",
+        "islclosure",
+        "iscclosure",
+        "hookfunction",
+        "getgenv",
+        "getrenv",
+    }
+
+    _G.HubSafeNetCall = function(fn, ...)
+        if type(fn) ~= "function" then return false end
+        local env = getgenv and getgenv() or _G
+        local saved = {}
+        for _, key in ipairs(HIDDEN_KEYS) do
+            saved[key] = rawget(env, key)
+            rawset(env, key, nil)
+        end
+        local ok, a, b, c, d, e = pcall(fn, ...)
+        for k, v in next, saved do
+            if v ~= nil then
+                rawset(env, k, v)
+            end
+        end
+        if ok then return true, a, b, c, d, e end
+        return false, a
+    end
+
+    local _hubNetModule
+    local function getHubNetModule()
+        if _hubNetModule then return _hubNetModule end
+        local ok, mod = _G.HubSafeNetCall(function()
+            return require(game:GetService("ReplicatedStorage")
+                :WaitForChild("Packages"):WaitForChild("Net")
+                :WaitForChild("Net"))
+        end)
+        if ok and type(mod) == "table" then
+            _hubNetModule = mod
+        end
+        return _hubNetModule
+    end
+
+    _G.HubNetFire = function(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = path
+            if fullPath:sub(1, 3) ~= "RE/" and fullPath:sub(1, 3) ~= "RF/" then
+                fullPath = "RE/" .. fullPath
+            end
+            if net then
+                if type(net.RemoteEvent) == "function" then
+                    local re = net:RemoteEvent(fullPath:sub(4))
+                    if re and re.FireServer then
+                        re:FireServer(table.unpack(args))
+                        return true
+                    end
+                end
+                if type(net.FireServer) == "function" then
+                    net:FireServer(fullPath, table.unpack(args))
+                    return true
+                end
+            endfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathdo
+    local HIDDEN_KEYS = {
+        "identifyexecutor",
+        "islclosure",
+        "iscclosure",
+        "hookfunction",
+        "getgenv",
+        "getrenv",
+    }
+
+    _G.HubSafeNetCall = function(fn, ...)
+        if type(fn) ~= "function" then return false end
+        local env = getgenv and getgenv() or _G
+        local saved = {}
+        for _, key in ipairs(HIDDEN_KEYS) do
+            saved[key] = rawget(env, key)
+            rawset(env, key, nil)
+        end
+        local ok, a, b, c, d, e = pcall(fn, ...)
+        for k, v in next, saved do
+            if v ~= nil then
+                rawset(env, k, v)
+            end
+        end
+        if ok then return true, a, b, c, d, e end
+        return false, a
+    end
+
+    local _hubNetModule
+    local function getHubNetModule()
+        if _hubNetModule then return _hubNetModule end
+        local ok, mod = _G.HubSafeNetCall(function()
+            return require(game:GetService("ReplicatedStorage")
+                :WaitForChild("Packages"):WaitForChild("Net")
+                :WaitForChild("Net"))
+        end)
+        if ok and type(mod) == "table" then
+            _hubNetModule = mod
+        end
+        return _hubNetModule
+    end
+
+    _G.HubNetFire = function(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = path
+            if fullPath:sub(1, 3) ~= "RE/" and fullPath:sub(1, 3) ~= "RF/" then
+                fullPath = "RE/" .. fullPath
+            end
+            if net then
+                if type(net.RemoteEvent) == "function" then
+                    local re = net:RemoteEvent(fullPath:sub(4))
+                    if re and re.FireServer then
+                        re:FireServer(table.unpack(args))
+                        return true
+                    end
+                end
+                if type(net.FireServer) == "function" then
+                    net:FireServer(fullPath, table.unpack(args))
+                    return true
+                end
+            endfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathdo
+    local HIDDEN_KEYS = {
+        "identifyexecutor",
+        "islclosure",
+        "iscclosure",
+        "hookfunction",
+        "getgenv",
+        "getrenv",
+    }
+
+    _G.HubSafeNetCall = function(fn, ...)
+        if type(fn) ~= "function" then return false end
+        local env = getgenv and getgenv() or _G
+        local saved = {}
+        for _, key in ipairs(HIDDEN_KEYS) do
+            saved[key] = rawget(env, key)
+            rawset(env, key, nil)
+        end
+        local ok, a, b, c, d, e = pcall(fn, ...)
+        for k, v in next, saved do
+            if v ~= nil then
+                rawset(env, k, v)
+            end
+        end
+        if ok then return true, a, b, c, d, e end
+        return false, a
+    end
+
+    local _hubNetModule
+    local function getHubNetModule()
+        if _hubNetModule then return _hubNetModule end
+        local ok, mod = _G.HubSafeNetCall(function()
+            return require(game:GetService("ReplicatedStorage")
+                :WaitForChild("Packages"):WaitForChild("Net")
+                :WaitForChild("Net"))
+        end)
+        if ok and type(mod) == "table" then
+            _hubNetModule = mod
+        end
+        return _hubNetModule
+    end
+
+    _G.HubNetFire = function(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = path
+            if fullPath:sub(1, 3) ~= "RE/" and fullPath:sub(1, 3) ~= "RF/" then
+                fullPath = "RE/" .. fullPath
+            end
+            if net then
+                if type(net.RemoteEvent) == "function" then
+                    local re = net:RemoteEvent(fullPath:sub(4))
+                    if re and re.FireServer then
+                        re:FireServer(table.unpack(args))
+                        return true
+                    end
+                end
+                if type(net.FireServer) == "function" then
+                    net:FireServer(fullPath, table.unpack(args))
+                    return true
+                end
+            endfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathdo
+    local HIDDEN_KEYS = {
+        "identifyexecutor",
+        "islclosure",
+        "iscclosure",
+        "hookfunction",
+        "getgenv",
+        "getrenv",
+    }
+
+    _G.HubSafeNetCall = function(fn, ...)
+        if type(fn) ~= "function" then return false end
+        local env = getgenv and getgenv() or _G
+        local saved = {}
+        for _, key in ipairs(HIDDEN_KEYS) do
+            saved[key] = rawget(env, key)
+            rawset(env, key, nil)
+        end
+        local ok, a, b, c, d, e = pcall(fn, ...)
+        for k, v in next, saved do
+            if v ~= nil then
+                rawset(env, k, v)
+            end
+        end
+        if ok then return true, a, b, c, d, e end
+        return false, a
+    end
+
+    local _hubNetModule
+    local function getHubNetModule()
+        if _hubNetModule then return _hubNetModule end
+        local ok, mod = _G.HubSafeNetCall(function()
+            return require(game:GetService("ReplicatedStorage")
+                :WaitForChild("Packages"):WaitForChild("Net")
+                :WaitForChild("Net"))
+        end)
+        if ok and type(mod) == "table" then
+            _hubNetModule = mod
+        end
+        return _hubNetModule
+    end
+
+    _G.HubNetFire = function(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = path
+            if fullPath:sub(1, 3) ~= "RE/" and fullPath:sub(1, 3) ~= "RF/" then
+                fullPath = "RE/" .. fullPath
+            end
+            if net then
+                if type(net.RemoteEvent) == "function" then
+                    local re = net:RemoteEvent(fullPath:sub(4))
+                    if re and re.FireServer then
+                        re:FireServer(table.unpack(args))
+                        return true
+                    end
+                end
+                if type(net.FireServer) == "function" then
+                    net:FireServer(fullPath, table.unpack(args))
+                    return true
+                end
+            endfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathdo
+    local HIDDEN_KEYS = {
+        "identifyexecutor",
+        "islclosure",
+        "iscclosure",
+        "hookfunction",
+        "getgenv",
+        "getrenv",
+    }
+
+    _G.HubSafeNetCall = function(fn, ...)
+        if type(fn) ~= "function" then return false end
+        local env = getgenv and getgenv() or _G
+        local saved = {}
+        for _, key in ipairs(HIDDEN_KEYS) do
+            saved[key] = rawget(env, key)
+            rawset(env, key, nil)
+        end
+        local ok, a, b, c, d, e = pcall(fn, ...)
+        for k, v in next, saved do
+            if v ~= nil then
+                rawset(env, k, v)
+            end
+        end
+        if ok then return true, a, b, c, d, e end
+        return false, a
+    end
+
+    local _hubNetModule
+    local function getHubNetModule()
+        if _hubNetModule then return _hubNetModule end
+        local ok, mod = _G.HubSafeNetCall(function()
+            return require(game:GetService("ReplicatedStorage")
+                :WaitForChild("Packages"):WaitForChild("Net")
+                :WaitForChild("Net"))
+        end)
+        if ok and type(mod) == "table" then
+            _hubNetModule = mod
+        end
+        return _hubNetModule
+    end
+
+    _G.HubNetFire = function(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = path
+            if fullPath:sub(1, 3) ~= "RE/" and fullPath:sub(1, 3) ~= "RF/" then
+                fullPath = "RE/" .. fullPath
+            end
+            if net then
+                if type(net.RemoteEvent) == "function" then
+                    local re = net:RemoteEvent(fullPath:sub(4))
+                    if re and re.FireServer then
+                        re:FireServer(table.unpack(args))
+                        return true
+                    end
+                end
+                if type(net.FireServer) == "function" then
+                    net:FireServer(fullPath, table.unpack(args))
+                    return true
+                end
+            endfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathdo
+    local HIDDEN_KEYS = {
+        "identifyexecutor",
+        "islclosure",
+        "iscclosure",
+        "hookfunction",
+        "getgenv",
+        "getrenv",
+    }
+
+    _G.HubSafeNetCall = function(fn, ...)
+        if type(fn) ~= "function" then return false end
+        local env = getgenv and getgenv() or _G
+        local saved = {}
+        for _, key in ipairs(HIDDEN_KEYS) do
+            saved[key] = rawget(env, key)
+            rawset(env, key, nil)
+        end
+        local ok, a, b, c, d, e = pcall(fn, ...)
+        for k, v in next, saved do
+            if v ~= nil then
+                rawset(env, k, v)
+            end
+        end
+        if ok then return true, a, b, c, d, e end
+        return false, a
+    end
+
+    local _hubNetModule
+    local function getHubNetModule()
+        if _hubNetModule then return _hubNetModule end
+        local ok, mod = _G.HubSafeNetCall(function()
+            return require(game:GetService("ReplicatedStorage")
+                :WaitForChild("Packages"):WaitForChild("Net")
+                :WaitForChild("Net"))
+        end)
+        if ok and type(mod) == "table" then
+            _hubNetModule = mod
+        end
+        return _hubNetModule
+    end
+
+    _G.HubNetFire = function(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = path
+            if fullPath:sub(1, 3) ~= "RE/" and fullPath:sub(1, 3) ~= "RF/" then
+                fullPath = "RE/" .. fullPath
+            end
+            if net then
+                if type(net.RemoteEvent) == "function" then
+                    local re = net:RemoteEvent(fullPath:sub(4))
+                    if re and re.FireServer then
+                        re:FireServer(table.unpack(args))
+                        return true
+                    end
+                end
+                if type(net.FireServer) == "function" then
+                    net:FireServer(fullPath, table.unpack(args))
+                    return true
+                end
+            endfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathdo
+    local HIDDEN_KEYS = {
+        "identifyexecutor",
+        "islclosure",
+        "iscclosure",
+        "hookfunction",
+        "getgenv",
+        "getrenv",
+    }
+
+    _G.HubSafeNetCall = function(fn, ...)
+        if type(fn) ~= "function" then return false end
+        local env = getgenv and getgenv() or _G
+        local saved = {}
+        for _, key in ipairs(HIDDEN_KEYS) do
+            saved[key] = rawget(env, key)
+            rawset(env, key, nil)
+        end
+        local ok, a, b, c, d, e = pcall(fn, ...)
+        for k, v in next, saved do
+            if v ~= nil then
+                rawset(env, k, v)
+            end
+        end
+        if ok then return true, a, b, c, d, e end
+        return false, a
+    end
+
+    local _hubNetModule
+    local function getHubNetModule()
+        if _hubNetModule then return _hubNetModule end
+        local ok, mod = _G.HubSafeNetCall(function()
+            return require(game:GetService("ReplicatedStorage")
+                :WaitForChild("Packages"):WaitForChild("Net")
+                :WaitForChild("Net"))
+        end)
+        if ok and type(mod) == "table" then
+            _hubNetModule = mod
+        end
+        return _hubNetModule
+    end
+
+    _G.HubNetFire = function(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = path
+            if fullPath:sub(1, 3) ~= "RE/" and fullPath:sub(1, 3) ~= "RF/" then
+                fullPath = "RE/" .. fullPath
+            end
+            if net then
+                if type(net.RemoteEvent) == "function" then
+                    local re = net:RemoteEvent(fullPath:sub(4))
+                    if re and re.FireServer then
+                        re:FireServer(table.unpack(args))
+                        return true
+                    end
+                end
+                if type(net.FireServer) == "function" then
+                    net:FireServer(fullPath, table.unpack(args))
+                    return true
+                end
+            endfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathdo
+    local HIDDEN_KEYS = {
+        "identifyexecutor",
+        "islclosure",
+        "iscclosure",
+        "hookfunction",
+        "getgenv",
+        "getrenv",
+    }
+
+    _G.HubSafeNetCall = function(fn, ...)
+        if type(fn) ~= "function" then return false end
+        local env = getgenv and getgenv() or _G
+        local saved = {}
+        for _, key in ipairs(HIDDEN_KEYS) do
+            saved[key] = rawget(env, key)
+            rawset(env, key, nil)
+        end
+        local ok, a, b, c, d, e = pcall(fn, ...)
+        for k, v in next, saved do
+            if v ~= nil then
+                rawset(env, k, v)
+            end
+        end
+        if ok then return true, a, b, c, d, e end
+        return false, a
+    end
+
+    local _hubNetModule
+    local function getHubNetModule()
+        if _hubNetModule then return _hubNetModule end
+        local ok, mod = _G.HubSafeNetCall(function()
+            return require(game:GetService("ReplicatedStorage")
+                :WaitForChild("Packages"):WaitForChild("Net")
+                :WaitForChild("Net"))
+        end)
+        if ok and type(mod) == "table" then
+            _hubNetModule = mod
+        end
+        return _hubNetModule
+    end
+
+    _G.HubNetFire = function(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = path
+            if fullPath:sub(1, 3) ~= "RE/" and fullPath:sub(1, 3) ~= "RF/" then
+                fullPath = "RE/" .. fullPath
+            end
+            if net then
+                if type(net.RemoteEvent) == "function" then
+                    local re = net:RemoteEvent(fullPath:sub(4))
+                    if re and re.FireServer then
+                        re:FireServer(table.unpack(args))
+                        return true
+                    end
+                end
+                if type(net.FireServer) == "function" then
+                    net:FireServer(fullPath, table.unpack(args))
+                    return true
+                end
+            endfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathdo
+    local HIDDEN_KEYS = {
+        "identifyexecutor",
+        "islclosure",
+        "iscclosure",
+        "hookfunction",
+        "getgenv",
+        "getrenv",
+    }
+
+    _G.HubSafeNetCall = function(fn, ...)
+        if type(fn) ~= "function" then return false end
+        local env = getgenv and getgenv() or _G
+        local saved = {}
+        for _, key in ipairs(HIDDEN_KEYS) do
+            saved[key] = rawget(env, key)
+            rawset(env, key, nil)
+        end
+        local ok, a, b, c, d, e = pcall(fn, ...)
+        for k, v in next, saved do
+            if v ~= nil then
+                rawset(env, k, v)
+            end
+        end
+        if ok then return true, a, b, c, d, e end
+        return false, a
+    end
+
+    local _hubNetModule
+    local function getHubNetModule()
+        if _hubNetModule then return _hubNetModule end
+        local ok, mod = _G.HubSafeNetCall(function()
+            return require(game:GetService("ReplicatedStorage")
+                :WaitForChild("Packages"):WaitForChild("Net")
+                :WaitForChild("Net"))
+        end)
+        if ok and type(mod) == "table" then
+            _hubNetModule = mod
+        end
+        return _hubNetModule
+    end
+
+    _G.HubNetFire = function(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = path
+            if fullPath:sub(1, 3) ~= "RE/" and fullPath:sub(1, 3) ~= "RF/" then
+                fullPath = "RE/" .. fullPath
+            end
+            if net then
+                if type(net.RemoteEvent) == "function" then
+                    local re = net:RemoteEvent(fullPath:sub(4))
+                    if re and re.FireServer then
+                        re:FireServer(table.unpack(args))
+                        return true
+                    end
+                end
+                if type(net.FireServer) == "function" then
+                    net:FireServer(fullPath, table.unpack(args))
+                    return true
+                end
+            endfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathdo
+    local HIDDEN_KEYS = {
+        "identifyexecutor",
+        "islclosure",
+        "iscclosure",
+        "hookfunction",
+        "getgenv",
+        "getrenv",
+    }
+
+    _G.HubSafeNetCall = function(fn, ...)
+        if type(fn) ~= "function" then return false end
+        local env = getgenv and getgenv() or _G
+        local saved = {}
+        for _, key in ipairs(HIDDEN_KEYS) do
+            saved[key] = rawget(env, key)
+            rawset(env, key, nil)
+        end
+        local ok, a, b, c, d, e = pcall(fn, ...)
+        for k, v in next, saved do
+            if v ~= nil then
+                rawset(env, k, v)
+            end
+        end
+        if ok then return true, a, b, c, d, e end
+        return false, a
+    end
+
+    local _hubNetModule
+    local function getHubNetModule()
+        if _hubNetModule then return _hubNetModule end
+        local ok, mod = _G.HubSafeNetCall(function()
+            return require(game:GetService("ReplicatedStorage")
+                :WaitForChild("Packages"):WaitForChild("Net")
+                :WaitForChild("Net"))
+        end)
+        if ok and type(mod) == "table" then
+            _hubNetModule = mod
+        end
+        return _hubNetModule
+    end
+
+    _G.HubNetFire = function(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = path
+            if fullPath:sub(1, 3) ~= "RE/" and fullPath:sub(1, 3) ~= "RF/" then
+                fullPath = "RE/" .. fullPath
+            end
+            if net then
+                if type(net.RemoteEvent) == "function" then
+                    local re = net:RemoteEvent(fullPath:sub(4))
+                    if re and re.FireServer then
+                        re:FireServer(table.unpack(args))
+                        return true
+                    end
+                end
+                if type(net.FireServer) == "function" then
+                    net:FireServer(fullPath, table.unpack(args))
+                    return true
+                end
+            endfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathdo
+    local HIDDEN_KEYS = {
+        "identifyexecutor",
+        "islclosure",
+        "iscclosure",
+        "hookfunction",
+        "getgenv",
+        "getrenv",
+    }
+
+    _G.HubSafeNetCall = function(fn, ...)
+        if type(fn) ~= "function" then return false end
+        local env = getgenv and getgenv() or _G
+        local saved = {}
+        for _, key in ipairs(HIDDEN_KEYS) do
+            saved[key] = rawget(env, key)
+            rawset(env, key, nil)
+        end
+        local ok, a, b, c, d, e = pcall(fn, ...)
+        for k, v in next, saved do
+            if v ~= nil then
+                rawset(env, k, v)
+            end
+        end
+        if ok then return true, a, b, c, d, e end
+        return false, a
+    end
+
+    local _hubNetModule
+    local function getHubNetModule()
+        if _hubNetModule then return _hubNetModule end
+        local ok, mod = _G.HubSafeNetCall(function()
+            return require(game:GetService("ReplicatedStorage")
+                :WaitForChild("Packages"):WaitForChild("Net")
+                :WaitForChild("Net"))
+        end)
+        if ok and type(mod) == "table" then
+            _hubNetModule = mod
+        end
+        return _hubNetModule
+    end
+
+    _G.HubNetFire = function(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = path
+            if fullPath:sub(1, 3) ~= "RE/" and fullPath:sub(1, 3) ~= "RF/" then
+                fullPath = "RE/" .. fullPath
+            end
+            if net then
+                if type(net.RemoteEvent) == "function" then
+                    local re = net:RemoteEvent(fullPath:sub(4))
+                    if re and re.FireServer then
+                        re:FireServer(table.unpack(args))
+                        return true
+                    end
+                end
+                if type(net.FireServer) == "function" then
+                    net:FireServer(fullPath, table.unpack(args))
+                    return true
+                end
+            endfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathdo
+    local HIDDEN_KEYS = {
+        "identifyexecutor",
+        "islclosure",
+        "iscclosure",
+        "hookfunction",
+        "getgenv",
+        "getrenv",
+    }
+
+    _G.HubSafeNetCall = function(fn, ...)
+        if type(fn) ~= "function" then return false end
+        local env = getgenv and getgenv() or _G
+        local saved = {}
+        for _, key in ipairs(HIDDEN_KEYS) do
+            saved[key] = rawget(env, key)
+            rawset(env, key, nil)
+        end
+        local ok, a, b, c, d, e = pcall(fn, ...)
+        for k, v in next, saved do
+            if v ~= nil then
+                rawset(env, k, v)
+            end
+        end
+        if ok then return true, a, b, c, d, e end
+        return false, a
+    end
+
+    local _hubNetModule
+    local function getHubNetModule()
+        if _hubNetModule then return _hubNetModule end
+        local ok, mod = _G.HubSafeNetCall(function()
+            return require(game:GetService("ReplicatedStorage")
+                :WaitForChild("Packages"):WaitForChild("Net")
+                :WaitForChild("Net"))
+        end)
+        if ok and type(mod) == "table" then
+            _hubNetModule = mod
+        end
+        return _hubNetModule
+    end
+
+    _G.HubNetFire = function(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = path
+            if fullPath:sub(1, 3) ~= "RE/" and fullPath:sub(1, 3) ~= "RF/" then
+                fullPath = "RE/" .. fullPath
+            end
+            if net then
+                if type(net.RemoteEvent) == "function" then
+                    local re = net:RemoteEvent(fullPath:sub(4))
+                    if re and re.FireServer then
+                        re:FireServer(table.unpack(args))
+                        return true
+                    end
+                end
+                if type(net.FireServer) == "function" then
+                    net:FireServer(fullPath, table.unpack(args))
+                    return true
+                end
+            endfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathdo
+    local HIDDEN_KEYS = {
+        "identifyexecutor",
+        "islclosure",
+        "iscclosure",
+        "hookfunction",
+        "getgenv",
+        "getrenv",
+    }
+
+    _G.HubSafeNetCall = function(fn, ...)
+        if type(fn) ~= "function" then return false end
+        local env = getgenv and getgenv() or _G
+        local saved = {}
+        for _, key in ipairs(HIDDEN_KEYS) do
+            saved[key] = rawget(env, key)
+            rawset(env, key, nil)
+        end
+        local ok, a, b, c, d, e = pcall(fn, ...)
+        for k, v in next, saved do
+            if v ~= nil then
+                rawset(env, k, v)
+            end
+        end
+        if ok then return true, a, b, c, d, e end
+        return false, a
+    end
+
+    local _hubNetModule
+    local function getHubNetModule()
+        if _hubNetModule then return _hubNetModule end
+        local ok, mod = _G.HubSafeNetCall(function()
+            return require(game:GetService("ReplicatedStorage")
+                :WaitForChild("Packages"):WaitForChild("Net")
+                :WaitForChild("Net"))
+        end)
+        if ok and type(mod) == "table" then
+            _hubNetModule = mod
+        end
+        return _hubNetModule
+    end
+
+    _G.HubNetFire = function(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = path
+            if fullPath:sub(1, 3) ~= "RE/" and fullPath:sub(1, 3) ~= "RF/" then
+                fullPath = "RE/" .. fullPath
+            end
+            if net then
+                if type(net.RemoteEvent) == "function" then
+                    local re = net:RemoteEvent(fullPath:sub(4))
+                    if re and re.FireServer then
+                        re:FireServer(table.unpack(args))
+                        return true
+                    end
+                end
+                if type(net.FireServer) == "function" then
+                    net:FireServer(fullPath, table.unpack(args))
+                    return true
+                end
+            endfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathdo
+    local HIDDEN_KEYS = {
+        "identifyexecutor",
+        "islclosure",
+        "iscclosure",
+        "hookfunction",
+        "getgenv",
+        "getrenv",
+    }
+
+    _G.HubSafeNetCall = function(fn, ...)
+        if type(fn) ~= "function" then return false end
+        local env = getgenv and getgenv() or _G
+        local saved = {}
+        for _, key in ipairs(HIDDEN_KEYS) do
+            saved[key] = rawget(env, key)
+            rawset(env, key, nil)
+        end
+        local ok, a, b, c, d, e = pcall(fn, ...)
+        for k, v in next, saved do
+            if v ~= nil then
+                rawset(env, k, v)
+            end
+        end
+        if ok then return true, a, b, c, d, e end
+        return false, a
+    end
+
+    local _hubNetModule
+    local function getHubNetModule()
+        if _hubNetModule then return _hubNetModule end
+        local ok, mod = _G.HubSafeNetCall(function()
+            return require(game:GetService("ReplicatedStorage")
+                :WaitForChild("Packages"):WaitForChild("Net")
+                :WaitForChild("Net"))
+        end)
+        if ok and type(mod) == "table" then
+            _hubNetModule = mod
+        end
+        return _hubNetModule
+    end
+
+    _G.HubNetFire = function(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = path
+            if fullPath:sub(1, 3) ~= "RE/" and fullPath:sub(1, 3) ~= "RF/" then
+                fullPath = "RE/" .. fullPath
+            end
+            if net then
+                if type(net.RemoteEvent) == "function" then
+                    local re = net:RemoteEvent(fullPath:sub(4))
+                    if re and re.FireServer then
+                        re:FireServer(table.unpack(args))
+                        return true
+                    end
+                end
+                if type(net.FireServer) == "function" then
+                    net:FireServer(fullPath, table.unpack(args))
+                    return true
+                end
+            endfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathdo
+    local HIDDEN_KEYS = {
+        "identifyexecutor",
+        "islclosure",
+        "iscclosure",
+        "hookfunction",
+        "getgenv",
+        "getrenv",
+    }
+
+    _G.HubSafeNetCall = function(fn, ...)
+        if type(fn) ~= "function" then return false end
+        local env = getgenv and getgenv() or _G
+        local saved = {}
+        for _, key in ipairs(HIDDEN_KEYS) do
+            saved[key] = rawget(env, key)
+            rawset(env, key, nil)
+        end
+        local ok, a, b, c, d, e = pcall(fn, ...)
+        for k, v in next, saved do
+            if v ~= nil then
+                rawset(env, k, v)
+            end
+        end
+        if ok then return true, a, b, c, d, e end
+        return false, a
+    end
+
+    local _hubNetModule
+    local function getHubNetModule()
+        if _hubNetModule then return _hubNetModule end
+        local ok, mod = _G.HubSafeNetCall(function()
+            return require(game:GetService("ReplicatedStorage")
+                :WaitForChild("Packages"):WaitForChild("Net")
+                :WaitForChild("Net"))
+        end)
+        if ok and type(mod) == "table" then
+            _hubNetModule = mod
+        end
+        return _hubNetModule
+    end
+
+    _G.HubNetFire = function(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = path
+            if fullPath:sub(1, 3) ~= "RE/" and fullPath:sub(1, 3) ~= "RF/" then
+                fullPath = "RE/" .. fullPath
+            end
+            if net then
+                if type(net.RemoteEvent) == "function" then
+                    local re = net:RemoteEvent(fullPath:sub(4))
+                    if re and re.FireServer then
+                        re:FireServer(table.unpack(args))
+                        return true
+                    end
+                end
+                if type(net.FireServer) == "function" then
+                    net:FireServer(fullPath, table.unpack(args))
+                    return true
+                end
+            endfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathdo
+    local HIDDEN_KEYS = {
+        "identifyexecutor",
+        "islclosure",
+        "iscclosure",
+        "hookfunction",
+        "getgenv",
+        "getrenv",
+    }
+
+    _G.HubSafeNetCall = function(fn, ...)
+        if type(fn) ~= "function" then return false end
+        local env = getgenv and getgenv() or _G
+        local saved = {}
+        for _, key in ipairs(HIDDEN_KEYS) do
+            saved[key] = rawget(env, key)
+            rawset(env, key, nil)
+        end
+        local ok, a, b, c, d, e = pcall(fn, ...)
+        for k, v in next, saved do
+            if v ~= nil then
+                rawset(env, k, v)
+            end
+        end
+        if ok then return true, a, b, c, d, e end
+        return false, a
+    end
+
+    local _hubNetModule
+    local function getHubNetModule()
+        if _hubNetModule then return _hubNetModule end
+        local ok, mod = _G.HubSafeNetCall(function()
+            return require(game:GetService("ReplicatedStorage")
+                :WaitForChild("Packages"):WaitForChild("Net")
+                :WaitForChild("Net"))
+        end)
+        if ok and type(mod) == "table" then
+            _hubNetModule = mod
+        end
+        return _hubNetModule
+    end
+
+    _G.HubNetFire = function(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = path
+            if fullPath:sub(1, 3) ~= "RE/" and fullPath:sub(1, 3) ~= "RF/" then
+                fullPath = "RE/" .. fullPath
+            end
+            if net then
+                if type(net.RemoteEvent) == "function" then
+                    local re = net:RemoteEvent(fullPath:sub(4))
+                    if re and re.FireServer then
+                        re:FireServer(table.unpack(args))
+                        return true
+                    end
+                end
+                if type(net.FireServer) == "function" then
+                    net:FireServer(fullPath, table.unpack(args))
+                    return true
+                end
+            endfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathdo
+    local HIDDEN_KEYS = {
+        "identifyexecutor",
+        "islclosure",
+        "iscclosure",
+        "hookfunction",
+        "getgenv",
+        "getrenv",
+    }
+
+    _G.HubSafeNetCall = function(fn, ...)
+        if type(fn) ~= "function" then return false end
+        local env = getgenv and getgenv() or _G
+        local saved = {}
+        for _, key in ipairs(HIDDEN_KEYS) do
+            saved[key] = rawget(env, key)
+            rawset(env, key, nil)
+        end
+        local ok, a, b, c, d, e = pcall(fn, ...)
+        for k, v in next, saved do
+            if v ~= nil then
+                rawset(env, k, v)
+            end
+        end
+        if ok then return true, a, b, c, d, e end
+        return false, a
+    end
+
+    local _hubNetModule
+    local function getHubNetModule()
+        if _hubNetModule then return _hubNetModule end
+        local ok, mod = _G.HubSafeNetCall(function()
+            return require(game:GetService("ReplicatedStorage")
+                :WaitForChild("Packages"):WaitForChild("Net")
+                :WaitForChild("Net"))
+        end)
+        if ok and type(mod) == "table" then
+            _hubNetModule = mod
+        end
+        return _hubNetModule
+    end
+
+    _G.HubNetFire = function(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = path
+            if fullPath:sub(1, 3) ~= "RE/" and fullPath:sub(1, 3) ~= "RF/" then
+                fullPath = "RE/" .. fullPath
+            end
+            if net then
+                if type(net.RemoteEvent) == "function" then
+                    local re = net:RemoteEvent(fullPath:sub(4))
+                    if re and re.FireServer then
+                        re:FireServer(table.unpack(args))
+                        return true
+                    end
+                end
+                if type(net.FireServer) == "function" then
+                    net:FireServer(fullPath, table.unpack(args))
+                    return true
+                end
+            endfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathdo
+    local HIDDEN_KEYS = {
+        "identifyexecutor",
+        "islclosure",
+        "iscclosure",
+        "hookfunction",
+        "getgenv",
+        "getrenv",
+    }
+
+    _G.HubSafeNetCall = function(fn, ...)
+        if type(fn) ~= "function" then return false end
+        local env = getgenv and getgenv() or _G
+        local saved = {}
+        for _, key in ipairs(HIDDEN_KEYS) do
+            saved[key] = rawget(env, key)
+            rawset(env, key, nil)
+        end
+        local ok, a, b, c, d, e = pcall(fn, ...)
+        for k, v in next, saved do
+            if v ~= nil then
+                rawset(env, k, v)
+            end
+        end
+        if ok then return true, a, b, c, d, e end
+        return false, a
+    end
+
+    local _hubNetModule
+    local function getHubNetModule()
+        if _hubNetModule then return _hubNetModule end
+        local ok, mod = _G.HubSafeNetCall(function()
+            return require(game:GetService("ReplicatedStorage")
+                :WaitForChild("Packages"):WaitForChild("Net")
+                :WaitForChild("Net"))
+        end)
+        if ok and type(mod) == "table" then
+            _hubNetModule = mod
+        end
+        return _hubNetModule
+    end
+
+    _G.HubNetFire = function(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = path
+            if fullPath:sub(1, 3) ~= "RE/" and fullPath:sub(1, 3) ~= "RF/" then
+                fullPath = "RE/" .. fullPath
+            end
+            if net then
+                if type(net.RemoteEvent) == "function" then
+                    local re = net:RemoteEvent(fullPath:sub(4))
+                    if re and re.FireServer then
+                        re:FireServer(table.unpack(args))
+                        return true
+                    end
+                end
+                if type(net.FireServer) == "function" then
+                    net:FireServer(fullPath, table.unpack(args))
+                    return true
+                end
+            endfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathdo
+    local HIDDEN_KEYS = {
+        "identifyexecutor",
+        "islclosure",
+        "iscclosure",
+        "hookfunction",
+        "getgenv",
+        "getrenv",
+    }
+
+    _G.HubSafeNetCall = function(fn, ...)
+        if type(fn) ~= "function" then return false end
+        local env = getgenv and getgenv() or _G
+        local saved = {}
+        for _, key in ipairs(HIDDEN_KEYS) do
+            saved[key] = rawget(env, key)
+            rawset(env, key, nil)
+        end
+        local ok, a, b, c, d, e = pcall(fn, ...)
+        for k, v in next, saved do
+            if v ~= nil then
+                rawset(env, k, v)
+            end
+        end
+        if ok then return true, a, b, c, d, e end
+        return false, a
+    end
+
+    local _hubNetModule
+    local function getHubNetModule()
+        if _hubNetModule then return _hubNetModule end
+        local ok, mod = _G.HubSafeNetCall(function()
+            return require(game:GetService("ReplicatedStorage")
+                :WaitForChild("Packages"):WaitForChild("Net")
+                :WaitForChild("Net"))
+        end)
+        if ok and type(mod) == "table" then
+            _hubNetModule = mod
+        end
+        return _hubNetModule
+    end
+
+    _G.HubNetFire = function(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = path
+            if fullPath:sub(1, 3) ~= "RE/" and fullPath:sub(1, 3) ~= "RF/" then
+                fullPath = "RE/" .. fullPath
+            end
+            if net then
+                if type(net.RemoteEvent) == "function" then
+                    local re = net:RemoteEvent(fullPath:sub(4))
+                    if re and re.FireServer then
+                        re:FireServer(table.unpack(args))
+                        return true
+                    end
+                end
+                if type(net.FireServer) == "function" then
+                    net:FireServer(fullPath, table.unpack(args))
+                    return true
+                end
+            endfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathdo
+    local HIDDEN_KEYS = {
+        "identifyexecutor",
+        "islclosure",
+        "iscclosure",
+        "hookfunction",
+        "getgenv",
+        "getrenv",
+    }
+
+    _G.HubSafeNetCall = function(fn, ...)
+        if type(fn) ~= "function" then return false end
+        local env = getgenv and getgenv() or _G
+        local saved = {}
+        for _, key in ipairs(HIDDEN_KEYS) do
+            saved[key] = rawget(env, key)
+            rawset(env, key, nil)
+        end
+        local ok, a, b, c, d, e = pcall(fn, ...)
+        for k, v in next, saved do
+            if v ~= nil then
+                rawset(env, k, v)
+            end
+        end
+        if ok then return true, a, b, c, d, e end
+        return false, a
+    end
+
+    local _hubNetModule
+    local function getHubNetModule()
+        if _hubNetModule then return _hubNetModule end
+        local ok, mod = _G.HubSafeNetCall(function()
+            return require(game:GetService("ReplicatedStorage")
+                :WaitForChild("Packages"):WaitForChild("Net")
+                :WaitForChild("Net"))
+        end)
+        if ok and type(mod) == "table" then
+            _hubNetModule = mod
+        end
+        return _hubNetModule
+    end
+
+    _G.HubNetFire = function(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = path
+            if fullPath:sub(1, 3) ~= "RE/" and fullPath:sub(1, 3) ~= "RF/" then
+                fullPath = "RE/" .. fullPath
+            end
+            if net then
+                if type(net.RemoteEvent) == "function" then
+                    local re = net:RemoteEvent(fullPath:sub(4))
+                    if re and re.FireServer then
+                        re:FireServer(table.unpack(args))
+                        return true
+                    end
+                end
+                if type(net.FireServer) == "function" then
+                    net:FireServer(fullPath, table.unpack(args))
+                    return true
+                end
+            endfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = pathfunction(path, ...)
+        local args = { ... }
+        return _G.HubSafeNetCall(function()
+            local net = getHubNetModule()
+            local fullPath = path
+

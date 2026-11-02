@@ -1,0 +1,2115 @@
+-- deobfed by @mwp0622 discord.gg/mwp
+
+if type(getgenv().__TGT) == "table" and type(getgenv().__TGT.unload) == "function" then
+	pcall(getgenv().__TGT.unload)
+end
+
+getgenv().__TGT_TOKEN = (getgenv().__TGT_TOKEN or 0) + 1
+local tgtToken = getgenv().__TGT_TOKEN
+
+local function fn()
+	return getgenv().__TGT_TOKEN == tgtToken
+end
+
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local UserInputService = game:GetService("UserInputService")
+local Stats = game:GetService("Stats")
+local localPlayer = Players.LocalPlayer
+
+local function fn2()
+	local ok, result = pcall(function()
+		return gethui()
+	end)
+
+	if ok and typeof(result) == "Instance" then
+		return result
+	end
+
+	local ok2, result2 = pcall(function()
+		return game:GetService("CoreGui")
+	end)
+
+	if ok2 and typeof(result2) == "Instance" then
+		return result2
+	end
+	return nil
+end
+
+local v = fn2()
+local flag = not v
+
+if flag then
+	local flag2 = false
+
+	task.spawn(function()
+		pcall(function()
+			setthreadidentity(8)
+		end)
+
+		v = fn2()
+		flag2 = true
+	end)
+
+	local now = os.clock()
+
+	while not flag2 and os.clock() - now < 1 do
+		task.wait()
+	end
+end
+
+if flag then
+	return
+end
+
+local tbl = {
+	text = Color3.fromHex("#FFFFFF"),
+	placeholder = Color3.fromHex("#E0C1FF"),
+	accentMid = Color3.fromHex("#BC78FF"),
+	accentLo = Color3.fromHex("#8436D9"),
+	outlineMid = Color3.fromHex("#BA75F5"),
+	macRed = Color3.fromHex("#FF5F57"),
+	macYellow = Color3.fromHex("#FEBC2E"),
+	macGreen = Color3.fromHex("#28C840"),
+	fps = Color3.fromRGB(242, 170, 58),
+	ping = Color3.fromRGB(70, 224, 140),
+	label = Color3.fromHex("#FFFFFF"),
+	offText = Color3.fromHex("#E0C1FF"),
+	onStroke = Color3.fromHex("#BC78FF"),
+	accent = Color3.fromHex("#BC78FF"),
+}
+
+local tbl2 = { radius = 14, elemRadius = 10, topbar = 44, sidebar = 130, shadow = 0.22, bgTransparency = 0.35 }
+local text = "DISCORD.GG/TPTPTP"
+
+local function fn3(arg, arg2, parent)
+	local instance = Instance.new(arg)
+
+	for k, v2 in pairs(arg2) do
+		instance[k] = v2
+	end
+
+	if parent then
+		instance.Parent = parent
+	end
+
+	return instance
+end
+
+local function fn4(arg, arg2)
+	return fn3("UICorner", { CornerRadius = UDim.new(0, arg2) }, arg)
+end
+
+local function fn5(arg, arg2, arg3, arg4)
+	return fn3("UIStroke", {
+		Color = arg2,
+		Thickness = arg3 or 1,
+		Transparency = arg4 or 0,
+		ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
+	}, arg)
+end
+
+local function fn6(arg, arg2, arg3)
+	local tbl3 = {}
+	local tbl4 = {}
+
+	for _, v2 in ipairs(arg2) do
+		tbl3[#tbl3 + 1] = ColorSequenceKeypoint.new(v2[1], Color3.fromHex(v2[2]))
+		tbl4[#tbl4 + 1] = NumberSequenceKeypoint.new(v2[1], v2[3] or 0)
+	end
+
+	return fn3("UIGradient", { Color = ColorSequence.new(tbl3), Transparency = NumberSequence.new(tbl4), Rotation = arg3 or 0 }, arg)
+end
+
+local function fn7(arg)
+	return fn6(arg, { { 0, "#8436D9" }, { 0.5, "#BC78FF" }, { 1, "#54208A" } }, 45)
+end
+
+local function fn8(arg)
+	return fn6(arg, { { 0, "#8141B5", 0.45 }, { 0.5, "#BA75F5", 0.22 }, { 1, "#642F95", 0.42 } }, 90)
+end
+
+local function fn9(arg)
+	return fn6(arg, { { 0, "#371449", 0.72 }, { 0.5, "#9750D8", 0.61 }, { 1, "#241032", 0.74 } }, 90)
+end
+
+local function fn10(arg)
+	return fn6(arg, {
+		{ 0, "#170927", 0.06 },
+		{ 0.25, "#291043", 0.08 },
+		{ 0.5, "#3D185F", 0.1 },
+		{ 0.75, "#50227A", 0.12 },
+		{ 1, "#12071E", 0.06 },
+	}, 135)
+end
+
+local Folder = fn3("Folder", { Name = "_" .. tostring(math.random(1000000, 9999999)) }, v)
+local tbl3 = { v }
+
+local ok, result = pcall(function()
+	return game:GetService("CoreGui")
+end)
+
+if ok and result and result ~= v then
+	tbl3[#tbl3 + 1] = result
+end
+
+for _, v2 in ipairs(tbl3) do
+	for _, descendant in ipairs(v2:GetDescendants()) do
+		if descendant:IsA("TextLabel") and descendant.Text == "NEXT BASE" then
+			while true do
+				if descendant and descendant ~= v2 then
+					if descendant:IsA("BillboardGui") then
+						descendant:Destroy()
+						break
+					else
+						descendant = descendant.Parent
+						continue
+					end
+				end
+
+				break
+			end
+		end
+	end
+end
+
+local ScreenGui = fn3("ScreenGui", {
+	Name = "_" .. tostring(math.random(1000000, 9999999)),
+	ResetOnSpawn = false,
+	IgnoreGuiInset = true,
+	DisplayOrder = 9999,
+	ZIndexBehavior = Enum.ZIndexBehavior.Sibling,
+}, v)
+
+local ScreenGui2 = fn3("ScreenGui", {
+	Name = "_" .. tostring(math.random(1000000, 9999999)),
+	ResetOnSpawn = false,
+	IgnoreGuiInset = true,
+	DisplayOrder = 10000,
+	ZIndexBehavior = Enum.ZIndexBehavior.Sibling,
+}, v)
+
+local TextButton = fn3("TextButton", {
+	Name = "MobileOpen",
+	AnchorPoint = Vector2.new(1, 1),
+	Position = UDim2.new(1, -14, 1, -14),
+	Size = UDim2.fromOffset(58, 58),
+	BackgroundColor3 = Color3.fromHex("#2A1145"),
+	BackgroundTransparency = 0.12,
+	BorderSizePixel = 0,
+	AutoButtonColor = false,
+	Font = Enum.Font.GothamBlack,
+	Text = "TGT",
+	TextSize = 15,
+	TextColor3 = tbl.text,
+	Visible = UserInputService.TouchEnabled,
+}, ScreenGui2)
+
+fn4(TextButton, 18)
+fn10(TextButton)
+local v2 = fn5(TextButton, tbl.outlineMid, 1.4, 0.18)
+fn8(v2)
+local n = 286
+local n2 = 412
+
+local Frame = fn3("Frame", {
+	Name = "Window",
+	AnchorPoint = Vector2.new(0, 0),
+	Position = UDim2.new(0, 22, 0.5, -n2 / 2),
+	Size = UDim2.fromOffset(286, 412),
+	BackgroundColor3 = Color3.fromHex("#2A1145"),
+	BackgroundTransparency = tbl2.bgTransparency,
+	BorderSizePixel = 0,
+}, ScreenGui)
+
+local UIScale = fn3("UIScale", { Scale = 1 }, Frame)
+fn4(Frame, tbl2.radius)
+fn10(Frame)
+local v3 = fn5(Frame, tbl.outlineMid, 1.4)
+fn8(v3)
+
+fn3("ImageLabel", {
+	Name = "Shadow",
+	ZIndex = 0,
+	AnchorPoint = Vector2.new(0.5, 0.5),
+	Position = UDim2.new(0.5, 0, 0.5, 4),
+	Size = UDim2.new(1, 46, 1, 46),
+	BackgroundTransparency = 1,
+	Image = "rbxassetid://6014261993",
+	ImageColor3 = Color3.fromHex("#0B0413"),
+	ImageTransparency = tbl2.shadow,
+	ScaleType = Enum.ScaleType.Slice,
+	SliceCenter = Rect.new(49, 49, 450, 450),
+}, Frame)
+
+local Frame2 = fn3("Frame", { Name = "Topbar", Size = UDim2.new(1, 0, 0, tbl2.topbar), BackgroundTransparency = 1 }, Frame)
+
+local function fn11(arg, arg2, arg3)
+	local v4 = fn3
+
+	return v4("Frame", {
+		AnchorPoint = Vector2.new(0, 0.5),
+		Position = UDim2.new(0, arg, 0.5, 0),
+		Size = UDim2.fromOffset(12, 12),
+		BackgroundColor3 = arg2,
+		BackgroundTransparency = arg3 and 0.55 or 0,
+		BorderSizePixel = 0,
+	}, Frame2)
+end
+
+fn4(fn11(16, tbl.macRed), 6)
+fn4(fn11(36, tbl.macYellow, true), 6)
+fn4(fn11(56, tbl.macGreen, true), 6)
+
+local TextButton2 = fn3("TextButton", {
+	AnchorPoint = Vector2.new(0, 0.5),
+	Position = UDim2.new(0, 10, 0.5, 0),
+	Size = UDim2.fromOffset(24, 24),
+	BackgroundTransparency = 1,
+	Text = "",
+	AutoButtonColor = false,
+}, Frame2)
+
+fn3("TextLabel", {
+	Name = "Title",
+	Position = UDim2.new(0, 84, 0, 0),
+	Size = UDim2.new(1, -132, 1, 0),
+	BackgroundTransparency = 1,
+	Font = Enum.Font.GothamBold,
+	Text = "Target Controls",
+	TextSize = 15,
+	TextColor3 = tbl.text,
+	TextXAlignment = Enum.TextXAlignment.Left,
+}, Frame2)
+
+local TextButton3 = fn3("TextButton", {
+	Name = "Minimize",
+	AnchorPoint = Vector2.new(1, 0.5),
+	Position = UDim2.new(1, -9, 0.5, 0),
+	Size = UDim2.fromOffset(30, 28),
+	BackgroundTransparency = 1,
+	BorderSizePixel = 0,
+	AutoButtonColor = false,
+	Font = Enum.Font.GothamBlack,
+	Text = "-",
+	TextSize = 19,
+	TextColor3 = tbl.macYellow,
+	ZIndex = 4,
+}, Frame2)
+
+local Frame3 = fn3("Frame", {
+	Name = "Content",
+	Position = UDim2.new(0, 0, 0, tbl2.topbar),
+	Size = UDim2.new(1, 0, 1, -tbl2.topbar),
+	BackgroundTransparency = 1,
+}, Frame)
+
+fn3("UIPadding", {
+	PaddingTop = UDim.new(0, 10),
+	PaddingBottom = UDim.new(0, 10),
+	PaddingLeft = UDim.new(0, 12),
+	PaddingRight = UDim.new(0, 12),
+}, Frame3)
+
+fn3("UIListLayout", { Padding = UDim.new(0, 8), SortOrder = Enum.SortOrder.LayoutOrder }, Frame3)
+local topbar = tbl2.topbar
+local mainPanelMinimized = false
+
+local function fn12(arg)
+	local clipsDescendants = arg == true
+	if mainPanelMinimized == clipsDescendants then
+		return mainPanelMinimized
+	end
+	mainPanelMinimized = clipsDescendants
+	Frame3.Visible = not clipsDescendants
+	Frame.ClipsDescendants = clipsDescendants
+	Frame.Size = UDim2.fromOffset(286, clipsDescendants and topbar or 412)
+	TextButton3.Text = clipsDescendants and "+" or "-"
+	Frame:SetAttribute("Minimized", clipsDescendants)
+	return mainPanelMinimized
+end
+
+Frame:SetAttribute("Minimized", false)
+local n3 = 360
+local n4 = 132
+
+local Frame4 = fn3("Frame", {
+	Name = "ServerJob",
+	AnchorPoint = Vector2.new(1, 0),
+	Position = UDim2.new(1, -22, 0.5, -n4 / 2),
+	Size = UDim2.fromOffset(360, 132),
+	BackgroundColor3 = Color3.fromHex("#2A1145"),
+	BackgroundTransparency = tbl2.bgTransparency,
+	BorderSizePixel = 0,
+	ClipsDescendants = false,
+}, ScreenGui2)
+
+local UIScale2 = fn3("UIScale", { Scale = 1 }, Frame4)
+fn4(Frame4, tbl2.radius)
+fn10(Frame4)
+local v4 = fn5(Frame4, tbl.outlineMid, 1.4)
+fn8(v4)
+
+fn3("ImageLabel", {
+	Name = "Shadow",
+	ZIndex = 0,
+	AnchorPoint = Vector2.new(0.5, 0.5),
+	Position = UDim2.new(0.5, 0, 0.5, 4),
+	Size = UDim2.new(1, 46, 1, 46),
+	BackgroundTransparency = 1,
+	Image = "rbxassetid://6014261993",
+	ImageColor3 = Color3.fromHex("#0B0413"),
+	ImageTransparency = tbl2.shadow,
+	ScaleType = Enum.ScaleType.Slice,
+	SliceCenter = Rect.new(49, 49, 450, 450),
+}, Frame4)
+
+local Frame5 = fn3("Frame", { Name = "Topbar", Size = UDim2.new(1, 0, 0, 38), BackgroundTransparency = 1, Active = true }, Frame4)
+
+local function fn13(arg, arg2, arg3)
+	local v5 = fn3
+
+	local Frame6 = v5("Frame", {
+		AnchorPoint = Vector2.new(0, 0.5),
+		Position = UDim2.new(0, arg, 0.5, 0),
+		Size = UDim2.fromOffset(10, 10),
+		BackgroundColor3 = arg2,
+		BackgroundTransparency = arg3 and 0.55 or 0,
+		BorderSizePixel = 0,
+	}, Frame5)
+
+	fn4(Frame6, 5)
+	return Frame6
+end
+
+fn13(15, tbl.macRed, true)
+fn13(32, tbl.macYellow, true)
+fn13(49, tbl.macGreen, true)
+
+fn3("TextLabel", {
+	Position = UDim2.new(0, 72, 0, 0),
+	Size = UDim2.new(1, -122, 1, 0),
+	BackgroundTransparency = 1,
+	Font = Enum.Font.GothamBold,
+	Text = "Current Server Job ID",
+	TextSize = 14,
+	TextColor3 = tbl.text,
+	TextXAlignment = Enum.TextXAlignment.Left,
+}, Frame5)
+
+local TextButton4 = fn3("TextButton", {
+	Name = "Minimize",
+	AnchorPoint = Vector2.new(1, 0.5),
+	Position = UDim2.new(1, -10, 0.5, 0),
+	Size = UDim2.fromOffset(30, 26),
+	BackgroundTransparency = 1,
+	BorderSizePixel = 0,
+	AutoButtonColor = false,
+	Font = Enum.Font.GothamBlack,
+	Text = "-",
+	TextSize = 18,
+	TextColor3 = tbl.macYellow,
+	ZIndex = 4,
+}, Frame5)
+
+local jobId = tostring(game.JobId or "")
+
+local TextBox = fn3("TextBox", {
+	Position = UDim2.fromOffset(14, 43),
+	Size = UDim2.fromOffset(n3 - 28, 34),
+	BackgroundColor3 = Color3.fromHex("#241032"),
+	BackgroundTransparency = 0.25,
+	BorderSizePixel = 0,
+	ClearTextOnFocus = false,
+	TextEditable = false,
+	Text = jobId ~= "" and jobId or "LOCAL SESSION — NO JOB ID",
+	Font = Enum.Font.Code,
+	TextSize = 13,
+	TextColor3 = tbl.text,
+	TextXAlignment = Enum.TextXAlignment.Center,
+	TextTruncate = Enum.TextTruncate.AtEnd,
+}, Frame4)
+
+fn4(TextBox, tbl2.elemRadius)
+fn5(TextBox, tbl.outlineMid, 1, 0.5)
+
+local TextButton5 = fn3("TextButton", {
+	Position = UDim2.fromOffset(14, 86),
+	Size = UDim2.fromOffset(n3 - 28, 32),
+	BackgroundColor3 = Color3.fromHex("#9750D8"),
+	BackgroundTransparency = 0.28,
+	BorderSizePixel = 0,
+	AutoButtonColor = false,
+	Font = Enum.Font.GothamBold,
+	Text = jobId ~= "" and "COPY JOB ID" or "NO LIVE JOB ID",
+	TextSize = 13,
+	TextColor3 = tbl.text,
+}, Frame4)
+
+fn4(TextButton5, tbl2.elemRadius)
+fn9(TextButton5)
+fn5(TextButton5, tbl.outlineMid, 1, 0.45)
+local jobPanelMinimized = false
+
+local function fn14(arg)
+	local clipsDescendants = arg == true
+	if jobPanelMinimized == clipsDescendants then
+		return jobPanelMinimized
+	end
+	jobPanelMinimized = clipsDescendants
+	local visible = not clipsDescendants
+	TextBox.Visible = visible
+	TextButton5.Visible = visible
+	Frame4.ClipsDescendants = clipsDescendants
+	Frame4.Size = UDim2.fromOffset(360, clipsDescendants and 38 or 132)
+	TextButton4.Text = clipsDescendants and "+" or "-"
+	Frame4:SetAttribute("Minimized", clipsDescendants)
+	return jobPanelMinimized
+end
+
+Frame4:SetAttribute("Minimized", false)
+local tbl4 = {}
+
+local function fn15(arg, arg2, arg3, arg4)
+	local Frame6 = fn3("Frame", {
+		Name = arg2,
+		LayoutOrder = arg,
+		Size = UDim2.new(1, 0, 0, 44),
+		BackgroundColor3 = Color3.fromHex("#9750D8"),
+		BackgroundTransparency = 0.61,
+		BorderSizePixel = 0,
+	}, Frame3)
+
+	fn4(Frame6, tbl2.elemRadius)
+	fn9(Frame6)
+	fn5(Frame6, tbl.outlineMid, 1, 0.62)
+
+	fn3("TextLabel", {
+		Position = UDim2.new(0, 13, 0, 0),
+		Size = UDim2.new(1, -66, 1, 0),
+		BackgroundTransparency = 1,
+		Font = Enum.Font.GothamBold,
+		Text = arg2,
+		TextSize = 13,
+		TextColor3 = tbl.text,
+		TextXAlignment = Enum.TextXAlignment.Left,
+		TextTruncate = Enum.TextTruncate.AtEnd,
+	}, Frame6)
+
+	local Frame7 = fn3("Frame", {
+		AnchorPoint = Vector2.new(1, 0.5),
+		Position = UDim2.new(1, -11, 0.5, 0),
+		Size = UDim2.fromOffset(40, 21),
+		BackgroundColor3 = Color3.fromHex("#241032"),
+		BackgroundTransparency = 0.25,
+		BorderSizePixel = 0,
+	}, Frame6)
+
+	fn4(Frame7, 11)
+	local v5 = fn5(Frame7, tbl.outlineMid, 1, 0.45)
+
+	local Frame8 = fn3("Frame", {
+		Size = UDim2.new(1, 0, 1, 0),
+		BackgroundColor3 = tbl.accentLo,
+		BackgroundTransparency = 1,
+		BorderSizePixel = 0,
+	}, Frame7)
+
+	fn4(Frame8, 11)
+	local v6 = fn7(Frame8)
+	v6.Enabled = false
+
+	local Frame9 = fn3("Frame", {
+		AnchorPoint = Vector2.new(0, 0.5),
+		Position = UDim2.new(0, 3, 0.5, 0),
+		Size = UDim2.fromOffset(16, 16),
+		BackgroundColor3 = tbl.text,
+		BorderSizePixel = 0,
+		ZIndex = 2,
+	}, Frame7)
+
+	fn4(Frame9, 8)
+	local TextButton6 = fn3("TextButton", { Size = UDim2.new(1, 0, 1, 0), BackgroundTransparency = 1, Text = "", AutoButtonColor = false }, Frame6)
+
+	local tbl5 = {
+		index = 1,
+		states = arg3,
+		row = Frame6,
+		set = function(arg5, arg6)
+			arg5.index = (arg6 - 1) % #arg5.states + 1
+			local v7 = arg5.states[arg5.index]
+			local enabled = arg5.index > 1
+			Frame9.Position = enabled and UDim2.new(1, -19, 0.5, 0) or UDim2.new(0, 3, 0.5, 0)
+			Frame8.BackgroundTransparency = enabled and 0.1 or 1
+			v6.Enabled = enabled
+			v5.Transparency = enabled and 0.2 or 0.45
+
+			if arg4 then
+				task.spawn(pcall, arg4, v7, arg5.index)
+			end
+		end,
+		state = function(arg5)
+			return arg5.states[arg5.index]
+		end,
+		on = function(arg5)
+			return arg5.index > 1
+		end,
+	}
+
+	TextButton6.MouseButton1Click:Connect(function()
+		tbl5:set(tbl5.index + 1)
+	end)
+
+	tbl4[arg2] = tbl5
+	return tbl5
+end
+
+local tbl5 = {
+	nearest = true,
+	steal = false,
+	nextbase = false,
+	boost = false,
+	flyboost = false,
+	infjump = false,
+	flyActive = false,
+	flyToolName = nil,
+	flyMover = nil,
+	flySpeed = 0,
+	flyNative = 0,
+	flyTarget = 0,
+	status = "IDLE",
+	statusCol = tbl.offText,
+	target = nil,
+	lastName = nil,
+	conns = {},
+	bv = nil,
+	gens = nil,
+}
+
+local function fn16(arg)
+	tbl5.conns[#tbl5.conns + 1] = arg
+	return arg
+end
+
+fn16(TextButton3.MouseButton1Click:Connect(function()
+	fn12(not mainPanelMinimized)
+end))
+
+fn16(TextButton4.MouseButton1Click:Connect(function()
+	fn14(not jobPanelMinimized)
+end))
+
+fn16(TextButton.MouseButton1Click:Connect(function()
+	ScreenGui.Enabled = not ScreenGui.Enabled
+	TextButton.Text = ScreenGui.Enabled and "×" or "TGT"
+end))
+
+local function fn17()
+	if jobId == "" then
+		return false
+	end
+	local v5
+
+	if type(setclipboard) == "function" then
+		v5 = setclipboard
+	elseif type(toclipboard) == "function" then
+		v5 = toclipboard
+	else
+		v5 = nil
+
+		if type(writeclipboard) == "function" then
+			v5 = writeclipboard
+		end
+	end
+
+	if not v5 then
+		return false
+	end
+	return pcall(v5, jobId)
+end
+
+fn16(TextButton5.MouseButton1Click:Connect(function()
+	if jobId == "" then
+		return
+	end
+	TextButton5.Text = fn17() and "COPIED" or "COPY UNAVAILABLE"
+
+	task.delay(1.25, function()
+		if fn() and TextButton5.Parent then
+			TextButton5.Text = "COPY JOB ID"
+		end
+	end)
+end))
+
+local n5 = 0
+
+local function fn18(status, statusCol, arg)
+	if arg == nil and os.clock() < n5 then
+		return
+	end
+	tbl5.status = status
+	tbl5.statusCol = statusCol or tbl.offText
+	n5 = arg and os.clock() + arg or 0
+end
+
+local function fn19()
+	local character = localPlayer.Character
+	return character and character:FindFirstChild("HumanoidRootPart")
+end
+
+local function fn20()
+	local character = localPlayer.Character
+	return character and character:FindFirstChildOfClass("Humanoid")
+end
+
+local function fn21()
+	local character = localPlayer.Character
+	return character and character:GetAttribute("Stealing") and true or false
+end
+
+local tbl6 = {}
+local n6 = 0
+
+local function fn22(arg)
+	local now = os.clock()
+
+	if now - n6 > 2 then
+		tbl6 = {}
+		n6 = now
+	end
+
+	local v5 = tbl6[arg]
+	if v5 ~= nil then
+		return v5 ~= "\0" and v5 or nil
+	end
+	local plotSign = arg:FindFirstChild("PlotSign")
+	if not plotSign then
+		tbl6[arg] = "\0"
+		return nil
+	end
+
+	for _, descendant in ipairs(plotSign:GetDescendants()) do
+		if descendant:IsA("TextLabel") then
+			local text2 = descendant.Text
+			if text2 == "Empty Base" then
+				tbl6[arg] = ""
+				return ""
+			end
+			local match = text2:match("^(.+)'s Base$")
+			if match then
+				tbl6[arg] = match
+				return match
+			end
+		end
+	end
+
+	tbl6[arg] = "\0"
+	return nil
+end
+
+local function fn23(arg)
+	local plotSign = arg:FindFirstChild("PlotSign")
+	if not plotSign then
+		return false
+	end
+	local yourBase = plotSign:FindFirstChild("YourBase")
+	return yourBase and yourBase:IsA("BillboardGui") and yourBase.Enabled == true or false
+end
+
+local function fn24(arg)
+	local promptAttachment = arg:FindFirstChild("PromptAttachment")
+	local v5 = nil
+
+	if promptAttachment then
+		v5 = nil
+
+		for _, child in ipairs(promptAttachment:GetChildren()) do
+			if child:IsA("ProximityPrompt") and child.ActionText and child.ActionText:find("Steal") then
+				v5 = child
+			end
+		end
+	end
+
+	if not v5 then
+		for _, descendant in ipairs(arg:GetDescendants()) do
+			if descendant:IsA("ProximityPrompt") and descendant.ActionText and descendant.ActionText:find("Steal") then
+				v5 = descendant
+			end
+		end
+	end
+
+	return v5
+end
+
+local function fn25(arg)
+	local base = arg:FindFirstChild("Base")
+	base = base and base:FindFirstChild("Spawn")
+	return base, base and fn24(base) or nil
+end
+
+local function fn26(arg, arg2, arg3)
+	local v5 = arg[arg2]
+	if not v5 then
+		return nil
+	end
+	local huge = math.huge
+	local v6 = nil
+
+	for _, v7 in ipairs(v5) do
+		if not v7.claimed then
+			local n7 = v7.pos.X - arg3.X
+			local n8 = v7.pos.Z - arg3.Z
+			local n9 = n7 * n7 + n8 * n8
+
+			if n9 < huge then
+				huge = n9
+				v6 = v7
+			end
+		end
+	end
+
+	if v6 then
+		v6.claimed = true
+	end
+
+	return v6
+end
+
+local function fn27()
+	if tbl5.gens then
+		return tbl5.gens
+	end
+
+	if not pcall(function()
+		local v5 = getgc(true)
+
+		for i = 1, #v5 do
+			local v6 = v5[i]
+
+			if type(v6) == "table" then
+				local value = rawget(v6, "Fluriflura") or rawget(v6, "Tralalero Tralala")
+
+				if type(value) == "table" and rawget(value, "Generation") ~= nil and rawget(value, "Rarity") ~= nil then
+					local gens = {}
+
+					for k, v7 in pairs(v6) do
+						if type(k) == "string" and type(v7) == "table" then
+							gens[k] = rawget(v7, "Generation")
+						end
+					end
+
+					tbl5.gens = gens
+					return
+				end
+			end
+		end
+	end) then
+		tbl5.gens = tbl5.gens or {}
+	end
+
+	tbl5.gens = tbl5.gens or {}
+	return tbl5.gens
+end
+
+local function fn28(arg)
+	local gens = tbl5.gens and tbl5.gens[arg]
+	return type(gens) == "number" and gens or 0
+end
+
+local function fn29()
+	local v5 = fn19()
+	local plots = workspace:FindFirstChild("Plots")
+	if not v5 or not plots then
+		return nil
+	end
+	local v6 = nil
+	local v7 = nil
+
+	for _, child in ipairs(plots:GetChildren()) do
+		local mainRoot = child:FindFirstChild("MainRoot") or child:FindFirstChild("Spawn")
+
+		if mainRoot and mainRoot:IsA("BasePart") then
+			local magnitude = (mainRoot.Position - v5.Position).Magnitude
+
+			if not v6 or magnitude < v6 then
+				v6 = magnitude
+				v7 = child
+			end
+		end
+	end
+
+	return v7
+end
+
+local function fn30(arg, arg2)
+	local tbl7 = {}
+	local animalPodiums = arg:FindFirstChild("AnimalPodiums")
+	if not animalPodiums then
+		return tbl7
+	end
+
+	for _, child in ipairs(animalPodiums:GetChildren()) do
+		local num = tonumber(child.Name)
+		local v5, v6 = fn25(child)
+
+		if num and v5 and v6 then
+			local objectText = v6.ObjectText
+
+			if objectText and objectText ~= "" then
+				local v7 = arg2 and fn26(arg2, objectText, v5.Position) or nil
+
+				tbl7[#tbl7 + 1] = {
+					num = num,
+					name = objectText,
+					prompt = v6,
+					part = v5,
+					rarity = v7 and v7.rarity or "",
+					gen = v7 and v7.gen or "",
+					price = v7 and v7.price or "",
+					mutation = v7 and v7.mutation and v7.mutation ~= "None" and v7.mutation or "",
+				}
+			end
+		end
+	end
+
+	table.sort(tbl7, function(arg3, arg4)
+		return arg3.num < arg4.num
+	end)
+
+	return tbl7
+end
+
+local function fn31()
+	local v5 = fn19()
+	local plots = workspace:FindFirstChild("Plots")
+	if not v5 or not plots then
+		return {}
+	end
+	local nearest = tbl5.nearest and fn29() or nil
+	local tbl7 = {}
+
+	for _, child in ipairs(plots:GetChildren()) do
+		if (nearest == nil or child == nearest) and not fn23(child) then
+			local v6 = fn22(child)
+
+			for _, v7 in ipairs(fn30(child, nil)) do
+				tbl7[#tbl7 + 1] = {
+					plot = child,
+					owner = v6 ~= nil and v6 ~= "" and v6 or "unclaimed",
+					num = v7.num,
+					index = v7.name,
+					prompt = v7.prompt,
+					part = v7.part,
+					rarity = v7.rarity,
+					genText = v7.gen,
+					mutation = v7.mutation,
+					dist = (v7.part.Position - v5.Position).Magnitude,
+					gen = fn28(v7.name),
+				}
+			end
+		end
+	end
+
+	return tbl7
+end
+
+local function fn32()
+	if not tbl5.nearest and not tbl5.gens then
+		fn27()
+	end
+
+	local v5 = fn31()
+	if #v5 == 0 then
+		return nil, v5
+	end
+
+	if tbl5.nearest then
+		table.sort(v5, function(arg, arg2)
+			return arg.dist < arg2.dist
+		end)
+	else
+		table.sort(v5, function(arg, arg2)
+			if arg.gen == arg2.gen then
+				return arg.dist < arg2.dist
+			end
+			return arg.gen > arg2.gen
+		end)
+	end
+
+	return v5[1], v5
+end
+
+local tbl7 = { Radius = 55, FireRange = 10, HoldMin = 1.3, HoldMax = 2.6, EntryDelay = 0.3 }
+local tbl8 = {}
+local flag2 = false
+local v5 = nil
+
+local function fn33(arg)
+	local v6 = fn19()
+	if not v6 then
+		return math.huge
+	end
+	local parent = arg.Parent
+
+	if parent and parent:IsA("Attachment") then
+		parent = parent.Parent
+	end
+
+	if parent and parent:IsA("BasePart") then
+		return (parent.Position - v6.Position).Magnitude
+	end
+	return math.huge
+end
+
+local function fn34(arg, lastName)
+	if flag2 then
+		return
+	end
+
+	if not tbl8[arg] then
+		local tbl9 = { hold = {}, trigger = {}, ready = true }
+
+		if getconnections then
+			for _, v6 in ipairs(getconnections(arg.PromptButtonHoldBegan)) do
+				if v6.Function then
+					tbl9.hold[#tbl9.hold + 1] = v6.Function
+				end
+			end
+
+			for _, v6 in ipairs(getconnections(arg.Triggered)) do
+				if v6.Function then
+					tbl9.trigger[#tbl9.trigger + 1] = v6.Function
+				end
+			end
+		end
+
+		tbl8[arg] = tbl9
+	end
+
+	local v6 = tbl8[arg]
+	if not v6.ready then
+		return
+	end
+
+	if #v6.trigger == 0 then
+		fn18("NO HANDLER ON PROMPT", tbl.offText, 1.2)
+		return
+	end
+	local now = os.clock()
+	v6.ready = false
+	flag2 = true
+	v5 = now
+	tbl5.lastName = lastName
+	local accent = tbl.accent
+	fn18("GRABBING  " .. tostring(lastName), accent)
+
+	task.spawn(function()
+		for _, v7 in ipairs(v6.hold) do
+			task.spawn(pcall, v7)
+		end
+
+		task.wait(tbl7.HoldMin)
+		local fireRange = tbl7.FireRange
+		local flag3 = fn33(arg) <= fireRange
+
+		while true do
+			local holdMax = tbl7.HoldMax
+
+			if not (os.clock() - v5 > holdMax or not arg.Parent) then
+				local fireRange2 = tbl7.FireRange
+
+				if fn33(arg) <= fireRange2 then
+					if not flag3 then
+						task.wait(tbl7.EntryDelay)
+					end
+
+					for _, v7 in ipairs(v6.trigger) do
+						task.spawn(pcall, v7)
+					end
+
+					task.wait(0.05)
+					v6.ready = true
+					flag2 = false
+					return
+				else
+					task.wait()
+					continue
+				end
+			end
+
+			break
+		end
+
+		task.wait(0.05)
+		v6.ready = true
+		flag2 = false
+	end)
+end
+
+local function fn35(arg)
+	if not arg or not arg.prompt or not arg.prompt.Parent then
+		return
+	end
+
+	if flag2 then
+		return
+	end
+
+	if tbl7.Radius < arg.dist then
+		local label = tbl.label
+		fn18(string.format("%s  ·  #%d  ·  %.0f studs", arg.index, arg.num, arg.dist), label)
+		return
+	end
+
+	fn34(arg.prompt, arg.index)
+end
+
+local carryTarget = 28.8
+local flag3 = false
+local n7 = 0
+local walkSpeed = nil
+local v6 = nil
+local droveFrames = 0
+local n8 = nil
+
+local function fn36()
+	if n8 then
+		return n8
+	end
+
+	local ok2, result2 = pcall(function()
+		return game:GetService("StarterPlayer").CharacterWalkSpeed
+	end)
+
+	n8 = ok2 and type(result2) == "number" and result2 > 0 and result2 or 34
+	return n8
+end
+
+local n9 = 0.72
+local n10 = 90
+local v7 = nil
+local v8 = nil
+
+local function fn37(arg, arg2)
+	if type(arg) ~= "number" or arg <= 0 then
+		return
+	end
+
+	if v7 == nil or arg > v7 then
+		v7 = arg
+		v8 = nil
+	elseif arg <= v7 * n9 then
+		v8 = v8 or arg2
+
+		if n10 < arg2 - v8 then
+			v7 = arg
+			v8 = nil
+		end
+	else
+		v8 = nil
+		v7 += (arg - v7) * 0.05
+	end
+end
+
+local function fn38()
+	local v9 = fn36()
+	return (v7 and math.min(v7, v9) or v9) * 0.6 * 1.1
+end
+
+local function fn39()
+	if fn21() then
+		return true
+	end
+
+	if walkSpeed == nil or v7 == nil then
+		return false
+	end
+	return walkSpeed <= v7 * n9
+end
+
+local function fn40()
+	if not tbl5.boost then
+		if n7 ~= 0 then
+			flag3 = false
+			n7 = 0
+		end
+
+		return
+	end
+
+	local character = localPlayer.Character
+	if not character then
+		return
+	end
+	local humanoid = character:FindFirstChildOfClass("Humanoid")
+	local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+	if not humanoid or not humanoidRootPart then
+		return
+	end
+	local state = humanoid:GetState()
+	if humanoid.PlatformStand or state == Enum.HumanoidStateType.Physics or state == Enum.HumanoidStateType.Ragdoll or state == Enum.HumanoidStateType.FallingDown then
+		return
+	end
+	walkSpeed = humanoid.WalkSpeed
+	fn37(walkSpeed, os.clock())
+
+	if v6 == nil or walkSpeed < v6 then
+		v6 = walkSpeed
+	end
+
+	if not fn39() then
+		flag3 = false
+		n7 = 0
+		return
+	end
+
+	local moveDirection = humanoid.MoveDirection
+	if moveDirection.Magnitude <= 0 then
+		return
+	end
+	local v9 = carryTarget
+	local flag4
+
+	if v9 <= fn38() then
+		flag3 = false
+		n7 = 0
+		flag4 = true
+	else
+		local now = os.clock()
+
+		if n7 == 0 then
+			n7 = now
+			flag3 = true
+		end
+
+		if (flag3 and 1.1 or 0.9) <= now - n7 then
+			flag3 = not flag3
+			n7 = now
+		end
+
+		flag4 = flag3
+	end
+
+	if flag4 then
+		humanoidRootPart.Velocity = Vector3.new(moveDirection.X * v9, humanoidRootPart.Velocity.Y, moveDirection.Z * v9)
+		droveFrames += 1
+	end
+end
+
+local n11 = 200
+
+local tbl9 = {
+	["Flying Carpet"] = true,
+	Carpet = true,
+	Cloud = true,
+	["Witch's Broom"] = true,
+	["Cupid's Wings"] = true,
+	["Santa's Sleigh"] = true,
+	["Magic Carpet"] = true,
+	Waverider = true,
+	["Flying Bee"] = true,
+}
+
+local function fn41()
+	tbl5.flyActive = false
+	tbl5.flyToolName = nil
+	tbl5.flyMover = nil
+	tbl5.flySpeed = 0
+	tbl5.flyNative = 0
+	tbl5.flyTarget = 0
+end
+
+local function fn42(arg)
+	local flightLinearVelocity = arg:FindFirstChild("FlightLinearVelocity")
+	if flightLinearVelocity and flightLinearVelocity:IsA("LinearVelocity") then
+		return flightLinearVelocity
+	end
+	local flightPower = arg:FindFirstChild("FlightPower")
+	if flightPower and flightPower:IsA("BodyVelocity") then
+		return flightPower
+	end
+
+	for _, child in ipairs(arg:GetChildren()) do
+		local v9 = string.lower(child.Name)
+		if child:IsA("LinearVelocity") and (string.find(v9, "flight", 1, true) or string.find(v9, "fly", 1, true)) then
+			return child
+		end
+
+		if child:IsA("BodyVelocity") and (string.find(v9, "flight", 1, true) or string.find(v9, "fly", 1, true)) then
+			return child
+		end
+	end
+
+	return nil
+end
+
+local function fn43()
+	local character = localPlayer.Character
+	local humanoid = character and character:FindFirstChildOfClass("Humanoid")
+	local humanoidRootPart = character and character:FindFirstChild("HumanoidRootPart")
+	local tool = character and character:FindFirstChildWhichIsA("Tool")
+	if not character or not humanoid or not humanoidRootPart or not tool then
+		return nil
+	end
+	local v9 = fn42(humanoidRootPart)
+	if not (tbl9[tool.Name] == true or tool:GetAttribute("FlightGear") == true or type(tool:GetAttribute("FlightSpeed")) == "number" or v9 ~= nil) then
+		return nil
+	end
+	local flag4 = humanoidRootPart:GetAttribute("FlightActive") == true or tool:GetAttribute("IsActive") == true or humanoid.PlatformStand == true or v9 and v9:IsA("LinearVelocity") and v9.Enabled == true
+	local flag5
+
+	if flag4 then
+		flag5 = flag4
+	else
+		flag5 = v9 and v9:IsA("BodyVelocity") and v9.MaxForce.Magnitude > 1
+	end
+
+	return tool, humanoid, humanoidRootPart, v9, flag5
+end
+
+local function fn44(arg)
+	if not arg then
+		return Vector3.zero
+	end
+
+	if arg:IsA("LinearVelocity") then
+		return arg.VectorVelocity
+	end
+
+	if arg:IsA("BodyVelocity") then
+		return arg.Velocity
+	end
+	return Vector3.zero
+end
+
+local function fn45(arg, arg2, arg3)
+	if not arg then
+		return
+	end
+
+	if arg:IsA("LinearVelocity") then
+		arg.VectorVelocity = Vector3.new(arg2, arg.VectorVelocity.Y, arg3)
+	elseif arg:IsA("BodyVelocity") then
+		arg.Velocity = Vector3.new(arg2, arg.Velocity.Y, arg3)
+	end
+end
+
+local function fn46()
+	if not tbl5.flyboost then
+		return
+	end
+	tbl5.flyActive = false
+	tbl5.flyToolName = nil
+	tbl5.flyMover = nil
+	tbl5.flySpeed = 0
+	tbl5.flyNative = 0
+	tbl5.flyTarget = 0
+	local v9, v10, v11, v12, v13 = fn43()
+	if not v9 or not v11 then
+		return
+	end
+	tbl5.flyToolName = v9.Name
+	if not v13 or fn21() then
+		return
+	end
+	local assemblyLinearVelocity = v11.AssemblyLinearVelocity
+	tbl5.flyNative = Vector3.new(assemblyLinearVelocity.X, 0, assemblyLinearVelocity.Z).Magnitude
+	local moveDirection = v10.MoveDirection
+	local n12 = math.clamp(moveDirection.Magnitude, 0, 1)
+	local vector
+
+	if n12 > 0.01 then
+		vector = Vector3.new(moveDirection.X, 0, moveDirection.Z)
+
+		if vector.Magnitude > 0.01 then
+			vector = vector.Unit
+		end
+	else
+		local v14 = fn44(v12)
+		local vector2 = Vector3.new(v14.X, 0, v14.Z)
+		vector = nil
+
+		if vector2.Magnitude > 0.5 then
+			n12 = 1
+			vector = vector2.Unit
+		end
+	end
+
+	if vector then
+		local flyTarget = n11 * n12
+		local n13 = vector.X * flyTarget
+		local n14 = vector.Z * flyTarget
+		fn45(v12, n13, n14)
+		v11.AssemblyLinearVelocity = Vector3.new(n13, assemblyLinearVelocity.Y, n14)
+		tbl5.flyTarget = flyTarget
+	else
+		fn45(v12, 0, 0)
+		v11.AssemblyLinearVelocity = Vector3.new(0, assemblyLinearVelocity.Y, 0)
+	end
+
+	if v12 then
+		tbl5.flyMover = v12.ClassName
+	else
+		tbl5.flyMover = "RootVelocity"
+	end
+
+	tbl5.flyActive = true
+	local assemblyLinearVelocity2 = v11.AssemblyLinearVelocity
+	tbl5.flySpeed = math.sqrt(assemblyLinearVelocity2.X * assemblyLinearVelocity2.X + assemblyLinearVelocity2.Z * assemblyLinearVelocity2.Z)
+end
+
+local tbl10 = {
+	Vector3.new(-342.439, 10.399, 113.107),
+	Vector3.new(-342.439, 10.465, 6.107),
+	Vector3.new(-476.752, 10.465, 114.107),
+	Vector3.new(-476.752, 10.465, 7.107),
+	Vector3.new(-342.44, 10.464, 220.107),
+	Vector3.new(-476.752, 10.465, 221.107),
+	Vector3.new(-342.439, 10.465, -100.893),
+	Vector3.new(-476.752, 10.465, -99.893),
+}
+
+local n12 = 6
+local str = "Empty Base"
+local v9 = utf8.char(11015)
+
+local function fn47(arg)
+	local ok2, result2 = pcall(arg.GetBoundingBox, arg)
+	if not ok2 then
+		return nil
+	end
+	local position = result2.Position
+	local v10 = nil
+	local v11 = nil
+
+	for i, v12 in ipairs(tbl10) do
+		local n13 = position.X - v12.X
+		local n14 = position.Z - v12.Z
+		local v13 = math.sqrt(n13 * n13 + n14 * n14)
+
+		if not v10 or v13 < v10 then
+			v10 = v13
+			v11 = i
+		end
+	end
+
+	return v10 and v10 <= n12 and v11 or nil
+end
+
+local tbl11 = {}
+local tbl12 = {}
+
+local Part = fn3("Part", {
+	Name = "__NextBaseAnchor",
+	Anchored = true,
+	CanCollide = false,
+	CanQuery = false,
+	CanTouch = false,
+	Transparency = 1,
+	Size = Vector3.one,
+}, Folder)
+
+local BillboardGui = fn3("BillboardGui", {
+	Name = "NextBaseBillboard",
+	Adornee = Part,
+	Size = UDim2.fromScale(32, 13),
+	StudsOffset = Vector3.new(0, 10, 0),
+	MaxDistance = math.huge,
+	AlwaysOnTop = true,
+	LightInfluence = 0,
+	Enabled = false,
+}, Part)
+
+fn3("TextLabel", {
+	BackgroundTransparency = 1,
+	AnchorPoint = Vector2.new(0.5, 0.5),
+	Position = UDim2.fromScale(0.5, 0.3),
+	Size = UDim2.fromScale(0.95, 0.5),
+	Font = Enum.Font.GothamBlack,
+	Text = v9 .. "  NEXT  " .. v9,
+	TextScaled = true,
+	TextColor3 = Color3.fromRGB(255, 60, 60),
+	TextStrokeColor3 = Color3.fromRGB(0, 0, 0),
+	TextStrokeTransparency = 0,
+}, BillboardGui)
+
+fn3("TextLabel", {
+	BackgroundTransparency = 1,
+	AnchorPoint = Vector2.new(0.5, 0.5),
+	Position = UDim2.fromScale(0.5, 0.72),
+	Size = UDim2.fromScale(0.95, 0.42),
+	Font = Enum.Font.GothamBlack,
+	Text = "EMPTY BASE",
+	TextScaled = true,
+	TextColor3 = Color3.fromRGB(255, 255, 255),
+	TextStrokeColor3 = Color3.fromRGB(0, 0, 0),
+	TextStrokeTransparency = 0,
+}, BillboardGui)
+
+local function fn48(arg)
+	return arg.Text:gsub("^%s+", ""):gsub("%s+$", "") == str
+end
+
+local function fn49()
+	if not tbl5.nextbase then
+		BillboardGui.Enabled = false
+		return
+	end
+	local v10 = nil
+
+	for i = 1, #tbl10 do
+		local v11 = tbl11[i]
+
+		if v11 and v11.label and fn48(v11.label) then
+			v10 = i
+			break
+		else
+			v10 = nil
+		end
+	end
+
+	if v10 then
+		Part.CFrame = tbl11[v10].cf
+		BillboardGui.Enabled = true
+	else
+		BillboardGui.Enabled = false
+	end
+end
+
+local function fn50(arg)
+	if tbl12[arg] then
+		return
+	end
+	tbl12[arg] = true
+	fn16(arg:GetPropertyChangedSignal("Text"):Connect(fn49))
+end
+
+local function fn51()
+	local plots = workspace:FindFirstChild("Plots")
+	if not plots then
+		return
+	end
+
+	for _, child in ipairs(plots:GetChildren()) do
+		local plotSign = child:FindFirstChild("PlotSign")
+		local model = plotSign and plotSign:FindFirstChild("Model")
+		plotSign = plotSign and plotSign:FindFirstChild("SurfaceGui")
+		plotSign = plotSign and plotSign:FindFirstChild("Frame")
+		plotSign = plotSign and plotSign:FindFirstChild("TextLabel")
+
+		if model and plotSign then
+			local v10 = fn47(model)
+
+			if v10 then
+				tbl11[v10] = { label = plotSign, cf = select(1, model:GetBoundingBox()) }
+				fn50(plotSign)
+			end
+		end
+	end
+
+	fn49()
+end
+
+local function fn52()
+	BillboardGui.Enabled = false
+end
+
+local function fn53()
+	fn51()
+end
+
+local plots = workspace:FindFirstChild("Plots")
+
+if plots then
+	fn16(plots.DescendantAdded:Connect(function(descendant)
+		if descendant:IsA("TextLabel") then
+			task.defer(fn51)
+		end
+	end))
+
+	fn16(plots.ChildAdded:Connect(function()
+		task.defer(fn51)
+	end))
+end
+
+fn51()
+
+fn15(1, "Nearest", { "OFF", "ON" }, function(arg, arg2)
+	tbl5.nearest = arg2 > 1
+end)
+
+fn15(2, "Instant Steal", { "OFF", "ON" }, function(arg, arg2)
+	tbl5.steal = arg2 > 1
+
+	if not tbl5.steal then
+		fn18("IDLE", tbl.offText, 0.1)
+	end
+end)
+
+fn15(3, "Next Base", { "OFF", "ON" }, function(arg, arg2)
+	tbl5.nextbase = arg2 > 1
+
+	if tbl5.nextbase then
+		fn53()
+	else
+		fn52()
+	end
+end)
+
+fn15(4, "Steal Boost", { "OFF", "ON" }, function(arg, arg2)
+	tbl5.boost = arg2 > 1
+end)
+
+fn15(5, "Fly Gear Boost", { "OFF", "ON" }, function(arg, arg2)
+	tbl5.flyboost = arg2 > 1
+
+	if not tbl5.flyboost then
+		fn41()
+	end
+end)
+
+fn15(6, "Infinite Jump", { "OFF", "ON" }, function(arg, arg2)
+	tbl5.infjump = arg2 > 1
+end)
+
+local n13 = 0
+local n14 = 0.12
+
+local function fn54(arg)
+	local ok2, result2 = pcall(function()
+		return arg.UseJumpPower
+	end)
+
+	if ok2 and result2 == true then
+		return math.max(0, tonumber(arg.JumpPower) or 0)
+	end
+	return math.sqrt(2 * workspace.Gravity * math.max(0, tonumber(arg.JumpHeight) or 0))
+end
+
+fn16(UserInputService.JumpRequest:Connect(function()
+	if not fn() then
+		return
+	end
+
+	if not tbl5.infjump then
+		return
+	end
+	local character = localPlayer.Character
+	local humanoid = character and character:FindFirstChildOfClass("Humanoid")
+	local humanoidRootPart = character and character:FindFirstChild("HumanoidRootPart")
+	if not humanoid or not humanoidRootPart or humanoid.Health <= 0 or humanoid.SeatPart or humanoidRootPart.Anchored then
+		return
+	end
+	local state = humanoid:GetState()
+	if humanoid.PlatformStand or state == Enum.HumanoidStateType.Dead or state == Enum.HumanoidStateType.Physics or state == Enum.HumanoidStateType.Ragdoll or state == Enum.HumanoidStateType.FallingDown or state == Enum.HumanoidStateType.Seated then
+		return
+	end
+
+	if humanoid.FloorMaterial ~= Enum.Material.Air then
+		return
+	end
+	local now = os.clock()
+	if now - n13 < n14 then
+		return
+	end
+	local y = humanoidRootPart.AssemblyLinearVelocity.Y
+	local n15 = fn54(humanoid) - y
+	if n15 <= 0.5 then
+		return
+	end
+	n13 = now
+
+	pcall(function()
+		humanoidRootPart:ApplyImpulse(Vector3.new(0, humanoidRootPart.AssemblyMass * n15, 0))
+	end)
+end))
+
+local Frame6 = fn3("Frame", {
+	Name = "Status",
+	LayoutOrder = 90,
+	Size = UDim2.new(1, 0, 0, 34),
+	BackgroundColor3 = Color3.fromHex("#241032"),
+	BackgroundTransparency = 0.45,
+	BorderSizePixel = 0,
+}, Frame3)
+
+fn4(Frame6, tbl2.elemRadius)
+fn5(Frame6, tbl.outlineMid, 1, 0.62)
+
+local TextLabel = fn3("TextLabel", {
+	Size = UDim2.new(1, -20, 1, 0),
+	Position = UDim2.new(0, 10, 0, 0),
+	BackgroundTransparency = 1,
+	Font = Enum.Font.GothamMedium,
+	TextSize = 12,
+	TextColor3 = tbl.placeholder,
+	Text = "IDLE",
+	TextXAlignment = Enum.TextXAlignment.Left,
+	TextTruncate = Enum.TextTruncate.AtEnd,
+}, Frame6)
+
+tbl4.Nearest:set(2)
+
+local Frame7 = fn3("Frame", {
+	Name = "Strip",
+	AnchorPoint = Vector2.new(0.5, 1),
+	Position = UDim2.new(0.5, 0, 1, -86),
+	Size = UDim2.fromOffset(0, 50),
+	AutomaticSize = Enum.AutomaticSize.X,
+	BackgroundColor3 = Color3.fromHex("#1B0A2D"),
+	BackgroundTransparency = 0.18,
+	BorderSizePixel = 0,
+}, ScreenGui)
+
+local UIScale3 = fn3("UIScale", { Scale = 1 }, Frame7)
+fn4(Frame7, 25)
+local v10 = fn5(Frame7, tbl.outlineMid, 1.2, 0.3)
+fn8(v10)
+fn3("UIPadding", { PaddingLeft = UDim.new(0, 20), PaddingRight = UDim.new(0, 20) }, Frame7)
+
+fn3("UIListLayout", {
+	FillDirection = Enum.FillDirection.Horizontal,
+	VerticalAlignment = Enum.VerticalAlignment.Center,
+	SortOrder = Enum.SortOrder.LayoutOrder,
+	Padding = UDim.new(0, 13),
+}, Frame7)
+
+local function fn55(arg)
+	return fn3("Frame", {
+		LayoutOrder = arg,
+		Size = UDim2.new(0, 1, 0, 24),
+		BackgroundColor3 = tbl.outlineMid,
+		BackgroundTransparency = 0.5,
+		BorderSizePixel = 0,
+	}, Frame7)
+end
+
+fn4(fn3("Frame", {
+	LayoutOrder = 1,
+	Size = UDim2.fromOffset(11, 11),
+	BackgroundColor3 = tbl.accent,
+	BorderSizePixel = 0,
+}, Frame7), 6)
+
+fn3("TextLabel", {
+	LayoutOrder = 2,
+	Size = UDim2.fromOffset(0, 26),
+	AutomaticSize = Enum.AutomaticSize.X,
+	BackgroundTransparency = 1,
+	Font = Enum.Font.GothamBlack,
+	Text = text,
+	TextSize = 18,
+	TextColor3 = tbl.text,
+}, Frame7)
+
+fn55(3)
+
+local function fn56(arg, arg2, arg3)
+	local Frame8 = fn3("Frame", { LayoutOrder = arg, Size = UDim2.fromOffset(54, 38), BackgroundTransparency = 1 }, Frame7)
+
+	fn3("TextLabel", {
+		Size = UDim2.new(1, 0, 0, 13),
+		BackgroundTransparency = 1,
+		Font = Enum.Font.GothamBold,
+		Text = arg2,
+		TextSize = 11,
+		TextColor3 = tbl.placeholder,
+		TextTransparency = 0.35,
+	}, Frame8)
+
+	return (fn3("TextLabel", {
+		Position = UDim2.new(0, 0, 0, 15),
+		Size = UDim2.new(1, 0, 0, 20),
+		BackgroundTransparency = 1,
+		Font = Enum.Font.GothamBlack,
+		Text = "--",
+		TextSize = 17,
+		TextColor3 = arg3,
+	}, Frame8))
+end
+
+local fps = fn56(4, "FPS", tbl.fps)
+fn55(5)
+local ping = fn56(6, "PING", tbl.ping)
+local connection = nil
+
+local function fn57()
+	local currentCamera = workspace.CurrentCamera
+	currentCamera = currentCamera and currentCamera.ViewportSize or Vector2.new(1920, 1080)
+	local touchEnabled = UserInputService.TouchEnabled
+	TextButton.Visible = touchEnabled
+	TextButton.Text = ScreenGui.Enabled and "×" or "TGT"
+	Frame4.Visible = true
+
+	if touchEnabled then
+		UIScale2.Scale = math.clamp(math.min(1, (currentCamera.X - 20) / n3), 0.72, 1)
+		Frame4.Position = UDim2.new(1, -10, 0, 10)
+		local n15 = (jobPanelMinimized and 38 or 132) * UIScale2.Scale + 20
+		local visible = currentCamera.Y >= 430
+		UIScale.Scale = math.clamp(math.min((currentCamera.X - 20) / n, math.max(200, currentCamera.Y - n15 - (visible and 76 or 12)) / n2), 0.48, 1)
+		Frame.Position = UDim2.fromOffset(10, n15)
+		UIScale3.Scale = math.clamp(math.min(1, (currentCamera.X - 20) / 430), 0.66, 1)
+		Frame7.Visible = visible
+		Frame7.Position = UDim2.new(0.5, 0, 1, -14)
+		TextButton.Position = UDim2.new(1, -12, 1, -72)
+	else
+		UIScale.Scale = 1
+		UIScale2.Scale = 1
+		UIScale3.Scale = 1
+		Frame7.Visible = true
+		Frame.Position = UDim2.new(0, 22, 0.5, -n2 / 2)
+		Frame4.Position = UDim2.new(1, -22, 0.5, -n4 / 2)
+		Frame7.Position = UDim2.new(0.5, 0, 1, -86)
+	end
+end
+
+local function fn58()
+	if connection then
+		pcall(function()
+			connection:Disconnect()
+		end)
+	end
+
+	local currentCamera = workspace.CurrentCamera
+
+	if currentCamera then
+		connection = currentCamera:GetPropertyChangedSignal("ViewportSize"):Connect(fn57)
+		fn16(connection)
+	end
+
+	fn57()
+end
+
+fn16(workspace:GetPropertyChangedSignal("CurrentCamera"):Connect(fn58))
+fn58()
+local flag4 = false
+local v11 = nil
+local v12 = nil
+
+fn16(Frame2.InputBegan:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+		local position = input.Position
+		local position2 = Frame.Position
+		flag4 = true
+		v11 = position
+		v12 = position2
+	end
+end))
+
+fn16(UserInputService.InputChanged:Connect(function(input)
+	if not flag4 then
+		return
+	end
+
+	if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+		local n15 = input.Position - v11
+		Frame.Position = UDim2.new(v12.X.Scale, v12.X.Offset + n15.X, v12.Y.Scale, v12.Y.Offset + n15.Y)
+	end
+end))
+
+fn16(UserInputService.InputEnded:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+		flag4 = false
+	end
+end))
+
+Frame2.Active = true
+local flag5 = false
+local v13 = nil
+local v14 = nil
+
+fn16(Frame5.InputBegan:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+		local position = input.Position
+		local position2 = Frame4.Position
+		flag5 = true
+		v13 = position
+		v14 = position2
+	end
+end))
+
+fn16(UserInputService.InputChanged:Connect(function(input)
+	if not flag5 then
+		return
+	end
+
+	if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+		local n15 = input.Position - v13
+		Frame4.Position = UDim2.new(v14.X.Scale, v14.X.Offset + n15.X, v14.Y.Scale, v14.Y.Offset + n15.Y)
+	end
+end))
+
+fn16(UserInputService.InputEnded:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+		flag5 = false
+	end
+end))
+
+fn16(UserInputService.InputBegan:Connect(function(input, gameProcessed)
+	if gameProcessed then
+		return
+	end
+
+	if input.KeyCode == Enum.KeyCode.RightControl then
+		ScreenGui.Enabled = not ScreenGui.Enabled
+	end
+end))
+
+TextButton2.MouseButton1Click:Connect(function()
+	ScreenGui.Enabled = false
+	TextButton.Text = "TGT"
+end)
+
+fn16(RunService.Heartbeat:Connect(function()
+	if not fn() then
+		return
+	end
+	pcall(fn40)
+
+	if tbl5.flyboost then
+		pcall(fn46)
+	end
+end))
+
+task.spawn(function()
+	local n15 = 0
+	local now = os.clock()
+
+	local connection2 = RunService.RenderStepped:Connect(function()
+		n15 += 1
+	end)
+
+	fn16(connection2)
+
+	while fn() do
+		task.wait(1)
+		local now2 = os.clock()
+		local n16 = now2 - now
+
+		if n16 > 0 then
+			fps.Text = tostring(math.floor(n15 / n16 + 0.5))
+		end
+
+		n15 = 0
+
+		local ok2, result2 = pcall(function()
+			return Stats.Network.ServerStatsItem["Data Ping"]:GetValue()
+		end)
+
+		ping.Text = ok2 and tostring(math.floor(result2 + 0.5)) .. "ms" or "--"
+		now = now2
+	end
+
+	pcall(function()
+		connection2:Disconnect()
+	end)
+end)
+
+task.spawn(function()
+	while fn() do
+		task.wait(0.2)
+
+		pcall(function()
+			if tbl5.steal then
+				local v15 = fn32()
+				tbl5.target = v15
+
+				if v15 then
+					fn35(v15)
+				end
+			end
+
+			if tbl5.flyboost and tbl5.flyActive then
+				local v15 = fn18
+				local format = string.format
+				local str2 = tostring(tbl5.flyToolName or "GEAR")
+				local flySpeed = tbl5.flySpeed or 0
+				local flyTarget = tbl5.flyTarget or 0
+				local onStroke = tbl.onStroke
+				v15(format("FLY BOOST  %s  ·  %.0f/%.0f", str2, flySpeed, flyTarget), onStroke)
+			elseif tbl5.flyboost and not tbl5.steal then
+				fn18(tbl5.flyToolName and "ACTIVATE  " .. tostring(tbl5.flyToolName) or "EQUIP A FLY GEAR", tbl.offText)
+			elseif fn39() then
+				local v15 = fn19()
+				local n15 = 0
+
+				if v15 then
+					local velocity = v15.Velocity
+					n15 = math.sqrt(velocity.X * velocity.X + velocity.Z * velocity.Z)
+				end
+
+				fn18(string.format("CARRYING  %s  ·  %.1f", tostring(tbl5.lastName or "?"), n15), tbl.onStroke)
+			elseif not tbl5.steal then
+				fn18("IDLE", tbl.offText)
+			elseif not tbl5.target then
+				fn18(tbl5.nearest and "NO BRAINROTS ON THIS PLOT" or "NO BRAINROTS ON OTHER PLOTS", tbl.offText)
+			end
+
+			TextLabel.Text = tbl5.status
+			TextLabel.TextColor3 = tbl5.statusCol
+		end)
+	end
+end)
+
+task.spawn(function()
+	while fn() do
+		local v15 = task.wait(0.1)
+
+		if tbl5.nextbase then
+			pcall(fn53, v15)
+		end
+	end
+end)
+
+task.spawn(function()
+	task.wait(0.5)
+
+	if fn() then
+		pcall(fn27)
+	end
+end)
+
+getgenv().__TGT = {
+	unload = function()
+		getgenv().__TGT_TOKEN = (getgenv().__TGT_TOKEN or 0) + 1
+		fn41()
+
+		for _, conn in ipairs(tbl5.conns) do
+			pcall(function()
+				conn:Disconnect()
+			end)
+		end
+
+		tbl5.conns = {}
+		fn52()
+
+		if Folder then
+			Folder:Destroy()
+		end
+
+		if ScreenGui then
+			ScreenGui:Destroy()
+		end
+
+		if ScreenGui2 then
+			ScreenGui2:Destroy()
+		end
+
+		getgenv().__TGT = nil
+	end,
+	rows = tbl4,
+	state = tbl5,
+	gui = ScreenGui,
+	mobileGui = ScreenGui2,
+	mainPanel = Frame,
+	jobId = jobId,
+	copyJobId = fn17,
+	jobPanel = Frame4,
+	setMainPanelMinimized = function(arg)
+		if arg == nil then
+			arg = not mainPanelMinimized
+		end
+
+		return fn12(arg)
+	end,
+	setJobPanelMinimized = function(arg)
+		if arg == nil then
+			arg = not jobPanelMinimized
+		end
+
+		return fn14(arg)
+	end,
+	setDiscord = function(arg)
+		text = tostring(arg)
+
+		for _, child in ipairs(Frame7:GetChildren()) do
+			if child:IsA("TextLabel") and child.LayoutOrder == 2 then
+				child.Text = text
+			end
+		end
+	end,
+	setCarrySpeed = function(arg)
+		local num = tonumber(arg)
+
+		if num then
+			carryTarget = num
+		end
+
+		return carryTarget, fn38()
+	end,
+	setFlySpeed = function(arg)
+		local num = tonumber(arg)
+
+		if num then
+			n11 = math.clamp(num, 20, 250)
+		end
+
+		return n11
+	end,
+	carrying = function()
+		return fn39(), walkSpeed
+	end,
+	probe = function()
+		local v15 = fn31()
+		local v16 = fn32()
+		local v17 = fn20()
+		local standingOn = fn29()
+		local tbl13 = { candidates = #v15 }
+
+		if standingOn then
+			standingOn = (fn22(standingOn) or "unclaimed") .. " base"
+		end
+
+		tbl13.standingOn = standingOn or "?"
+		tbl13.scoped = tbl5.nearest and "this plot only" or "all other plots"
+		tbl13.target = v16 and string.format("%s  ·  #%d  ·  %.0f studs  ·  %s", v16.index, v16.num, v16.dist, v16.owner) or "none"
+		tbl13.nextBaseShown = BillboardGui.Enabled
+		tbl13.infiniteJump = tbl5.infjump
+		tbl13.infiniteJumpMethod = "vertical ApplyImpulse"
+		tbl13.flyBoost = tbl5.flyboost
+		tbl13.flyActive = tbl5.flyActive
+		tbl13.flyTool = tbl5.flyToolName
+		tbl13.flyMover = tbl5.flyMover
+		tbl13.flySpeed = tbl5.flySpeed
+		tbl13.flyNative = tbl5.flyNative
+		tbl13.flyTarget = tbl5.flyTarget
+		tbl13.jobId = jobId
+		tbl13.mainPanelMinimized = mainPanelMinimized
+		tbl13.jobPanelMinimized = jobPanelMinimized
+		tbl13.carrying = fn39()
+		tbl13.walkSpeed = v17 and v17.WalkSpeed or -1
+
+		local function fn59()
+			local v18 = fn19()
+			if not v18 then
+				return -1
+			end
+			local velocity = v18.Velocity
+			return math.sqrt(velocity.X * velocity.X + velocity.Z * velocity.Z)
+		end
+
+		tbl13.hSpeed = fn59()
+		tbl13.lastApplied = walkSpeed or -1
+		tbl13.minWalk = v6 or -1
+		tbl13.droveFrames = droveFrames
+		tbl13.baseObserved = v7 or -1
+		tbl13.crawlBelow = v7 and v7 * n9 or -1
+		tbl13.carryTarget = carryTarget
+		tbl13.ceiling = fn38()
+		tbl13.gens = tbl5.gens and true or false
+		return tbl13
+	end,
+}
+
+fn16(localPlayer.CharacterAdded:Connect(function()
+	task.wait(0.6)
+	walkSpeed = nil
+	n13 = 0
+	tbl5.flyActive = false
+	tbl5.flyToolName = nil
+	tbl5.flyMover = nil
+	tbl5.flySpeed = 0
+	tbl5.flyNative = 0
+	tbl5.flyTarget = 0
+end))
